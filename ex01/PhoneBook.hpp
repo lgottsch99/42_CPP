@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:41:58 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/22 17:51:23 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:06:38 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ class PhoneBook
 		int current;
 
 		PhoneBook();
-		void shout();
 		void add_contact();
 
 };

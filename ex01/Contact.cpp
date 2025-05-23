@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:53:03 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/22 18:43:26 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:05:58 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,29 @@ Member: data inside classes
 
 class Contact
 {
-		bool number;
-
+	bool is_number;
+	bool is_empty;
 
 	public:				//Access specifier
 		void shout();	//Method
 		void add();
-		char *first;	//Member
-		char *last;
-		char *nick;
-		char *number;
-		char *secret;
+		int	number_check(std::string number);
+		
+		std::string first;	//Member
+		std::string last;
+		std::string nick;
+		std::string number;
+		std::string secret;
 		Contact();		//Constructor
 
 };
+
 */
 
 Contact::Contact()
 {
 	is_number = false;
+	is_empty = true;
 	
 	first = "";
 	last = "";
@@ -54,31 +58,41 @@ Contact::Contact()
 	secret = "";
 }
 
-void	Contact::shout()
-{
-	std::cout << "HELLOOOOOOO" << std::endl;
-}
 
-//A saved contact can’t have empty fields.
+//TODO A saved contact can’t have empty fields.
 void	Contact::add()
 {
+	//std::cout << "in Contact add\n";
+	std::cout << "\n";
 
-	std::cout << "in Contact add\n";
-
-	std::cout << "\nFirst Name: ";
-	std::cin >> first;
-
-	std::cout << "Last Name: ";
-	std::cin >> last;
+	while (first.empty())
+	{
+		std::cout << "First Name: ";
+		std::getline(std::cin, first);
+	}	is_number = false;
+	is_empty = true;
 	
-	std::cout << "Nickname: ";
-	std::cin >> nick;
+	while (last.empty())
+	{
+		std::cout << "Last Name: ";
+		std::getline(std::cin, last);
+	}
+	std::cout << "you entered: " << last << "\n";
+
+	while (nick.empty())
+	{
+		std::cout << "Nickname: ";
+		std::getline(std::cin, nick);
+	}
+	std::cout << "you entered: " << nick << "\n";
+
 
 	//TODO check if digits and + only
 	while (is_number == false)
 	{
 		std::cout << "Number: ";
-		std::cin >> number;
+		std::getline(std::cin, number);
+
 		if (number_check(number) != 0) 
 		{
 			number = "";
@@ -89,10 +103,15 @@ void	Contact::add()
 			is_number = true;
 	}
 
-	std::cout << "Darkest Secret: ";
-	std::cin >> secret;
+	while (secret.empty())
+	{
+		std::cout << "Darkest Secret: ";
+		std::getline(std::cin, secret);
+	}
+	std::cout << "you entered: " << secret << "\n";
 
-	std::cout << std::endl;
+	is_empty = false;
+	std::cout << "\n";
 
 }
 
@@ -113,4 +132,16 @@ int	Contact::number_check(std::string number)
 		i++;
 	}
 	return (0);
+}
+
+void	Contact::clear_contact()
+{
+	is_number = false;
+	is_empty = true;
+	
+	first = "";
+	last = "";
+	nick = "";
+	number = "";
+	secret = "";
 }

@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:54:51 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/22 18:12:29 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:06:31 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,6 @@ PhoneBook::PhoneBook()
 }
 
 //method
-void PhoneBook::shout()
-{
-	std::cout << "BOOK IS BOOKING!" << std::endl;
-}
-
 void PhoneBook::add_contact()
 {
 	std::cout << "in phonebook add_contact\n";
