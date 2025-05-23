@@ -6,12 +6,13 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:13:26 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/23 17:19:07 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:29:47 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <string>
+#include <cstdlib>
 #include "PhoneBook.hpp"
 #include "Contact.hpp"
 
@@ -26,9 +27,56 @@ std::endl flushes buffer -> slower, use \n if only need a line break
 
 */
 
+
+
+
 void	search(PhoneBook *pbook)
 {
+	std::string	str_index;
+	int			i_index;
+	bool		valid_index;
+
+	valid_index = false;
+	i_index = -1;
 	
+	//check if ANY entries exist
+	if (pbook->people[0].first.empty())
+	{
+		std::cout << "Phonebook has no entries yet!\n";
+		return;
+	}
+
+
+	// display all saved contacts
+	pbook->show_saved_contacts();
+	std::cout << "\n";
+
+	//prompt for index to display
+	while (!valid_index)
+	{
+		std::cout << "Enter Contact-Index: ";
+		std::getline(std::cin, str_index);
+		i_index = atoi(str_index.c_str());
+
+		std::cout << "Entered: " << i_index << "\n";
+		
+		//check if index valid
+		if (i_index >= 0 && i_index <= 7)
+		{
+			if (pbook->people[i_index].first.empty())
+				std::cout << "Contact Nr. " << i_index << " does not exist.\n";
+			else
+				valid_index = true;
+		}
+		else
+			std::cout << "Index out of valid range (0-7).\n";
+	}
+
+	//display all info of contact
+	if (valid_index)
+		pbook->people[i_index].display_contact();
+	
+	return ;
 }
 
 void	add_contact(int *current, PhoneBook *pbook)

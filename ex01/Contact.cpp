@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:53:03 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/23 17:05:58 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:27:37 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ void	Contact::add()
 	{
 		std::cout << "First Name: ";
 		std::getline(std::cin, first);
-	}	is_number = false;
-	is_empty = true;
+	}
+
+	is_number = false; //?
+	is_empty = true;//?
 	
 	while (last.empty())
 	{
@@ -139,9 +141,42 @@ void	Contact::clear_contact()
 	is_number = false;
 	is_empty = true;
 	
-	first = "";
-	last = "";
-	nick = "";
-	number = "";
-	secret = "";
+	first.clear();
+	last.clear();
+	nick.clear();
+	number.clear();
+	secret.clear();
 }
+
+void	Contact::display_contact()
+{
+	int	width;
+
+	width = 25;
+	std::cout.setf(std::ios::left);
+	
+	std::cout.width(width);
+	std::cout.fill(' ');
+	std::cout << "First Name: ";
+	std::cout << first << "\n";
+
+	std::cout.width(width);
+	std::cout << "Last Name: ";
+	std::cout << last << "\n";
+
+	std::cout.width(width);
+	std::cout << "Nickname: ";
+	std::cout << nick << "\n";
+
+	std::cout.width(width);
+	std::cout << "Number: ";
+	std::cout << number << "\n";
+
+	std::cout.width(width);
+	std::cout << "Darkest Secret: ";
+	std::cout << secret << "\n\n";
+
+	std::cout.unsetf(std::ios::left);
+
+}
+

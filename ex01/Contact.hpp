@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:26 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/23 17:06:17 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:09:29 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class Contact
 		void add();		//Method
 		int	number_check(std::string number);
 		void clear_contact();
+		void display_contact();
 		
 		std::string first;	//Member
 		std::string last;

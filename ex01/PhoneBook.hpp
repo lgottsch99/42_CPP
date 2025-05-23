@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:41:58 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/23 17:06:38 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:35:08 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 
 class PhoneBook
 {
+	void	padded_field(std::string str);
+
 	public:
 		Contact people[8];
-		int oldest; //index of oldest
-		int current;
+		void	show_saved_contacts();
 
-		PhoneBook();
-		void add_contact();
+		//PhoneBook();
 
 };
 
