@@ -6,11 +6,18 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:38:19 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/20 14:46:54 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:04:42 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+
+/*
+MAYBE :
+change ft toupper to cout format flag uppercase https://cplusplus.com/reference/ios/ios_base/fmtflags/
+
+*/
+
 
 char	ft_toupper(char c)
 {
@@ -26,14 +33,11 @@ int	main(int argc, char *argv[])
 	int 	y;
 	char	*tmp;
 
-	//No argument given
 	if (argc < 2)
 	{
 		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
 		return 0;
 	}
-	
-	//loop through arguments
 	i = 1;
 	while (i < argc)
 	{

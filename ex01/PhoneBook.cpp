@@ -6,34 +6,23 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:54:51 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/23 20:24:34 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/24 15:53:13 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
 
-/*
-class PhoneBook
-{
-	public:
-		Contact people[8];
-		void	show_saved_contacts();
 
-		PhoneBook();
-
-};
+/*writes padded text field for phonebook entry overview
 */
-
-
-//writes padded text field for phonebook entry overview
-void	PhoneBook::padded_field(std::string str)
+void	PhoneBook::_padded_field(std::string str) const
 {
-	if (str.length() >= 10) //OK
+	if (str.length() >= 10)
 	{
 		std::cout.write(str.c_str(), 9);
 		std::cout << ".";
 	}
-	else//OK
+	else
 	{
 		std::cout.setf(std::ios::right);
 		std::cout.width(10);
@@ -43,13 +32,13 @@ void	PhoneBook::padded_field(std::string str)
 	}
 }
 
-//method
-void	PhoneBook::show_saved_contacts()
+/* display all saved contacts as (index | first | last | nick)
+*/
+void	PhoneBook::show_saved_contacts() const
 {
 	int	index;
 
 	index = 0;
-	// display all saved contacts as (index | first | las | nick)
 	while (index < 8 && !people[index].first.empty())
 	{
 		std::cout.setf(std::ios::right);
@@ -60,11 +49,11 @@ void	PhoneBook::show_saved_contacts()
 		std::cout << index << "|";
 
 		//2. any other field
-		padded_field(people[index].first);
+		_padded_field(people[index].first);
 		std::cout << "|";
-		padded_field(people[index].last);
+		_padded_field(people[index].last);
 		std::cout << "|";
-		padded_field(people[index].nick);
+		_padded_field(people[index].nick);
 		std::cout << "\n";
 
 		index++;

@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:58:26 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/23 20:09:29 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/24 15:51:55 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,26 @@
 
 class Contact
 {
-	bool is_number;
+	private:
+		bool	_is_number;
 
-	public:				//Access specifier
-		bool is_empty;
-		void add();		//Method
-		int	number_check(std::string number);
-		void clear_contact();
-		void display_contact();
-		
-		std::string first;	//Member
+		int		_get_input(std::string *str);
+		int		_number_check(std::string number) const;
+
+	public:
+		bool 		is_empty;
+		std::string first;
 		std::string last;
 		std::string nick;
 		std::string number;
 		std::string secret;
-		Contact();		//Constructor
+	
+		Contact();
+		~Contact();
 
+		int		add();
+		void	clear_contact();
+		void	display_contact() const;
 };
 
 #endif

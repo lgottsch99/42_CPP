@@ -5,17 +5,17 @@
 #                                                     +:+ +:+         +:+      #
 #    By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/20 14:12:49 by lgottsch          #+#    #+#              #
-#    Updated: 2025/05/24 16:01:22 by lgottsch         ###   ########.fr        #
+#    Created: 2025/05/24 16:17:31 by lgottsch          #+#    #+#              #
+#    Updated: 2025/05/24 16:59:41 by lgottsch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = phonebook
+NAME = account
 
 CC = c++ 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC= main.cpp Contact.cpp PhoneBook.cpp
+SRC= tests.cpp Account.cpp
 
 
 # rules

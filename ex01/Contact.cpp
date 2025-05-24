@@ -6,49 +6,15 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:53:03 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/23 20:27:37 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/24 15:59:44 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "Contact.hpp"
-
-/*
-Method: ft that belongs to a class
-
-Constructor: ft that is autom. called when class is created
-			-> needs same name as Class!
-Member: data inside classes
-	Note: By default, all members of a class are private if you don't 
-	specify an access specifier!
-
-
-
-
-class Contact
-{
-	bool is_number;
-	bool is_empty;
-
-	public:				//Access specifier
-		void shout();	//Method
-		void add();
-		int	number_check(std::string number);
-		
-		std::string first;	//Member
-		std::string last;
-		std::string nick;
-		std::string number;
-		std::string secret;
-		Contact();		//Constructor
-
-};
-
-*/
 
 Contact::Contact()
 {
-	is_number = false;
+	_is_number = false;
 	is_empty = true;
 	
 	first = "";
@@ -58,66 +24,78 @@ Contact::Contact()
 	secret = "";
 }
 
-
-//TODO A saved contact can’t have empty fields.
-void	Contact::add()
+Contact::~Contact()
 {
-	//std::cout << "in Contact add\n";
+	clear_contact();
+}
+
+/*getting line of input in CTRL D safe manner
+*/
+int	Contact::_get_input(std::string *str)
+{
+	if (!std::getline(std::cin, *str))
+	{
+		std::cout << "\nEOF or other Error detected" << std::endl;
+		std::cin.clear();
+		return 1;
+	}
+	return 0;
+}
+
+int	Contact::add()
+{
 	std::cout << "\n";
 
 	while (first.empty())
 	{
 		std::cout << "First Name: ";
-		std::getline(std::cin, first);
+		if (_get_input(&first) == 1)
+			return 1;
 	}
-
-	is_number = false; //?
-	is_empty = true;//?
 	
 	while (last.empty())
 	{
 		std::cout << "Last Name: ";
-		std::getline(std::cin, last);
+		if (_get_input(&last) == 1)
+			return 1;
 	}
-	std::cout << "you entered: " << last << "\n";
 
 	while (nick.empty())
 	{
 		std::cout << "Nickname: ";
-		std::getline(std::cin, nick);
+		if (_get_input(&nick) == 1)
+			return 1;
 	}
-	std::cout << "you entered: " << nick << "\n";
 
-
-	//TODO check if digits and + only
-	while (is_number == false)
+	while (_is_number == false)
 	{
 		std::cout << "Number: ";
-		std::getline(std::cin, number);
+		if (_get_input(&number) == 1)
+			return 1;
 
-		if (number_check(number) != 0) 
+		if (_number_check(number) != 0) 
 		{
-			number = "";
+			number.clear();
 			std::cout << "Number can only contain digits 0-9 and +\n";
-
 		}
 		else
-			is_number = true;
+			_is_number = true;
 	}
 
 	while (secret.empty())
 	{
 		std::cout << "Darkest Secret: ";
-		std::getline(std::cin, secret);
+		if (_get_input(&secret) == 1)
+			return 1;
+
 	}
-	std::cout << "you entered: " << secret << "\n";
 
 	is_empty = false;
 	std::cout << "\n";
-
+	return 0;
 }
 
-int	Contact::number_check(std::string number)
+int	Contact::_number_check(std::string number) const
 {
 	int i;
 	int len;
@@ -138,7 +116,7 @@ int	Contact::number_check(std::string number)
 
 void	Contact::clear_contact()
 {
-	is_number = false;
+	_is_number = false;
 	is_empty = true;
 	
 	first.clear();
@@ -148,7 +126,7 @@ void	Contact::clear_contact()
 	secret.clear();
 }
 
-void	Contact::display_contact()
+void	Contact::display_contact() const
 {
 	int	width;
 
@@ -177,6 +155,4 @@ void	Contact::display_contact()
 	std::cout << secret << "\n\n";
 
 	std::cout.unsetf(std::ios::left);
-
 }
-
