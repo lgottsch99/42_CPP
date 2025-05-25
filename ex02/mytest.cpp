@@ -1,17 +1,9 @@
-// ************************************************************************** //
-//                                                                            //
-//                tests.cpp for GlobalBanksters United                        //
-//                Created on  : Thu Nov 20 23:45:02 1989                      //
-//                Last update : Wed Jan 04 09:23:52 1992                      //
-//                Made by : Brad "Buddy" McLane <bm@gbu.com>                  //
-//                                                                            //
-// ************************************************************************** //
+
 
 #include <vector>
 #include <algorithm>
 #include <functional>
 #include "Account.hpp"
-
 
 int		main( void ) {
 
@@ -22,7 +14,7 @@ int		main( void ) {
 	//init amounts 
 	int	const				amounts[]	= { 42, 54, 957, 432, 1234, 0, 754, 16576 };
 	size_t const			amounts_size( sizeof(amounts) / sizeof(int) );
-	accounts_t				accounts( amounts, amounts + amounts_size ); //init amount class
+	accounts_t				accounts( amounts, amounts + amounts_size );
 	accounts_t::iterator	acc_begin	= accounts.begin();
 	accounts_t::iterator	acc_end		= accounts.end();
 
@@ -39,15 +31,15 @@ int		main( void ) {
 	ints_t::iterator	wit_end		= withdrawals.end();
 
 	//first action
-	Account::displayAccountsInfos();
+	Account::displayAccountsInfos(); //OK
 	
-	std::for_each( acc_begin, acc_end, std::mem_fun_ref( &Account::displayStatus ) );
+	std::for_each( acc_begin, acc_end, std::mem_fun_ref( &Account::displayStatus ) ); //OK
 
-	for ( acc_int_t it( acc_begin, dep_begin );
+	for ( acc_int_t it( acc_begin, dep_begin ); //one iterator going thru accounts, one thru deposit int array
 		  it.first != acc_end && it.second != dep_end;
 		  ++(it.first), ++(it.second) ) {
 
-		(*(it.first)).makeDeposit( *(it.second) );
+		(*(it.first)).makeDeposit( *(it.second) ); //it first = account obj, it second = iterator in deposit int array
 	}
 
 	Account::displayAccountsInfos();
@@ -65,11 +57,3 @@ int		main( void ) {
 
 	return 0;
 }
-
-
-// ************************************************************************** //
-// vim: set ts=4 sw=4 tw=80 noexpandtab:                                      //
-// -*- indent-tabs-mode:t;                                                   -*-
-// -*- mode: c++-mode;                                                       -*-
-// -*- fill-column: 75; comment-column: 75;                                  -*-
-// ************************************************************************** //

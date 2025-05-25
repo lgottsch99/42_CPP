@@ -19,38 +19,41 @@
 class Account {
 
 //info about SINGLE account
+/*
+static vars in CLASSES are SHARED BETWEEN ALL OBJECTS of the class!
+*/
 public:
 
 	typedef Account		t;
 
-	static int	getNbAccounts( void );
+	static int	getNbAccounts( void ); 
 	static int	getTotalAmount( void );
 	static int	getNbDeposits( void );
 	static int	getNbWithdrawals( void );
-	static void	displayAccountsInfos( void );
+	static void	displayAccountsInfos( void ); //OK
 
-	Account( int initial_deposit );
+	Account( int initial_deposit ); //OK
 	~Account( void );
 
 	void	makeDeposit( int deposit );
 	bool	makeWithdrawal( int withdrawal );
 	int		checkAmount( void ) const;
-	void	displayStatus( void ) const;
+	void	displayStatus( void ) const; //OK
 
 
 private:
 
-	static int	_nbAccounts;
-	static int	_totalAmount;
-	static int	_totalNbDeposits;
-	static int	_totalNbWithdrawals;
+	static int	_nbAccounts; //OK
+	static int	_totalAmount; //OK
+	static int	_totalNbDeposits; //OK
+	static int	_totalNbWithdrawals; //OK
 
-	static void	_displayTimestamp( void );
+	static void	_displayTimestamp( void ); 
 
-	int				_accountIndex;
-	int				_amount;
-	int				_nbDeposits;
-	int				_nbWithdrawals;
+	int				_accountIndex; //OK
+	int				_amount; //OK
+	int				_nbDeposits; //OK
+	int				_nbWithdrawals; //OK
 
 	Account( void );
 
