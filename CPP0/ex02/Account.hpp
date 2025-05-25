@@ -26,18 +26,18 @@ public:
 
 	typedef Account		t;
 
-	static int	getNbAccounts( void ); 
-	static int	getTotalAmount( void );
-	static int	getNbDeposits( void );
-	static int	getNbWithdrawals( void );
+	static int	getNbAccounts( void ); //OK
+	static int	getTotalAmount( void );//OK
+	static int	getNbDeposits( void );//OK
+	static int	getNbWithdrawals( void );//OK
 	static void	displayAccountsInfos( void ); //OK
 
 	Account( int initial_deposit ); //OK
 	~Account( void );
 
-	void	makeDeposit( int deposit );
-	bool	makeWithdrawal( int withdrawal );
-	int		checkAmount( void ) const;
+	void	makeDeposit( int deposit ); //OK
+	bool	makeWithdrawal( int withdrawal ); //OK
+	int		checkAmount( void ) const; //OK
 	void	displayStatus( void ) const; //OK
 
 
@@ -48,14 +48,14 @@ private:
 	static int	_totalNbDeposits; //OK
 	static int	_totalNbWithdrawals; //OK
 
-	static void	_displayTimestamp( void ); 
+	static void	_displayTimestamp( void ); //OK
 
 	int				_accountIndex; //OK
 	int				_amount; //OK
 	int				_nbDeposits; //OK
 	int				_nbWithdrawals; //OK
 
-	Account( void );
+	Account( void ); //disabling public use of constructor WITHOUT amount value
 
 };
 

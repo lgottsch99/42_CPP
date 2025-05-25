@@ -6,7 +6,7 @@
 /*   By: Watanudon <Watanudon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 16:08:30 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/25 16:03:09 by Watanudon        ###   ########.fr       */
+/*   Updated: 2025/05/25 20:35:02 by Watanudon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int Account::_totalNbWithdrawals = 0;
 Account::Account(int initial_deposit):
 	 _amount(initial_deposit), _nbDeposits(0), _nbWithdrawals(0)
 {
-	_accountIndex = _nbAccounts;
+	_accountIndex = getNbAccounts();
 	_nbAccounts++;
 	_totalAmount += initial_deposit;
 	
@@ -49,7 +49,7 @@ Account::Account(int initial_deposit):
 // [19920104_091532] 
 //yyyy mm dd _ hh mm ss
 // https://www.w3schools.com/cpp/cpp_date.asp
-void Account::_displayTimestamp(void) //TODO set format padding with 0
+void Account::_displayTimestamp(void)
 {
 	time_t		timer;
 	struct tm	*timeinfo;
@@ -62,11 +62,24 @@ void Account::_displayTimestamp(void) //TODO set format padding with 0
 	year = 1900 + timeinfo->tm_year;
 	month = timeinfo->tm_mon + 1;
 
-	//print timestamp
-	std::cout << "[" << year << month
-				<< timeinfo->tm_mday << "_" 
-				<< timeinfo->tm_hour << timeinfo->tm_min
-				<< timeinfo->tm_sec << "] ";
+	//print timestamp	
+	std::cout << "[" << year;
+	std::cout.width(2); //only for next operation
+	std::cout.fill('0');
+
+	std::cout << month;
+
+	std::cout.width(2);
+	std::cout << timeinfo->tm_mday;
+	std::cout << "_";
+
+	std::cout.width(2);
+	std::cout << timeinfo->tm_hour;
+	std::cout.width(2);
+	std::cout << timeinfo->tm_min;
+	std::cout.width(2);
+	std::cout << timeinfo->tm_sec;
+	std::cout << "] ";
 }
 
 
@@ -102,10 +115,10 @@ Account::~Account( void )
 void	Account::displayAccountsInfos()
 {
 	_displayTimestamp();
-	std::cout << "accounts:" << _nbAccounts
-				<< ";total:" << _totalAmount
-				<< ";deposits:" << _totalNbDeposits
-				<< ";withdrawals:" << _totalNbWithdrawals << "\n";
+	std::cout << "accounts:" << getNbAccounts()
+				<< ";total:" << getTotalAmount()
+				<< ";deposits:" << getNbDeposits()
+				<< ";withdrawals:" << getNbWithdrawals() << "\n";
 }
 
 
@@ -162,7 +175,7 @@ void	Account::makeDeposit( int deposit )
 			<< ";p_amount:" << p_amount
 			<< ";deposit:" << deposit
 			<< ";amount:" << _amount 
-			<< ";nb_deposits" << _nbDeposits << "\n";
+			<< ";nb_deposits:" << _nbDeposits << "\n";
 
 }
 
@@ -212,4 +225,28 @@ bool	Account::makeWithdrawal( int withdrawal )
 		std::cout << "refused\n";
 
 	return status;	
+}
+
+
+int	Account::getNbAccounts( void )
+{
+	return (_nbAccounts);
+}
+
+int	Account::getTotalAmount( void )
+{
+	return (_totalAmount);
+}
+int	Account::getNbDeposits( void )
+{
+	return (_totalNbDeposits);
+}
+int	Account::getNbWithdrawals( void )
+{
+	return (_totalNbWithdrawals);
+}
+
+int		Account::checkAmount( void ) const
+{
+	return (_amount);
 }
