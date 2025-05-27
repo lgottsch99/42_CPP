@@ -5,22 +5,24 @@
 #                                                     +:+ +:+         +:+      #
 #    By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/24 16:17:31 by lgottsch          #+#    #+#              #
-#    Updated: 2025/05/27 15:42:37 by lgottsch         ###   ########.fr        #
+#    Created: 2025/05/27 15:59:50 by lgottsch          #+#    #+#              #
+#    Updated: 2025/05/27 16:04:09 by lgottsch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = account
+
+NAME = megaphone
 
 CC = c++ 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC= tests.cpp Account.cpp
+SRC= main.cpp Zombie.cpp
 
 
 # rules
 $(NAME):
 	 $(CC) $(CFLAGS) $(SRC) -o $(NAME)
+
 
 all: $(NAME)
 

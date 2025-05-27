@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:53:03 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/24 15:59:44 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:35:21 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	Contact::add()
 			return 1;
 	}
 
-	while (_is_number == false)
+	while (_is_number == false || number.empty())
 	{
 		std::cout << "Number: ";
 		if (_get_input(&number) == 1)

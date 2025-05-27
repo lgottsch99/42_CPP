@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PhoneBook.hpp                                      :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 16:41:58 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/27 15:42:20 by lgottsch         ###   ########.fr       */
+/*   Created: 2025/05/27 16:01:29 by lgottsch          #+#    #+#             */
+/*   Updated: 2025/05/27 16:30:01 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHONEBOOK_HPP
-#define PHONEBOOK_HPP
+//This function creates a zombie, names it, and returns it so you can use it outside
+//of the function scope. 
+// ->malloced ?
+Zombie* newZombie( std::string name );
 
-#include "Contact.hpp"
+//This function creates a zombie, names it, and makes it announce itself.
+void randomChump( std::string name );
 
 
-/* const for safety, functions accessing all members in read only mode 
-(aka) never setting any new values -> good to use const
-*/
-
-class PhoneBook
+int main (void)
 {
-	void	_padded_field(std::string str) const;
 
-	public:
-		Contact people[8];
 
-		void	show_saved_contacts() const;
-};
-
-#endif
+}

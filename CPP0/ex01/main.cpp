@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:13:26 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/24 15:58:31 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:38:16 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,21 @@ int	get_input(std::string *str)
 	}
 	return 0;
 }
+/* returns -1 if invalid, index (0-7) if valid
+*/
+int validity_check(std::string *index)
+{
+	char c;
+	
+	//check if index only single char + between 0-7
+	if (index->length() != 1)
+		return -1;
+	
+	c = index->at(0);
+	if (c >= '0' && c <= '7')
+		return (std::atoi(&c));
+	return -1;
+}
 
 /* prompting for index and showing contact 
 */
@@ -45,10 +60,10 @@ int	search_display(PhoneBook *pbook)
 			str_index.clear();
 			return 1;
 		}
-		i_index = atoi(str_index.c_str());
-		
+
 		//check if index valid
-		if (i_index >= 0 && i_index <= 7)
+		i_index = validity_check(&str_index);
+		if (i_index != -1)
 		{
 			if (pbook->people[i_index].first.empty())
 				std::cout << "Contact Nr. " << i_index << " does not exist.\n";
@@ -59,7 +74,7 @@ int	search_display(PhoneBook *pbook)
 			}
 		}
 		else
-			std::cout << "Index out of valid range (0-7).\n";
+			std::cout << "Index invalid (range 0-7).\n";
 	}
 	str_index.clear();
 	return 0;

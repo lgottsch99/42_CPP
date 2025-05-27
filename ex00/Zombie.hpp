@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PhoneBook.hpp                                      :+:      :+:    :+:   */
+/*   Zombie.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/20 16:41:58 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/27 15:42:20 by lgottsch         ###   ########.fr       */
+/*   Created: 2025/05/27 16:04:13 by lgottsch          #+#    #+#             */
+/*   Updated: 2025/05/27 16:21:33 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHONEBOOK_HPP
-#define PHONEBOOK_HPP
+#pragma once
+#ifndef __ZOMBIE_HPP__
+#define __ZOMBIE_HPP__
 
-#include "Contact.hpp"
-
-
-/* const for safety, functions accessing all members in read only mode 
-(aka) never setting any new values -> good to use const
-*/
-
-class PhoneBook
+class Zombie
 {
-	void	_padded_field(std::string str) const;
-
+	private:
+		std::string	_name;
+		
 	public:
-		Contact people[8];
 
-		void	show_saved_contacts() const;
+		Zombie();
+		~Zombie();
+
+		void announce( void );
 };
+
 
 #endif
