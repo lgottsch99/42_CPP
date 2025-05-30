@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   HumanB.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 22:30:43 by Watanudon         #+#    #+#             */
-/*   Updated: 2025/05/29 17:21:50 by lgottsch         ###   ########.fr       */
+/*   Created: 2025/05/30 12:38:32 by lgottsch          #+#    #+#             */
+/*   Updated: 2025/05/30 14:21:56 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "HumanB.hpp"
+#include "Weapon.hpp"
 #include <iostream>
 #include <string>
-#include <cstdlib>
-#include "Zombie.hpp"
 
-
-Zombie* zombieHorde( int N, std::string name );
-
-int main (void)
+HumanB::HumanB( std::string name ):
+	_Weapon(NULL), _name (name)
 {
-	Zombie *horde;
+	return;
+}
 
-	horde = NULL;
-	horde = zombieHorde(5, "sybille");
+HumanB::~HumanB()
+{
+	_name.clear();
+}
 
-
-	delete [] horde;
-	return 0;
+void	HumanB::attack()
+{
+	std::cout << _name << " attacks with their " << _Weapon->getType() << "\n";
+}
+void	HumanB::setWeapon( Weapon& og )
+{
+	_Weapon = &og;
+	return ;
 }

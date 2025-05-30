@@ -5,18 +5,17 @@
 #                                                     +:+ +:+         +:+      #
 #    By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/27 15:59:50 by lgottsch          #+#    #+#              #
-#    Updated: 2025/05/29 17:18:52 by lgottsch         ###   ########.fr        #
+#    Created: 2025/05/29 17:23:19 by lgottsch          #+#    #+#              #
+#    Updated: 2025/05/30 13:01:49 by lgottsch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-
-NAME = zombie
+NAME = violence
 
 CC = c++ 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC= main.cpp Zombie.cpp newZombie.cpp randomChump.cpp
+SRC= main.cpp HumanA.cpp HumanB.cpp Weapon.cpp
 
 # rules
 $(NAME):
@@ -30,6 +29,6 @@ clean: fclean
 fclean:
 	rm -f $(NAME)
 
-re: clean fclean all
+re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all fclean re clean

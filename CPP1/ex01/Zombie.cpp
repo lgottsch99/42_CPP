@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Zombie.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Watanudon <Watanudon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 22:33:24 by Watanudon         #+#    #+#             */
-/*   Updated: 2025/05/27 22:37:59 by Watanudon        ###   ########.fr       */
+/*   Updated: 2025/05/29 17:15:29 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 #include <string>
 #include "Zombie.hpp"
 
-Zombie::Zombie(std::string name)
+Zombie::Zombie( void ): _name( "default")
 {
-	_name = name;
-	announce();
+	std::cout << "Zombie created" << std::endl;
 }
 
 Zombie::~Zombie()
@@ -29,4 +28,9 @@ Zombie::~Zombie()
 void	Zombie::announce( void )
 {
 	std::cout << _name << ": BraiiiiiiinnnzzzZ..." << std::endl;
+}
+
+void	Zombie::setname( std::string name )
+{
+	_name = name;
 }

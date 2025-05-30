@@ -5,27 +5,33 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 22:30:43 by Watanudon         #+#    #+#             */
-/*   Updated: 2025/05/29 17:21:50 by lgottsch         ###   ########.fr       */
+/*   Created: 2025/05/30 12:20:02 by lgottsch          #+#    #+#             */
+/*   Updated: 2025/05/30 14:01:01 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include "Zombie.hpp"
+#include "Weapon.hpp"
+#include "HumanA.hpp"
+#include "HumanB.hpp"
 
-
-Zombie* zombieHorde( int N, std::string name );
-
-int main (void)
+int main()
 {
-	Zombie *horde;
-
-	horde = NULL;
-	horde = zombieHorde(5, "sybille");
-
-
-	delete [] horde;
+	//HumanA uses weapon by REFERENCE
+	{
+		Weapon club = Weapon("crude spiked club");
+		HumanA bob("Bob", club);
+		bob.attack();
+		club.setType("some other type of club");
+		bob.attack();
+	}
+	//HumanB uses weapon by POINTER
+	{
+		Weapon club = Weapon("crude spiked club");
+		HumanB jim("Jim");
+		jim.setWeapon(club);
+		jim.attack();
+		club.setType("some other type of club");
+		jim.attack();
+	}
 	return 0;
 }

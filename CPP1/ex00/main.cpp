@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Watanudon <Watanudon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:01:29 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/27 22:25:35 by Watanudon        ###   ########.fr       */
+/*   Updated: 2025/05/29 12:38:10 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int main (void)
 	Zombie	*a;
 	Zombie	*b;
 
-	a = newZombie(bernd);
+	a = newZombie(bernd); //using new to dyn. alloc + construct
 	b = newZombie(ralf);
 
 	delete b;
 	
-	randomChump(fritz);
+	randomChump(fritz); // allocated on stack so destroyed autom.
 
-	delete a;
+	delete a; //"freeing" with delete
 	
 	return 0;
 }

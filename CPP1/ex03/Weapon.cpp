@@ -1,31 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Weapon.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 22:30:43 by Watanudon         #+#    #+#             */
-/*   Updated: 2025/05/29 17:21:50 by lgottsch         ###   ########.fr       */
+/*   Created: 2025/05/30 12:20:39 by lgottsch          #+#    #+#             */
+/*   Updated: 2025/05/30 14:05:22 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
+#include "Weapon.hpp"
 #include <string>
-#include <cstdlib>
-#include "Zombie.hpp"
 
-
-Zombie* zombieHorde( int N, std::string name );
-
-int main (void)
+Weapon::Weapon( std::string type ): 
+	_type(type)
 {
-	Zombie *horde;
+	return;
+}
 
-	horde = NULL;
-	horde = zombieHorde(5, "sybille");
+Weapon::~Weapon()
+{
+	_type.clear();
+	return;
+}
 
+std::string& Weapon::getType()
+{
+	std::string &ref = _type;
+	return (ref);
+}
 
-	delete [] horde;
-	return 0;
+void	Weapon::setType( std::string str )
+{
+	_type.clear();
+	_type = str;
+	return; 
 }

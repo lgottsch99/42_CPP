@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Watanudon <Watanudon@student.42.fr>        +#+  +:+       +#+         #
+#    By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/27 22:27:20 by Watanudon         #+#    #+#              #
-#    Updated: 2025/05/27 22:35:17 by Watanudon        ###   ########.fr        #
+#    Updated: 2025/05/29 17:19:06 by lgottsch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = zombie
 CC = c++ 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC= main.cpp Zombie.cpp Zombie.cpp zombieHorde.cpp
+SRC= main.cpp Zombie.cpp zombieHorde.cpp
 
 # rules
 $(NAME):
@@ -24,9 +24,11 @@ $(NAME):
 
 all: $(NAME)
 
-clean:
+clean: fclean
+
+fclean:
 	rm -f $(NAME)
 
-re: clean all
+re: fclean all
 
-.PHONY: all clean re
+.PHONY: all fclean re clean

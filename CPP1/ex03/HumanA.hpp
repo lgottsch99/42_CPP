@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   HumanA.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 22:30:43 by Watanudon         #+#    #+#             */
-/*   Updated: 2025/05/29 17:21:50 by lgottsch         ###   ########.fr       */
+/*   Created: 2025/05/30 12:37:33 by lgottsch          #+#    #+#             */
+/*   Updated: 2025/05/30 13:55:46 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include "Zombie.hpp"
+#ifndef HUMANA_HPP
+#define HUMANA_HPP
 
+#include "Weapon.hpp"
 
-Zombie* zombieHorde( int N, std::string name );
+/*
+Take weapon by REFERENCE!!!!
+*/
 
-int main (void)
+class HumanA
 {
-	Zombie *horde;
+	private:
+		Weapon&		_Weapon;
+		std::string _name;
 
-	horde = NULL;
-	horde = zombieHorde(5, "sybille");
+	public:
+		HumanA( std::string name, Weapon& weapon );
+		~HumanA();
+
+		void	attack( void );
+};
 
 
-	delete [] horde;
-	return 0;
-}
+#endif
