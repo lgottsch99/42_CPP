@@ -6,25 +6,29 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 12:56:40 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/31 12:58:22 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:47:55 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HARL_HPP
 #define HARL_HPP
 
+#include <string>
 
 class Harl
 {
 	private:
-		void debug( void );
-		void info( void );
-		void warning( void );
-		void error( void );
+		void _debug( void );
+		void _info( void );
+		void _warning( void );
+		void _error( void );
 
 	public:
+		Harl();
+		~Harl();
+		
 		void complain( std::string level );
-}
+};
 
 
 #endif
