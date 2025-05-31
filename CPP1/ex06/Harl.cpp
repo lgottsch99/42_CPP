@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:30:42 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/31 16:54:24 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/31 16:59:43 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,45 +71,49 @@ void	Harl::complain( std::string level )
 		i++;
 	}
 
+	/* WITHOUT BREAK:
+		ONCE a case matches, all the following get executed too??!!
+	
+	*/
 	switch (i)
 	{
 		case 0: //DEBUG
 			(this->*ptrs[0])();
 			std::cout << "\n";
-			(this->*ptrs[1])();
-			std::cout << "\n";
-			(this->*ptrs[2])();
-			std::cout << "\n";
-			(this->*ptrs[3])();
-			std::cout << "\n";
-			break;
+			// (this->*ptrs[1])();
+			// std::cout << "\n";
+			// (this->*ptrs[2])();
+			// std::cout << "\n";
+			// (this->*ptrs[3])();
+			// std::cout << "\n";
+			// break;
 
 		case 1: //INFO
 			(this->*ptrs[1])();
 			std::cout << "\n";
-			(this->*ptrs[2])();
-			std::cout << "\n";
-			(this->*ptrs[3])();
-			std::cout << "\n";
-			break;
+			// (this->*ptrs[2])();
+			// std::cout << "\n";
+			// (this->*ptrs[3])();
+			// std::cout << "\n";
+			// break;
 
 		case 2: //WARNING
 			(this->*ptrs[2])();
 			std::cout << "\n";
-			(this->*ptrs[3])();
-			std::cout << "\n";
-			break;
+			// (this->*ptrs[3])();
+			// std::cout << "\n";
+			// break;
 
 		case 3: //ERROR
 			(this->*ptrs[3])();
 			std::cout << "\n";
-			break;
+			// break;
 
 		//------------------------
 		case 5: //OTHER
 			(this->*ptrs[4])();
 			std::cout << "\n";
-			break;
+			// break;
 
 	}
 	return ;
