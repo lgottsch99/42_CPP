@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:30:42 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/31 16:59:43 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/31 17:18:18 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,17 @@ void	Harl::complain( std::string level )
 	}
 
 	/* WITHOUT BREAK:
-		ONCE a case matches, all the following get executed too??!!
+		ONCE a case matches, all the following cases get executed too!!
 	
+	switch (char) {
+	case 'a':
+	case 'e':
+	case 'i':
+	case 'o':
+	case 'u':
+		std::cout << "It's a vowel!\n";
+		break;
+}
 	*/
 	switch (i)
 	{
@@ -107,7 +116,7 @@ void	Harl::complain( std::string level )
 		case 3: //ERROR
 			(this->*ptrs[3])();
 			std::cout << "\n";
-			// break;
+			break; //to stop the fallthrough
 
 		//------------------------
 		case 5: //OTHER
