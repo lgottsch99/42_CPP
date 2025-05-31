@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 14:25:42 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/31 12:49:52 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:08:12 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,15 @@
 //std::string.replace FORBIDDEN
 
 /*
-fstream can read + write to a file
+Tests:
+
+	- input file does not exist
+	- s1 does not occur in input file
+	- s1 empty
+	- s2 empty
+	- s1 = s2
+
+
 */
 
 
@@ -70,6 +78,12 @@ void		read_and_replace(std::fstream& fs, std::fstream& newfile, char *argv[])
 
 	read_whole_file(fs, fulltext);
 
+	if (s1.empty())
+	{
+		newfile << fulltext;
+		return;
+	}
+
 	while (match)
 	{
 		start = 0;
@@ -98,7 +112,7 @@ void		read_and_replace(std::fstream& fs, std::fstream& newfile, char *argv[])
 
 int main(int argc, char *argv[])
 {
-	std::fstream	fs; //inout file
+	std::fstream	fs; //input file
 	std::fstream	newfile;
 	std::string		new_file_name;
 	
@@ -108,12 +122,10 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	//open input file
 	fs.open(argv[1], std::ios::in); //explicitly adding mode makes thing more robust!!
 	if (!check_success(fs, "fs"))
 		return 1;
 
-	//open output file 
 	new_file_name = argv[1];
 	new_file_name.append(".replace");
 
@@ -121,73 +133,8 @@ int main(int argc, char *argv[])
 	if (!check_success(newfile, "newfile"))
 		return 1;
 
-
 	read_and_replace(fs, newfile, argv);
 
-
-	// //copy its content into new file
-	// //replacing every occurence of s1 with s2 
-
-	// std::string fulltext;
-	// //read whole text inputfile
-	// read_whole_file(fs, fulltext);
-	// std::cout << fulltext; //OK
-
-
-	// std::string s1 = argv[2];
-	// std::string s2 = argv[3];
-	// size_t		index = 0;
-	// bool		match = true;
-
-	// while (match)
-	// {
-	// 	index = -1;
-	// 	//look for s1 in fulltext
-	// 	// size_t	index;
-	// 	size_t	start = 0;
-	// 	match = false;
-
-	// 	index = fulltext.find(argv[2]);
-	// 	if (index >= fulltext.length())
-	// 	{
-	// 		std::cout << "No (more) match found in fulltext\n";
-	// 		match = false;
-	// 		// index = -1;
-	// 		newfile << fulltext;
-	// 	}
-	// 	else
-	// 	{
-	// 		std::cout << "found s1 at " << index << "\n";
-	// 		match = true;
-
-	// 		newfile << fulltext.substr(start, index);
-	// 		newfile << argv[3];
-
-	// 		std::string tmp;
-	// 		std::string sub;
-	// 		size_t 	sub_start = index + s1.length();
-
-	// 		std:: cout << "sub start: " << sub_start;
-
-	// 		sub = fulltext.substr(sub_start , fulltext.length() - index);
-
-	// 		fulltext.clear();
-	// 		fulltext = sub;
-	// 		// if (fulltext.length() == 0)
-	// 		// {
-	// 		// 	std::cout << "Reached end of file\n";
-	// 		// 	newfile << sub;
-	// 		// 	fs.close();
-	// 		// 	newfile.close();
-	// 		// 	return 0;
-	// 		// }
-
-	// 	}
-
-
-	// }
-
-	std::cout << "Reached end of file\n";
 	fs.close();
 	newfile.close();
 	return 0;
