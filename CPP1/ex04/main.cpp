@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 14:25:42 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/31 13:08:12 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:45:44 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,9 @@ void		read_and_replace(std::fstream& fs, std::fstream& newfile, char *argv[])
 	std::string fulltext;
 	std::string s1 = argv[2];
 	std::string s2 = argv[3];
-	bool		match = true;
+	
 	size_t		start = 0;
 	size_t		index = 0;
-
 
 	read_whole_file(fs, fulltext);
 
@@ -83,7 +82,8 @@ void		read_and_replace(std::fstream& fs, std::fstream& newfile, char *argv[])
 		newfile << fulltext;
 		return;
 	}
-
+	
+	bool	match = true;
 	while (match)
 	{
 		start = 0;

@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   randomChump.cpp                                    :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 21:53:14 by Watanudon         #+#    #+#             */
-/*   Updated: 2025/06/03 12:11:33 by lgottsch         ###   ########.fr       */
+/*   Created: 2025/06/03 13:44:53 by lgottsch          #+#    #+#             */
+/*   Updated: 2025/06/03 16:33:47 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "Fixed.hpp"
 #include <iostream>
-#include <string>
-#include <cstdlib>
-#include "Zombie.hpp"
 
-//This function creates a zombie, names it, and makes it announce itself.
-//on stack-> limited to function scope
-void randomChump( std::string name )
+int main( void )
 {
-	Zombie	random(name);
-}
+	Fixed a;
+	Fixed b( a );
+	Fixed c;
 
+	c = b;
+
+	std::cout << a.getRawBits() << std::endl;
+	std::cout << b.getRawBits() << std::endl;
+	std::cout << c.getRawBits() << std::endl;
+	
+	return 0;
+}

@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:01:29 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/29 12:38:10 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:15:28 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,30 @@
 #include "Zombie.hpp"
 
 
-//TODO: decide which of the function malloc aand which not
-
 //This function creates a zombie, names it, and returns it so you can use it outside
 //of the function scope. 
-// ->malloced 
+// ->alloced 
 Zombie* newZombie( std::string name );
 
 //This function creates a zombie, names it, and makes it announce itself.
+// -> on stack
 void randomChump( std::string name );
 
 
 int main (void)
 {
-	std::string		fritz = "Fritz";
-	std::string		bernd = "Bernd";
-	std::string		ralf = "Ralf";
-
 	Zombie	*a;
 	Zombie	*b;
 
-	a = newZombie(bernd); //using new to dyn. alloc + construct
-	b = newZombie(ralf);
+	a = newZombie("Bernd"); //using new to dyn. alloc + construct
+	b = newZombie("Ralf");
 
-	delete b;
+	randomChump("Fritz");
+
+	std::cout << "\n**back in main function**\n";
 	
-	randomChump(fritz); // allocated on stack so destroyed autom.
-
 	delete a; //"freeing" with delete
-	
+	delete b;
+
 	return 0;
 }

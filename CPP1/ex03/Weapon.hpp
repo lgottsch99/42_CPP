@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 12:20:42 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/30 14:08:10 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:36:04 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Weapon
 		Weapon( std::string type );
 		~Weapon();
 
-		std::string&	getType();
+		const std::string&	getType() const;
 		void			setType( std::string str);
 
 };

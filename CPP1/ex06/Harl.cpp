@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:30:42 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/31 17:18:18 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:51:53 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	Harl::_other( void )
 {
 	std::cout << "[ Probably complaining about insignificant problems ]\n";
 	// std::cout << "Other: " << "\n";
-	// std::cout << "This is unacceptable! I want to speak to the manager now.\n";
 }
 
 

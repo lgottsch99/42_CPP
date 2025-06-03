@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   newZombie.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Watanudon <Watanudon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:52:48 by Watanudon         #+#    #+#             */
-/*   Updated: 2025/05/27 22:34:00 by Watanudon        ###   ########.fr       */
+/*   Updated: 2025/06/03 12:11:03 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include <cstdlib>
 #include "Zombie.hpp"
 
-//malloced version
-
+//"malloced" version
 Zombie* newZombie( std::string name )
 {
 	Zombie	*newZombie;
@@ -26,5 +25,4 @@ Zombie* newZombie( std::string name )
 	if (!newZombie)
 		std::cout << "dynamic allocation failed!" << std::endl;
 	return (newZombie);
-	
 }

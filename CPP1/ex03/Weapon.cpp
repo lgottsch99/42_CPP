@@ -6,7 +6,7 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 12:20:39 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/30 14:05:22 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/06/03 12:36:12 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ Weapon::~Weapon()
 	return;
 }
 
-std::string& Weapon::getType()
+const std::string& Weapon::getType() const
 {
-	std::string &ref = _type;
+	const std::string &ref = _type;
 	return (ref);
 }
 

@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   randomChump.cpp                                    :+:      :+:    :+:   */
+/*   Fixed.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 21:53:14 by Watanudon         #+#    #+#             */
-/*   Updated: 2025/06/03 12:11:33 by lgottsch         ###   ########.fr       */
+/*   Created: 2025/06/03 13:46:19 by lgottsch          #+#    #+#             */
+/*   Updated: 2025/06/03 16:26:40 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include "Zombie.hpp"
+#ifndef FIXED_HPP
+#define FIXED_HPP
 
-//This function creates a zombie, names it, and makes it announce itself.
-//on stack-> limited to function scope
-void randomChump( std::string name )
+class Fixed
 {
-	Zombie	random(name);
-}
+	private:
+		int					_value;
+		static const int	_bit; //=number of fractional bits
 
+	public:
+		Fixed(void); //default constructor
+		Fixed(const Fixed& ex); //copy constructor
+		Fixed &operator = (const Fixed& e);//copy assignment operator
+		~Fixed(); //destructor
+
+		int		getRawBits( void ) const;
+		void	setRawBits( int const raw );
+};
+
+#endif
