@@ -6,42 +6,49 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:50:41 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/06/03 16:56:47 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:30:37 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 #include <iostream>
 
-//constructor for static member
-const int Fixed::_bit = 8;
+/*
+subject does not talk about negative numbers
+*/
 
-Fixed::Fixed(void): _value(0)
+
+//constructor for static member (static members + SHARED btw all o bjects of same class)
+const int Fixed::_FractionalBit = 8;
+
+
+Fixed::Fixed(void): _FixedPointValue(0)
 {
 	std::cout << "Default constructor (void) called\n";
 }
 
-
-
-Fixed::Fixed(const int num) //TODO  
+/*
+Bitshifting, convert int to fixed point means moving the int bits before "point"
+"point" is left of ffractional bit positions 
+*/
+Fixed::Fixed(const int num) //OK  
 {
 	//TODO convert to corresponding fixed point value
-
-
-	std::cout << "Default constructor (const int) called\n";
-
+	
+	std::cout << "Int constructor called\n";
+	_FixedPointValue = num << _FractionalBit; //scaling up , moving int parts to left of "point"
+	
 }
 
-Fixed::Fixed(const float num) //TODO  
+Fixed::Fixed(const float num) //TODO  not same as subject
 {
-	//TODO convert to corresponding fixed point value
+	//TODO convert float to fixed point value
+	//1. mult by scale factor(1 << _FractionalBit)
+	//2. convert to fp
 
-
-	std::cout << "Default constructor (const int) called\n";
-
+	std::cout << "Float constructor called\n";
+	_FixedPointValue = (int) (num * (1 << _FractionalBit));
 }
-
-
 
 
 Fixed::~Fixed(void)
@@ -53,7 +60,7 @@ Fixed::~Fixed(void)
 Fixed::Fixed(const Fixed& ex)
 {
 	std::cout << "Copy constructor called\n";
-	this->_value = ex.getRawBits();
+	this->_FixedPointValue = ex.getRawBits();
 }
 
 //copy assignment operator
@@ -61,30 +68,44 @@ Fixed::Fixed(const Fixed& ex)
 Fixed &Fixed::operator=(const Fixed &e)
 {
 	std::cout << "Copy assignment operator called\n";
-	this->_value = e.getRawBits();
+	this->_FixedPointValue = e.getRawBits();
 	return (*this);
 }
 
 //returns the raw value of the fixed-point value
 int	Fixed::getRawBits() const
 {
-	std::cout << "getRawBits member function called\n";
-	return (_value);
+	//std::cout << "getRawBits member function called\n";
+	return (_FixedPointValue);
 }
 
 void	Fixed::setRawBits(int const raw)
 {
-	_value = raw;
+	_FixedPointValue = raw;
 	return ;
 }
 
-
+// https://medium.com/incredible-coder/converting-fixed-point-to-floating-point-format-and-vice-versa-6cbc0e32544e 
 float	Fixed::toFloat( void ) const
 {
 	//TODO converts the fixed-point value to a floating-point value.
+	//1. convert fixed point value to float
+	//2. scale down to real number (remove bits after "point")? =divide down by scale factor
+
+	//SCALE_FACTOR (1 << frac bits) ???????????
+	return (((float)_FixedPointValue) / (1 << _FractionalBit));
 }
 
+//converts the fixed-point value to an integer value.
 int		Fixed::toInt( void ) const
 {
-	//TODO converts the fixed-point value to an integer value.
+	return (_FixedPointValue >> _FractionalBit); //OK
+}
+
+//cout is object of class std::ostream, cin of class std::istream
+// https://www.geeksforgeeks.org/overloading-stream-insertion-operators-c/
+std::ostream& operator<<(std::ostream& ostream, const Fixed& fixed)//OK
+{
+	ostream << fixed.toFloat();
+	return (ostream);
 }

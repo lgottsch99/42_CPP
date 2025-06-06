@@ -6,18 +6,20 @@
 /*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:46:19 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/06/03 16:55:02 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:22:27 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FIXED_HPP
 #define FIXED_HPP
 
+#include <iostream>
+
 class Fixed
 {
 	private:
-		int					_value;
-		static const int	_bit; //=number of fractional bits
+		int					_FixedPointValue;
+		static const int	_FractionalBit;
 
 	public:
 		Fixed(void); //default constructor
@@ -33,7 +35,10 @@ class Fixed
 
 		int		getRawBits( void ) const;
 		void	setRawBits( int const raw );
-		
+
+
 };
+
+std::ostream& operator<<(std::ostream& ostream, const Fixed& fixed);
 
 #endif
