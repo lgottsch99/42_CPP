@@ -1,0 +1,20 @@
+
+#ifndef CAT_HPP
+#define CAT_HPP
+
+#include "Animal.hpp"
+
+class Cat: virtual public Animal
+{
+	public:
+		Cat(void);//default
+		Cat(const Cat& other); //copy construct
+		Cat &operator=( const Cat& other); //copy assignment
+		~Cat(); //destructor
+
+		void	makeSound(void) const;
+
+};
+
+
+#endif

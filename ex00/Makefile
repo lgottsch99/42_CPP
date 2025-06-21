@@ -1,21 +1,11 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: Watanudon <Watanudon@student.42.fr>        +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/06/06 14:01:38 by lgottsch          #+#    #+#              #
-#    Updated: 2025/06/09 15:53:33 by Watanudon        ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
-NAME = claptrap
+
+NAME = animal
 
 CC = c++ 
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -Wshadow
 
-SRC= main.cpp ClapTrap.cpp
+SRC= main.cpp Animal.cpp Dog.cpp Cat.cpp WrongAnimal.cpp WrongCat.cpp
 
 # rules
 $(NAME):
