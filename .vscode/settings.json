@@ -39,6 +39,9 @@
 		"typeinfo": "cpp",
 		"variant": "cpp",
 		"__split_buffer": "cpp",
-		"algorithm": "cpp"
+		"algorithm": "cpp",
+		"__hash_table": "cpp",
+		"array": "cpp",
+		"type_traits": "cpp"
 	}
 }

@@ -1,0 +1,20 @@
+/*
+If there’s no virtual keyword — no vtable is created.
+Function calls are resolved at compile time using static dispatch based on the pointer type, not the actual object type.
+This is what happens in your WrongAnimal/WrongCat test.
+
+polymorphism only happens with keyword: virtual!
+
+A vtable (virtual table) is a hidden lookup table that the compiler creates to support dynamic (runtime) polymorphism in C++.
+It’s essentially an array (or table) of function pointers to the most derived implementations of virtual functions for a particular class.
+
+When you declare a class with virtual functions, the compiler generates:
+A hidden pointer inside each object (called the vptr, or virtual table pointer)
+That vptr points to a vtable for the actual class type
+The vtable contains addresses of the virtual functions for that type.
+At runtime, when you call a virtual function through a base class pointer or reference, C++ uses:
+The object's vptr to find the vtable
+Looks up the function pointer for the function you called
+Invokes the correct implementation (could be from a derived class)
+This is how dynamic dispatch happens in C++.
+*/
