@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Watanudon <Watanudon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:13:26 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/05/27 15:38:16 by lgottsch         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:58:49 by Watanudon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int main()
 	PhoneBook	pbook;
 	std::string command;
 	int			current;
-	
+
 	current = 0;
 	while (1)
 	{

@@ -1,0 +1,119 @@
+
+#include "Bureaucrat.hpp"
+#include <iostream>
+#include <exception>
+
+
+// -------------- Exceptions --------------
+
+struct Bureaucrat::GradeTooHighException : public std::exception {
+	const char * what () const throw () {
+	   return "Grade too high!\n";
+	}
+};
+
+struct Bureaucrat::GradeTooLowException : public std::exception {
+	const char * what () const throw () {
+	   return "Grade too low!\n";
+	}
+};
+
+
+// -------------- Constructors --------------
+
+
+//default
+Bureaucrat::Bureaucrat(std::string const name, int const grade):
+_name(name), _grade(grade)
+{
+	std::cout << "(Bureaucrat) Default constructor\n";
+	if (_grade < 1)
+		throw GradeTooLowException();
+	else if(_grade > 150)
+		throw GradeTooHighException();
+}
+
+//copy construct
+Bureaucrat::Bureaucrat(const Bureaucrat& other):
+_name(other.getName()), _grade(other.getGrade())
+{
+	std::cout << "(Bureaucrat) Copy constructor\n";
+}
+
+//copy assignment
+Bureaucrat &Bureaucrat::operator=( const Bureaucrat& other)
+{
+	std::cout << "(Bureaucrat) Copy assignment operator\n";
+	if (this != &other)
+	{
+		_grade = other.getGrade();
+	}
+	return (*this);
+}
+
+//destructor
+Bureaucrat::~Bureaucrat()
+{
+	std::cout << "(Bureaucrat) Destructor\n";
+}
+
+// -------------- Member Fts --------------
+
+const std::string&	Bureaucrat::getName() const 
+{
+	return (_name);
+}
+
+const int&			Bureaucrat::getGrade() const
+{
+	return (_grade);
+}
+
+void			Bureaucrat::incrementGrade() //TODO exceptions
+{
+	if (_grade >= 2)
+		_grade--;
+	else //throw exception too big?
+		throw GradeTooHighException();
+
+}
+
+void			Bureaucrat::decrementGrade() //TODO exceptions
+{
+	if (_grade <= 149)
+		_grade++;
+	else //throw exception too small?
+		throw GradeTooLowException();
+
+}
+
+void			Bureaucrat::signForm(AForm& form)
+{
+	try
+	{
+		if (form.beSigned(_grade) == true)
+			std::cout << _name << " signed " << form.getName() << "\n";
+	}
+	catch (std::exception &e)
+	{
+		std::cout << _name << " could not sign " << form.getName() << " because " << e.what();
+	}
+}
+
+void	Bureaucrat::executeForm(AForm const & form) const
+{
+	if (form.execute(*this))
+		std::cout << this->getName() << " executed " << form.getName() << "\n";
+
+}
+
+// -------------- Operators --------------
+/*
+insertion («) operator to print output in the following format (without the angle brackets):
+<name>, bureaucrat grade <grade>.
+*/
+std::ostream& operator<<(std::ostream& ostream, const Bureaucrat& obj)
+{
+	ostream << obj.getName() << ", bureaucrat grade " << obj.getGrade() << "\n";
+	return (ostream);
+}
