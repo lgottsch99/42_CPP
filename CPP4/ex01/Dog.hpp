@@ -20,7 +20,6 @@ class Dog: virtual public Animal
 		void	set_idea(int index, std::string idea);
 		void	print_idea(int index);
 
-
 };
 
 #endif

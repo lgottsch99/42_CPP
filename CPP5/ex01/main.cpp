@@ -5,12 +5,15 @@
 
 int main(void)
 {
+	std::cout << "Basic init -----------------\n";
 	Bureaucrat a("a", 100);
 	Form b("AGG", 120, 120);
 	std::cout << a << "\n";
 	std::cout << b << "\n";
 
 	//try to sign forms
+	std::cout << "\nSign forms -----------------\n";
+
 	a.signForm(b);
 	std::cout << "\n\n";
 
@@ -28,10 +31,13 @@ int main(void)
 	e.signForm(f);
 	std::cout << "\n\n";
 
+	std::cout << "\nForm init exceptions -----------------\n";
+
 	//form grade out of bounds
 	//in case exception COULD be thrown-> always need to catch! otherwise std::terminate()
 	try
 	{
+		std::cout << "trying: Form z(lol, 0, 0); \n";
 		Form z("lol", 0, 0);
 	}
 	catch (std::exception &e)
@@ -41,6 +47,7 @@ int main(void)
 
 	try
 	{
+		std::cout << "trying: Form y(lolol, 190, 190); \n";
 		Form y("lolol", 190, 190);
 	}
 	catch (std::exception &e)
@@ -50,6 +57,7 @@ int main(void)
 
 	try
 	{
+		std::cout << "trying: Form x(lololol, -5, 234); \n";
 		Form x("lololol", -5, 234);
 	}
 	catch (std::exception &e)

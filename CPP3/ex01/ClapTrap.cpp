@@ -4,11 +4,11 @@
 
 //CONSTRUCTORS, DESTRUCTOR ------------------
 
-// ClapTrap::ClapTrap( void ): 
-// _name("none"),_HitPoints(10), _EnergyPoints(10), _AttackDamage(10)
-// {
-// 	std::cout << "ClapTrap Default constructor (void) called\n";
-// }
+ClapTrap::ClapTrap( void ): 
+_name("none"),_HitPoints(10), _EnergyPoints(10), _AttackDamage(10)
+{
+	std::cout << "ClapTrap Default constructor (void) called\n";
+}
 
 //default constructor
 ClapTrap::ClapTrap( std::string name ): 
@@ -93,7 +93,7 @@ void		ClapTrap::setAttackDamage(int num)
 
 //MEMBER FTs ------------------
 
-void ClapTrap::attack(const std::string& target) //??? string -> dummy only
+void ClapTrap::attack(const std::string& target)
 {
 	if (this->getEnergyPoints() > 0 && this->getHitPoints() > 0)
 	{

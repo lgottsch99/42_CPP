@@ -19,8 +19,8 @@ class Bureaucrat
 
 		const std::string&	getName() const;
 		const int&			getGrade() const;		
-		void			incrementGrade();
-		void			decrementGrade();
+		void				incrementGrade();
+		void				decrementGrade();
 
 		struct GradeTooHighException;
 		struct GradeTooLowException;

@@ -21,10 +21,6 @@ ScavTrap::ScavTrap(const ScavTrap& other):
 ClapTrap(other)
 {
 	std::cout << "ScavTrap Copy constructor called\n";
-	// _name = other.getName();
-	// _HitPoints = other.getHitPoints();
-	// _EnergyPoints = other.getEnergyPoints();
-	// _AttackDamage = other.getAttackDamage();
 }
 
 //copy assignement

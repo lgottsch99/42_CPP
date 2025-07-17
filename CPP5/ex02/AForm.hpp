@@ -31,7 +31,7 @@ class AForm
 		const int&			getGradeSign() const;
 		const int&			getGradeExec() const;
 
-		bool				beSigned(int& bureauGrade);
+		bool				beSigned(const Bureaucrat& bob);
 		bool				execute(Bureaucrat const & executor) const;
 		virtual void		action() const = 0; //making class abstract
 

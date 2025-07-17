@@ -28,9 +28,9 @@ _name(name), _grade(grade)
 {
 	std::cout << "(Bureaucrat) Default constructor\n";
 	if (_grade < 1)
-		throw GradeTooLowException();
-	else if(_grade > 150)
 		throw GradeTooHighException();
+	else if(_grade > 150)
+		throw GradeTooLowException();
 }
 
 //copy construct

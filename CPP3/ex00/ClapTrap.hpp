@@ -13,10 +13,8 @@ class ClapTrap
 		int			_EnergyPoints;
 		int			_AttackDamage;
 		
-		
-
 	public:
-		// ClapTrap(void);
+		ClapTrap(void);
 		ClapTrap(std::string name); //default
 		ClapTrap(const ClapTrap& other); //copy construct
 		ClapTrap &operator=( const ClapTrap& other); //copy assignment

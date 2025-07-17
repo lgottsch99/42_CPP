@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Fixed.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Watanudon <Watanudon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:46:19 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/06/08 11:25:19 by Watanudon        ###   ########.fr       */
+/*   Updated: 2025/06/21 14:33:55 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <iostream>
 
 // https://youtu.be/i1phJl-0v54?feature=shared 
-
 
 class Fixed
 {
@@ -38,7 +37,6 @@ class Fixed
 
 		int		getRawBits( void ) const;
 		void	setRawBits( int const raw );
-
 
 };
 

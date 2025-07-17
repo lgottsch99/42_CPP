@@ -26,8 +26,6 @@ class DiamondTrap: public ScavTrap, public FragTrap
 		using ScavTrap::attack;
 		void	whoAmI();
 		void	print_stat();
-		
-
 };
 
 #endif

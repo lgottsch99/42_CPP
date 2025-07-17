@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Fixed.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Watanudon <Watanudon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: lgottsch <lgottsch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:50:41 by lgottsch          #+#    #+#             */
-/*   Updated: 2025/06/08 13:15:49 by Watanudon        ###   ########.fr       */
+/*   Updated: 2025/06/21 14:32:39 by lgottsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,16 @@ Fixed::Fixed(const Fixed& ex)
 Fixed &Fixed::operator=(const Fixed &e)
 {	
 	std::cout << "Copy assignment operator called\n";
-	if (this != &e) //protection against self assignment
+	if (this != &e)
 	{
 		this->_FixedPointValue = e.getRawBits();
 	}
-	return (*this); //->it lets us chain assignments like a = b = c;
+	return (*this);
 }
 
 //returns the raw value of the fixed-point value
 int	Fixed::getRawBits() const
 {
-	//std::cout << "getRawBits member function called\n";
 	return (_FixedPointValue);
 }
 
@@ -99,11 +98,9 @@ void	Fixed::setRawBits(int const raw)
 // https://medium.com/incredible-coder/converting-fixed-point-to-floating-point-format-and-vice-versa-6cbc0e32544e 
 float	Fixed::toFloat( void ) const
 {
-	//TODO converts the fixed-point value to a floating-point value.
 	//1. convert fixed point value to float
 	//2. scale down to real number (remove bits after "point")? =divide down by scale factor
 
-	//SCALE_FACTOR (1 << frac bits) ???????????
 	return ((static_cast<float>(_FixedPointValue)) / (1 << _FractionalBit));
 }
 

@@ -1,4 +1,5 @@
 
+# TODO refactor to generate .o files -> scales better for large projects!!
 
 NAME = bureau
 

@@ -1,5 +1,4 @@
 
-
 #include "ClapTrap.hpp"
 
 //CONSTRUCTORS, DESTRUCTOR ------------------

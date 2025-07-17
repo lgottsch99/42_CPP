@@ -5,6 +5,8 @@
 #include <string>
 #include "Bureaucrat.hpp"
 
+class Bureaucrat;
+
 class Form
 {
 	private:
@@ -28,7 +30,7 @@ class Form
 		const int&			getGradeSign() const;
 		const int&			getGradeExec() const;
 
-		bool				beSigned(int& bureauGrade);
+		bool				beSigned(const Bureaucrat& bob);
 
 };
 

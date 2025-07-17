@@ -91,7 +91,7 @@ void			Bureaucrat::signForm(AForm& form)
 {
 	try
 	{
-		if (form.beSigned(_grade) == true)
+		if (form.beSigned(*this) == true)
 			std::cout << _name << " signed " << form.getName() << "\n";
 	}
 	catch (std::exception &e)

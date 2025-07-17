@@ -23,7 +23,7 @@ ClapTrap(name + "_clap_name"), ScavTrap(name), FragTrap(name)
 {
 	std::cout << "DiamondTrap Default constructor (string) called\n";
 	
-	//need to update values as wanted for DiamondTrap
+	//need to update values as wanted for DiamondTrap (as here clap is virtual, scav and frag dont actually init or touch it, need to set value here / ord efine special default  get set)
 	_name = name;
 	_HitPoints = 100;
 	_EnergyPoints = 50;

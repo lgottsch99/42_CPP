@@ -45,6 +45,5 @@ int main(void)
 	Frank.attack("ITSELF");
 	Frank.beRepaired(12);
 
-
 	return (0);
 }

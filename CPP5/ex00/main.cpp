@@ -4,6 +4,8 @@
 
 int main(void)
 {
+	std::cout << "Basic init ----------------\n\n";
+
 	Bureaucrat a("pete", 1);
 
 	//Basic Tests
@@ -16,8 +18,12 @@ int main(void)
 	b = a;
 	std::cout << b;
 
+
+	std::cout << "\nInit out of range exception ----------------\n\n";
+
 	try
 	{
+		std::cout << "Bureaucrat d(Ralf, 156);\n";
 		Bureaucrat d("Ralf", 156);
 	}
 	catch (std::exception &e)
@@ -27,6 +33,7 @@ int main(void)
 
 	try
 	{
+		std::cout << "Bureaucrat d(Ulf, 0);\n";
 		Bureaucrat d("Ulf", 0);
 	}
 	catch (std::exception &e)
@@ -34,11 +41,12 @@ int main(void)
 		std::cout << "Caught exception: " << e.what();
 	}
 
-
+	std::cout << "\nINcrement out of range exception ----------------\n\n";
 
 	//Exceptions
 	try
 	{
+		std::cout << "trying to increment " << a << "\n";
 		a.incrementGrade();
 	}
 	catch (std::exception &e)
@@ -46,6 +54,7 @@ int main(void)
 		std::cout << "Caught exception: " << e.what();
 	}
 	
+	std::cout << "DEcrement out of range exception ----------------\n\n";
 
 	Bureaucrat c("lola", 120);
 
@@ -62,18 +71,17 @@ int main(void)
 		std::cout << "Caught exception: " << e.what();
 	}
 
-	try
-	{
-		while (1)
-		{
-			c.incrementGrade();
-			std::cout << "incremented grade of " << c;
-		}
-	}
-	catch (std::exception &e)
-	{
-		std::cout << "Caught exception: " << e.what();
-	}
-
-	
+	////same as above
+	// try
+	// {
+	// 	while (1)
+	// 	{
+	// 		c.incrementGrade();
+	// 		std::cout << "incremented grade of " << c;
+	// 	}
+	// }
+	// catch (std::exception &e)
+	// {
+	// 	std::cout << "Caught exception: " << e.what();
+	// }
 }

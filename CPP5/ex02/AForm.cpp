@@ -88,9 +88,9 @@ const int&		 AForm::getGradeExec() const
 	return (_gradeExec);
 }
 
-bool			 AForm::beSigned(int& bureauGrade)
+bool			 AForm::beSigned(const Bureaucrat& bob)
 {
-	if (bureauGrade > _gradeSign) //eg bureau grade: 123; Aform gradeSIgn: 100
+	if (bob.getGrade() > _gradeSign) //eg bureau grade: 123; Aform gradeSIgn: 100
 	{
 		throw GradeTooLowException();
 		return false;

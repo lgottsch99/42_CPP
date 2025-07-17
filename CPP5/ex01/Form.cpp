@@ -82,9 +82,11 @@ const int&			Form::getGradeExec() const
 	return (_gradeExec);
 }
 
-bool				Form::beSigned(int& bureauGrade)
+//add a beSigned() member function to the Form that takes a Bureaucrat as a
+//parameter
+bool				Form::beSigned(const Bureaucrat& bob)
 {
-	if (bureauGrade > _gradeSign) //eg bureau grade: 123; form gradeSIgn: 100
+	if (bob.getGrade() > _gradeSign) //eg bureau grade: 123; form gradeSIgn: 100
 	{
 		throw GradeTooLowException();
 		return false;

@@ -4,11 +4,11 @@
 
 //CONSTRUCTORS, DESTRUCTOR ------------------
 
-// ClapTrap::ClapTrap( void ): 
-// _name("none"),_HitPoints(10), _EnergyPoints(10), _AttackDamage(10)
-// {
-// 	std::cout << "ClapTrap Default constructor (void) called\n";
-// }
+ClapTrap::ClapTrap( void ): 
+_name("none"),_HitPoints(10), _EnergyPoints(10), _AttackDamage(10)
+{
+	std::cout << "ClapTrap Default constructor (void) called\n";
+}
 
 //default constructor
 ClapTrap::ClapTrap( std::string name ): 
