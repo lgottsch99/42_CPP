@@ -11,7 +11,7 @@ Required grades: sign 25, exec 5 Informs that <target> has been pardoned by Zaph
 class PresidentialPardonForm: virtual public AForm
 {
 	private:
-		std::string const	_target;
+		std::string	_target;
 
 	public:
 		PresidentialPardonForm(std::string const target);//default
@@ -19,8 +19,9 @@ class PresidentialPardonForm: virtual public AForm
 		PresidentialPardonForm &operator=( const PresidentialPardonForm& other); //copy assignment
 		virtual ~PresidentialPardonForm(); //destructor //virtual so it checks itself for correct type
 
-		void	action() const;
+		void				action() const;
 
+		const std::string&	getTarget(void) const;
 };
 
 #endif

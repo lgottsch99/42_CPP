@@ -33,6 +33,7 @@ RobotomyRequestForm &RobotomyRequestForm::operator=( const RobotomyRequestForm& 
 	std::cout << "(RRF) Copy assignment operator\n";
 	if (this != &other)
 	{
+		_target = other.getTarget();
 		// if (other.getSignedStatus()) //TODO how to assign signed status??? it is private in AForm
 		// 	this->AForm::_signed = true;
 	}
@@ -64,3 +65,7 @@ void	RobotomyRequestForm::action() const
 }
 
 
+const std::string&	RobotomyRequestForm::getTarget(void) const
+{
+	return (_target);
+}

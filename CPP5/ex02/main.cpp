@@ -16,6 +16,8 @@ actions of forms: ascii tree in scf, random in rrf
 
 int main(void)
 {
+	//AForm lol; //abstract
+
 	// normal init and print stats _________________________
 	Bureaucrat alf("alf", 1);
 	std::cout << alf << "\n";
