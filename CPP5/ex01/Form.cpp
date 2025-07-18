@@ -8,17 +8,16 @@
 
 // -------------- Exceptions --------------
 
-struct Form::GradeTooHighException : public std::exception {
-	const char * what () const throw () {
-	   return "Grade too high!\n";
-	}
+char const *Form::GradeTooHighException::what(void) const throw()
+{
+	   return ("Form: Grade too high!\n");
 };
 
-struct Form::GradeTooLowException : public std::exception {
-	const char * what () const throw () {
-	   return "Grade too low!\n";
-	}
+char const *Form::GradeTooLowException::what(void) const throw()
+{
+	   return ("Form: Grade too low!\n");
 };
+
 
 // -------------- Constructors --------------
 //default

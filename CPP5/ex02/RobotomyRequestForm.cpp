@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <ctime>
+#include <stdlib.h> 
 
 /*
 Required grades: sign 72, exec 45
@@ -51,16 +53,16 @@ RobotomyRequestForm::~RobotomyRequestForm()
 void	RobotomyRequestForm::action() const
 {
 	//Makes some drilling noises, then informs that <target> has been robotomized successfully 50% of the time. 
-//Otherwise, it informs that the robotomy failed.
+	//Otherwise, it informs that the robotomy failed.
 	std::cout << "..DRILLING NOISE...\n";
 
-	bool yes = true;
-	//TODO random 50% chance:
+	srand(std::time(NULL)); //seed for rand (aka setting internal algo params for random numbers), otherwise rand always the same
+	int yes = std::rand() % 2;
 
-	if (yes)
-		std::cout << _target << " successfully robotomized!\n";
+	if (yes == 1)
+		std::cout << _target << " SUCCESSfully robotomized!\n";
 	else	
-		std::cout << "Robotomy of " << _target << "FAILED!\n";
+		std::cout << "Robotomy of " << _target << " FAILED!\n";
 
 }
 

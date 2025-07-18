@@ -8,22 +8,19 @@
 
 // -------------- Exceptions --------------
 
-struct AForm::GradeTooHighException : public std::exception {
-	const char * what () const throw () {
-	   return "Grade too high!\n";
-	}
+char const *AForm::GradeTooHighException::what(void) const throw()
+{
+	   return ("Form: Grade too high!\n");
 };
 
-struct AForm::GradeTooLowException : public std::exception {
-	const char * what () const throw () {
-	   return "Grade too low!\n";
-	}
+char const *AForm::GradeTooLowException::what(void) const throw()
+{
+	   return ("Form: Grade too low!\n");
 };
 
-struct AForm::FormNotSignedExecption : public std::exception {
-	const char * what () const throw () {
-	   return "Form not signed! Cannot be executed!\n";
-	}
+char const *AForm::FormNotSignedExecption::what(void) const throw()
+{
+	   return ("Form: Not signed! Cannot be executed!\n");
 };
 
 // -------------- Constructors --------------

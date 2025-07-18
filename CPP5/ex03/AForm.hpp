@@ -22,9 +22,24 @@ class AForm
 		AForm &operator=( const AForm& other); //copy assignment
 		virtual ~AForm(); //destructor //virtual so it checks itself for correct type
 
-		struct GradeTooHighException;
-		struct GradeTooLowException;
-		struct FormNotSignedExecption;
+
+		class GradeTooHighException : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
+
+		class GradeTooLowException : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
+
+		class FormNotSignedExecption : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
 
 		const std::string&	getName() const;
 		const bool&			getSignedStatus() const;

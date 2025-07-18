@@ -19,11 +19,24 @@ int main(void)
 
 	Intern  someRandomIntern;
 	AForm*   rrf;
-	rrf = someRandomIntern.makeForm("robotomy request", "Bender");	
+	AForm*   scf;
+	AForm*   ppf;
+	
+	rrf = someRandomIntern.makeForm("robotomy request", "Bender");
+	scf = someRandomIntern.makeForm("shrubbery creation", "Mouse");	
+	ppf = someRandomIntern.makeForm("presidential pardon", "you");	
 
 	Boss.signForm(*rrf);
+	Boss.signForm(*scf);
+	//Boss.executeForm(*scf);
+
+	//checking exception of intern (form does not exist)
+	AForm *fake = NULL;
+	fake = someRandomIntern.makeForm("trolol", "lol");
 
 	delete rrf;
+	delete scf;
+	delete ppf;
 	return 0;
 }
 

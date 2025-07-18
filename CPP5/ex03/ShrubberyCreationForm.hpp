@@ -12,7 +12,7 @@ Creates a file <target>_shrubbery in the working directory and writes ASCII tree
 class ShrubberyCreationForm: virtual public AForm
 {
 	private:
-		std::string const	_target;
+		std::string	_target;
 
 	public:
 		ShrubberyCreationForm(std::string const target);//default
@@ -21,6 +21,7 @@ class ShrubberyCreationForm: virtual public AForm
 		virtual ~ShrubberyCreationForm(); //destructor //virtual so it checks itself for correct type
 
 		void	action() const;
+		const std::string&	getTarget(void) const;
 
 };
 

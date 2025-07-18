@@ -40,11 +40,11 @@ Intern::~Intern()
 }
 
 //----------- Exceptions ------------
-struct Intern::FormDoesNotExistException : public std::exception {
-	const char * what () const throw () {
-	   return "Requested form does not exist!\n";
-	}
-};
+
+char const *Intern::FormDoesNotExistException::what(void) const throw()
+{
+	return("Intern: Requested form does not exist!\n");
+}
 
 //----------- Member fts ------------
 int	Intern::checkFormExists(std::string formName)
@@ -91,7 +91,6 @@ AForm*	Intern::makeForm(std::string formName, std::string formTarget)
 				std::cout << "Intern creates PresidentialPardonForm.\n";
 				break;
 		}
-	
 		return (newForm);
 	}
 	catch (std::exception &e)

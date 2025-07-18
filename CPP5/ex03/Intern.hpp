@@ -17,7 +17,11 @@ class Intern
 		Intern &operator=( const Intern& other); //copy assignment
 		~Intern(); //destructor
 
-		struct FormDoesNotExistException;
+		class FormDoesNotExistException : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
 
 		AForm*	makeForm(std::string formName, std::string formTarget);
 };

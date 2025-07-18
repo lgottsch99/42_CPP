@@ -32,6 +32,7 @@ ShrubberyCreationForm &ShrubberyCreationForm::operator=( const ShrubberyCreation
 	std::cout << "(SCF) Copy assignment operator\n";
 	if (this != &other)
 	{
+		_target = other.getTarget();
 		// if (other.getSignedStatus()) //TODO how to assign signed status??? it is private in AForm
 		// 	this->AForm::_signed = true;
 	}
@@ -56,10 +57,57 @@ void	ShrubberyCreationForm::action() const
 	filename = _target + filename;
 
 	//TODO write ascii trees in it
-	outfile.open (filename);
+	outfile.open (filename.c_str());
 	outfile << "ASCII TREES\n";
+
+	outfile << 
+"The Worm.s Turn\n" <<
+"\n" <<
+"\n" <<
+"\n" <<
+"              _{\\ _{\\{\\/}/}/}__\n" <<
+"             {/{/\\}{/{/\\}(\\}{/\\} _\n" <<
+"            {/{/\\}{/{/\\}(_)\\}{/{/\\}  _\n" <<
+"         {\\{/(\\}\\}{/{/\\}\\}{/){/\\}\\} /\\}\n" <<
+"        {/{/(_)/}{\\{/)\\}{\\(_){/}/}/}/}\n" <<
+"       _{\\{/{/{\\{/{/(_)/}/}/}{\\(/}/}/}\n" <<
+"      {/{/{\\{\\{\\(/}{\\{\\/}/}{\\}(_){\\/}\\}\n" <<
+"      _{\\{/{\\{/(_)\\}/}{/{/{/\\}\\})\\}{/\\}\n" <<
+"     {/{/{\\{\\(/}{/{\\{\\{\\/})/}{\\(_)/}/}\\}\n" <<
+"      {\\{\\/}(_){\\{\\{\\/}/}(_){\\/}{\\/}/})/}\n" <<
+"       {/{\\{\\/}{/{\\{\\{\\/}/}{\\{\\/}/}\\}(_)\n" <<
+"      {/{\\{\\/}{/){\\{\\{\\/}/}{\\{\\(/}/}\\}/}\n" <<
+"       {/{\\{\\/}(_){\\{\\{\\(/}/}{\\(_)/}/}\\}\n" <<
+"         {/({/{\\{/{\\{\\/}(_){\\/}/}\\}/}(\\}\n" <<
+"          (_){/{\\/}{\\{\\/}/}{\\{\\)/}/}(_)\n" <<
+"            {/{/{\\{\\/}{/{\\{\\{\\(_)/}\n" <<
+"             {/{\\{\\{\\/}/}{\\{\\\\}/}\n" <<
+"              {){/ {\\/}{\\/} \\\\}\\\\}\n" <<
+"              (_)  \\.-..-/\n" <<
+"          __...--- |.-.-.| --...__\n" <<
+"   _...--    .-.   |.- -.|  . -.  --.._\n" <<
+"       . .  . .    |..-._| .  . .  .   jro\n" <<
+" .  .-  .    .--.  | .-..|    .  .  . .\n" <<
+"          . ..     |  -_-| \n" <<
+"  .  .  .       _.-| _ - |-._  .     .\n" <<
+"              ..   |.- .-|   ..\n" <<
+"  ..-.   . .  ..   `-._.-    ..    -  \n" <<
+"   .-. .        .-._______.-.     .  .\n" <<
+"        .      ~,\n" <<
+"    .       .   |\\   .    . .-. \n" <<
+"    ___________/  \\____________ \n" <<
+"   /  Why is it, when you want \\ \n" <<
+"  |  something, it is so damn   | \n" <<
+"  |    much work to get it?     | \n" <<
+"   \\___________________________/ \n\n";
+
+
 	outfile.close();
 
 }
 
 
+const std::string&	ShrubberyCreationForm::getTarget(void) const
+{
+	return (_target);
+}

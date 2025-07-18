@@ -27,8 +27,17 @@ class Bureaucrat
 
 		void			signForm(Form& form);
 
-		struct GradeTooHighException;
-		struct GradeTooLowException;
+		class GradeTooHighException : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
+
+		class GradeTooLowException : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
 
 };
 

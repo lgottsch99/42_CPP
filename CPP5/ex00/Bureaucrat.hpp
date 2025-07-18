@@ -22,9 +22,17 @@ class Bureaucrat
 		void				incrementGrade();
 		void				decrementGrade();
 
-		struct GradeTooHighException;
-		struct GradeTooLowException;
+		class GradeTooHighException : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
 
+		class GradeTooLowException : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
 };
 
 /*

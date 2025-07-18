@@ -6,18 +6,15 @@
 
 // -------------- Exceptions --------------
 
-struct Bureaucrat::GradeTooHighException : public std::exception {
-	const char * what () const throw () {
-	   return "Grade too high!\n";
-	}
+char const *Bureaucrat::GradeTooHighException::what(void) const throw()
+{
+	   return ("Grade too high! (less than 1)\n");
 };
 
-struct Bureaucrat::GradeTooLowException : public std::exception {
-	const char * what () const throw () {
-	   return "Grade too low!\n";
-	}
+char const *Bureaucrat::GradeTooLowException::what(void) const throw()
+{
+	   return ("Grade too low! (more than 150)\n");
 };
-
 
 // -------------- Constructors --------------
 
@@ -104,7 +101,6 @@ void	Bureaucrat::executeForm(AForm const & form) const
 {
 	if (form.execute(*this))
 		std::cout << this->getName() << " executed " << form.getName() << "\n";
-
 }
 
 // -------------- Operators --------------

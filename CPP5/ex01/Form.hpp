@@ -22,15 +22,24 @@ class Form
 		Form &operator=( const Form& other); //copy assignment
 		~Form(); //destructor
 
-		struct GradeTooHighException;
-		struct GradeTooLowException;
-
 		const std::string&	getName() const;
 		const bool&			getSignedStatus() const;
 		const int&			getGradeSign() const;
 		const int&			getGradeExec() const;
 
 		bool				beSigned(const Bureaucrat& bob);
+
+		class GradeTooHighException : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
+
+		class GradeTooLowException : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
 
 };
 

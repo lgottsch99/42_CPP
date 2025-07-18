@@ -2,6 +2,16 @@
 #include "Bureaucrat.hpp"
 #include <iostream>
 
+
+/*
+TODO
+
+change exception to classes inside class
+
+*/
+
+
+
 int main(void)
 {
 	std::cout << "Basic init ----------------\n\n";
@@ -71,17 +81,4 @@ int main(void)
 		std::cout << "Caught exception: " << e.what();
 	}
 
-	////same as above
-	// try
-	// {
-	// 	while (1)
-	// 	{
-	// 		c.incrementGrade();
-	// 		std::cout << "incremented grade of " << c;
-	// 	}
-	// }
-	// catch (std::exception &e)
-	// {
-	// 	std::cout << "Caught exception: " << e.what();
-	// }
 }
