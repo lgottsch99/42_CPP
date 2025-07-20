@@ -7,10 +7,7 @@
 #include "Intern.hpp"
 #include <iostream>
 
-/*
-TODO
 
-*/
 
 
 int main(void)
