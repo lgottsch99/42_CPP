@@ -14,12 +14,16 @@ class ScalarConverter
 	private:
 		static void	check_print(std::string &str);
 
-
-	public:
 		ScalarConverter(void);//default
 		ScalarConverter(const ScalarConverter& other); //copy construct
 		ScalarConverter &operator=( const ScalarConverter& other); //copy assignment
 		~ScalarConverter(); //destructor
+
+	public:
+		// ScalarConverter(void);//default
+		// ScalarConverter(const ScalarConverter& other); //copy construct
+		// ScalarConverter &operator=( const ScalarConverter& other); //copy assignment
+		// ~ScalarConverter(); //destructor
 
 		class CharNotDisplayable : public std::exception 
 		{
@@ -27,7 +31,7 @@ class ScalarConverter
 				const char * what(void) const throw();
 		};
 
-		static void convert(std::string &str);
+		static void convert(std::string str);
 };
 
 #endif

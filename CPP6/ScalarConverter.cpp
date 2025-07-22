@@ -74,35 +74,11 @@ double	4.2		"4.2"
 special literals	nan, +inf	"nan", "+inf", "-inf"
 
 */
-void ScalarConverter::convert(std::string &str)
+void ScalarConverter::convert(std::string str)
 {
-	//string like "hello"  -> invalid input?
-	//string like "4.9f" -> char output = "4.9f"(string), all others just numbers 
-	std::string c;
-	// int i;
-	// float f;
-	// double d;
-	//output its value in the following series of scalar types: char, int, float, double
+	//1.detect type of literal
 
-	try
-	{
-		//check printability
-		check_print(str);
-		c = str;
+	//2. cast & print starting from correct type
 
-		//check for "-inff, +inff, and nanf" | "-inf, +inf, and nan."
-		// i = convert_int(str);
-		// f = convert_float(str);
-		// d = convert_double(str);
-		
-		// //else: check for last char f AND all others digit or .-
-
-		// print_conv(c, i, f, d);
-
-	}
-	catch(std::exception &e)
-	{
-		std::cout << e.what();
-	}
 
 }
