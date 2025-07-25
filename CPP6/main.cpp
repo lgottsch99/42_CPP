@@ -10,7 +10,7 @@ int main (int argc, char *argv[])
 		std::cout << "Wrong input. Usage: ./convert literal\n";
 		return 0;
 	}
-	std::cout << "Correct input, converting...\n";
+	//std::cout << "Correct input, converting...\n";
 	
 	ScalarConverter::convert(std::string(argv[1]));
 
