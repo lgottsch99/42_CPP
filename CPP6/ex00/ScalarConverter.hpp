@@ -12,7 +12,6 @@ Except for char parameters, only the decimal notation will be used.
 class ScalarConverter
 {	
 	private:
-		//static void	check_print(std::string &str);
 		static void	convert_from_char(char& c);
 		static bool	is_int(std::string str);
 		static void	convert_from_int(std::string str);
@@ -20,9 +19,6 @@ class ScalarConverter
 		static void	convert_from_float(std::string str);
 		static bool	is_double(std::string str);
 		static void	convert_from_double(std::string str);
-
-
-
 
 		ScalarConverter(void);//default
 		ScalarConverter(const ScalarConverter& other); //copy construct

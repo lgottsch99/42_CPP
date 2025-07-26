@@ -55,18 +55,6 @@ char const *ScalarConverter::InvalidInput::what(void) const throw()
 
 //----------- Methods ------------
  
-// void	ScalarConverter::check_print(std::string &str)
-// {
-// 	//loop thru str
-// 	for (unsigned long i = 0; i < str.length(); i++)
-// 	{
-// 		int c = static_cast<int>(str[i]);
-// 		if (c < 32 || c > 255)
-// 			throw CharNotDisplayable();
-// 	}
-// 	return;
-// }
-
 void	ScalarConverter::convert_from_char(char& c)
 {
 	std::cout << "OG TYPE: char\n";
