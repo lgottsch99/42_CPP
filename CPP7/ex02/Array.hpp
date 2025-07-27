@@ -18,7 +18,7 @@ class Array
 		~Array(); //destructor
 
 		//....
-
+		T& operator[](int); //[]operator overload (indexing into array)
 
 		int	size(void) //returns length of current array
 
@@ -83,6 +83,15 @@ template <typename T>
 const char* Array<T>::IndexOutOfBounds::what(void) const throw()
 {
 	   return ("(Array<T>) Index out of bounds!\n");
+}
+
+template <typename T>
+T& Array<T>::operator[](int index)
+{
+    if (index >= thos->_size) {
+        throw IndexOutOfBounds();
+    }
+    return _array[index];
 }
 
 #endif
