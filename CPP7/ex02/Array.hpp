@@ -2,6 +2,7 @@
 #define ARRAY_HPP
 
 #include <cstdlib>
+#include <iostream>
 
 template <typename T>
 class Array
@@ -20,7 +21,7 @@ class Array
 		//....
 		T& operator[](int); //[]operator overload (indexing into array)
 
-		int	size(void) //returns length of current array
+		int	size(void) const; //returns length of current array
 
 		class IndexOutOfBounds : public std::exception 
 		{
@@ -45,6 +46,7 @@ Array<T>::Array(unsigned int n) // Creates an array of n elements initialized by
 {
 	std::cout << "(Array) uint constructor\n";
 	_array = new T[n];
+	_size = n;
 }
 
 //copy construct
@@ -53,7 +55,7 @@ Array<T>::Array(const Array& other)
 {
 	std::cout << "(Array) copy constructor\n";
 	this->_size = other._size;
-	_array = new T[size];
+	_array = new T[_size];
 	for (int i = 0; i < _size; i++)
 		this->_array[i] = other._array[i];
 }
@@ -63,18 +65,30 @@ template <typename T>
 Array<T> &Array<T>::operator=( const Array& other)
 {
 	std::cout << "(Array) copy assignment\n";
-	if (this != *other)
+	if (this != &other)
 	{
+		delete[] _array; //Free old memory
 		this->_size = other._size;
-		_array = new T[size];
+		_array = new T[_size];
 		for (int i = 0; i < _size; i++)
 			this->_array[i] = other._array[i];
 	}
 	return (*this);
 }
 
+
+//destructor
 template <typename T>
-int Array<T>::size(void) //returns length of current array
+Array<T>::~Array()
+{
+	std::cout << "(Array) Destructor\n";
+	//delete allocated mem
+	delete[] _array;
+}
+
+
+template <typename T>
+int Array<T>::size(void) const //returns length of current array
 {
 	return (this->_size);
 }
@@ -88,7 +102,7 @@ const char* Array<T>::IndexOutOfBounds::what(void) const throw()
 template <typename T>
 T& Array<T>::operator[](int index)
 {
-    if (index >= thos->_size) {
+    if (index >= this->_size) {
         throw IndexOutOfBounds();
     }
     return _array[index];
