@@ -42,6 +42,7 @@
 		"algorithm": "cpp",
 		"__hash_table": "cpp",
 		"array": "cpp",
-		"type_traits": "cpp"
+		"type_traits": "cpp",
+		"unordered_map": "cpp"
 	}
 }
