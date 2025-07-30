@@ -22,7 +22,7 @@ class Span
 		unsigned int	shortestSpan(void);
 		unsigned int	longestSpan(void);
 
-		template <typename T>
+		template <typename T> // only template. why?: we might create a span from different existing types of containers
 		void			addRange(T start, T end);
 
 		//getset
@@ -56,21 +56,19 @@ elements to the container.
 
 */
 template <typename T>
-void	Span::addRange(T start, T end)
+void	Span::addRange(T start, T end) //pass iterators of existing container thta stores ints
 {
 	//check size of range (if bigger than max int ?)
 	if (start == end)
 		return ;
 
-	
 	//check size of desired range
 	unsigned int rangeSize = std::distance(start, end);
-	if (_vec.size() + rangeSize > Span::_max_int)
-		throw std::runtime_error("Not enough space for range");
+	if (_vec.size() + rangeSize > this->_max_int)
+		throw std::runtime_error("Not enough space for range.");
 
 	//insert
 	_vec.insert(_vec.end(), start, end);
-		
 }
 
 #endif

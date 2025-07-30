@@ -2,8 +2,6 @@
 
 #include "Span.hpp"
 
-/* TODO: evtl bissi aufräumen und meherere templates 
-*/
 
 int main(void)
 {
@@ -82,5 +80,4 @@ int main(void)
 
 
 	return 0;
-
 }
