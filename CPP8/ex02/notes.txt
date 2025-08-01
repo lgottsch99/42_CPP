@@ -1,0 +1,60 @@
+CPP 08 ex02:
+
+### 📌 What They Want:
+
+You're asked to create a `MutantStack` class that:
+
+1. **Inherits from `std::stack<T>`** (or wraps it).
+2. **Behaves like a normal stack** — with `push()`, `pop()`, `top()`, etc.
+3. **Adds iterator support**, which `std::stack` normally lacks.
+
+---
+
+### 🔍 What “Testing with other containers” *Means*:
+
+They want you to **compare your `MutantStack` with other STL containers** — such as `std::vector`, `std::list`, or even `std::deque` — **which *are* iterable**.
+
+This means:
+
+* You should try iterating over your `MutantStack` using a `for` loop or with iterators (`begin()`, `end()`), like you'd do with a `std::list`.
+* To verify correctness, **you can run the same iteration-based tests** with `std::list` or `std::vector`, then with `MutantStack`, and compare output/behavior.
+
+---
+
+### ✅ Example of What They Expect
+
+```cpp
+MutantStack<int> mstack;
+
+mstack.push(10);
+mstack.push(20);
+mstack.push(30);
+
+// Should be able to iterate like a list
+for (MutantStack<int>::iterator it = mstack.begin(); it != mstack.end(); ++it)
+	std::cout << *it << std::endl;
+
+// Compare to std::list
+std::list<int> lst;
+lst.push_back(10);
+lst.push_back(20);
+lst.push_back(30);
+
+for (std::list<int>::iterator it = lst.begin(); it != lst.end(); ++it)
+	std::cout << *it << std::endl;
+```
+
+If this code works the same for both, your `MutantStack` is correct.
+
+---
+
+### 🧪 Why This Is Useful:
+
+You're basically being asked to:
+
+* Prove your `MutantStack` behaves like a stack.
+* Show it also behaves like an iterable container (like a `list`).
+* Confirm compatibility with STL-style iteration patterns.
+
+
+
