@@ -43,6 +43,8 @@
 		"__hash_table": "cpp",
 		"array": "cpp",
 		"type_traits": "cpp",
-		"unordered_map": "cpp"
+		"unordered_map": "cpp",
+		"list": "cpp",
+		"stack": "cpp"
 	}
 }
