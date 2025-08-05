@@ -1,0 +1,36 @@
+container in c++98 : vector, list, deque, 
+		sorted: set map, multisite, multi map
+
+DEQUE
+deque (usually pronounced like "deck") is an irregular acronym of double-ended queue. Double-ended queues are sequence containers with dynamic sizes that can be expanded or contracted on both ends (either its front or its back).
+
+SET
+Sets are containers that store unique elements following a specific order.
+In a set, the value of an element also identifies it (the value is itself the key, of type T), and each value must be unique. The value of the elements in a set cannot be modified once in the container (the elements are always const), but they can be inserted or removed from the container.
+
+MULTISET
+Multisets are containers that store elements following a specific order, and where multiple elements can have equivalent values.
+In a multiset, the value of an element also identifies it (the value is itself the key, of type T). The value of the elements in a multiset cannot be modified once in the container (the elements are always const), but they can be inserted or removed from the container.
+
+MAP
+Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
+In a map, the key values are generally used to sort and uniquely identify the elements, while the mapped values store the content associated to this key. The types of key and mapped value may differ, and are grouped together in member type value_type, which is a pair type combining both: typedef pair<const Key, T> value_type;
+sorted by key.
+
+
+
+adaptors: stack, queue, prio-queue 
+
+1: container to store price css in and then look up date in input.txt? sorted by date?  MAP (key + value pair, key unique da datum können )
+
+2: einlesen und speichern der Operatoren, sorted! 		MULTISET (mehrere gleiche müssen möglich sein, but key=value)
+
+3: -> merge insert sorting : 2 verschiedene  container: einer sortiert in order, einer evtl nicht? to show difference in efficiency
+	 MULTIMAP? ordered, 
+ list /vector? unordered
+
+
+
+ex02: https://dev.to/emuminov/human-explanation-and-step-by-step-visualisation-of-the-ford-johnson-algorithm-5g91
+
+
