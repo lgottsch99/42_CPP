@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
 	if (argc != 2)
 	{
-		std::cout << "Usage: ./btc input.txt\n";
+		std::cout << "Usage: ./btc <input_file>\n";
 		return 0;
 	}
 
@@ -20,5 +20,5 @@ int main(int argc, char *argv[])
 				//validate date
 				//validate value
 				//if both ok: look up data value and calculate, print
-
+	return 0;
 }
