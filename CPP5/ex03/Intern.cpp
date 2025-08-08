@@ -50,14 +50,12 @@ char const *Intern::FormDoesNotExistException::what(void) const throw()
 
 int	Intern::checkFormExists(std::string formName)
 {
-	std::cout << "in check if form exsts\n";
 	std::string existing[6] = {"shrubbery creation", "scf", "robotomy request", "rrf", "presidential pardon", "ppf"};
 	
 	int i = 0;
 	while (i < 6 && existing[i] != formName)
 		i++;
 
-	std::cout << "after while\n";
 	if (i >= 6)
 	{
 		throw FormDoesNotExistException();
