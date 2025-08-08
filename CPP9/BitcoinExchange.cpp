@@ -2,15 +2,27 @@
 #include "BitcoinExchange.hpp"
 #include <string>
 
+
+
+char const *BitcoinExchange::GradeTooHighException::what(std::string &line) const throw()
+{
+	std::string msg = "Input File: Line of invalid Format! -> ";
+
+	msg.append(line);
+	msg.append("\n");
+
+	greturn (msg);
+};
+
+
+
 // -------------- Constructors --------------
 
 //default
 BitcoinExchange::BitcoinExchange()
 {
 	std::cout << "(BitcoinExchange) Default constructor\n";
-
 	_ReadCsv();
-
 }
 
 //copy construct
@@ -69,7 +81,7 @@ bool BitcoinExchange::_ReadCsv()
 	return true;
 }
 
-void BitcoinExchange::OpenInputFile(std::string & str) //try open input file, if not possible throw exc
+std::ifstream& BitcoinExchange::OpenInputFile(std::string & str) //try open input file, if not possible throw exc
 {
 
 	std::ifstream input_file(str.c_str(), std::ifstream::in); //ifstream reads from file
@@ -78,17 +90,58 @@ void BitcoinExchange::OpenInputFile(std::string & str) //try open input file, if
 		throw std::runtime_error("Error: Cannot open input file!\n");
 	
 	//TODO validate format of input file??
-
+	return (input_file);
 }
 
-
-void BitcoinExchange::ProcessFile(std::string &filename)
+//orchestrator for processing
+void BitcoinExchange::ProcessFile(std::ifstream& infile, std::string &filename)
 {
-	//orchestrator for processing 
+	(void) filename;
+	std::string		input_line;
 
+	while (getline(infile, line)) //go thru each line
+	{
 		//go thru each line in input 
+		try
+		{
+			ValidateLine(line);
+
 			//validate line format
 			//validate date
 			//look up in csv 
 			//print result
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what();
+			continue;
+		}
+
+
+
+
+	}
+
+}
+
+
+void BitcoinExchange::ValidateLine(std::string& line) // date | value -> single | found?
+{
+	//go thru line and check if exactly one " | "
+	//else except
+	std::string del = " | ";
+	size_t pos_found;
+	size_t pos_two;
+
+	pos_found = line.find(del);
+ 	if (pos_found = std::string::npos)
+		throw InvalidInputLine(line);
+	else
+	{
+		//check for second occurrence
+		pos_two = line.rfind(del);
+		if (pos_found != pos_two)
+			throw InvalidInputLine(line);
+	}
+
 }

@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include <iomanip> 
 #include <stdexcept> // for std::runtime_error
-
+#include <exception>
 
 class BitcoinExchange
 {	
@@ -31,13 +31,18 @@ class BitcoinExchange
 
 		bool ValidateDate(); //yyyy-mm-dd ? valid numbers? 
 		bool ValidateAmount(); // positove int or float btw 0-1000?
-		bool ValidateLine(); // date | value -> single | found?
+		void ValidateLine(std::string& line); // date | value -> single | found?
 
 		void ConvertAndPrint(); //looks up data, calcs amount
 
-		void OpenInputFile(std::string &filename);
-		void ProcessFile(std::string &filename);
+		std::ifstream& OpenInputFile(std::string &filename);
+		void ProcessFile(std::ifstream& infile, std::string &filename);
 
+		class InvalidInputLine : public std::exception 
+		{
+			public:
+				const char * what(std::string &line) const throw();
+		};
 
 };
 

@@ -16,12 +16,14 @@ int main(int argc, char *argv[])
 
 	BitcoinExchange btc;//(obj) load csv file with data
 	std::string input_file(argv[1]);
+	std::ifstream infile;
 
 	try 
 	{
 		//check if input file is valid
 		//try to open, if ok:
-		btc.OpenInputFile(input_file);
+		infile = btc.OpenInputFile(input_file);
+		btc.ProcessFile(infile, input_file)
 			//(obj) read input line by line:
 				//(obj) validate date
 				//(obj) validate value
