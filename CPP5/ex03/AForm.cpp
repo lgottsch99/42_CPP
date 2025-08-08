@@ -100,19 +100,28 @@ bool			 AForm::beSigned(const Bureaucrat& bob)
 }
 
 
+bool				AForm::CheckSignGrades(Bureaucrat const & executor) const
+{
+	//check if form is signed
+	if (!getSignedStatus())
+		throw FormNotSignedExecption();
+	//check if bureau exec grade high enough
+	if (executor.getGrade() > _gradeExec)
+		throw GradeTooLowException();
+
+	return (true);
+}
+
 bool	AForm::execute(Bureaucrat const & executor) const
 {
 	try
 	{
-		//check if form is signed
-		if (!getSignedStatus())
-			throw FormNotSignedExecption();
-		//check if bureau exec grade high enough
-		if (executor.getGrade() > _gradeExec)
-			throw GradeTooLowException();
-		
-		action();
-		return true;
+		if (CheckSignGrades(executor))
+		{
+			// action();
+			return true;
+		}
+		return false;
 	}
 	catch(const std::exception& e)
 	{

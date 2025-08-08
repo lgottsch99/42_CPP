@@ -31,6 +31,7 @@ PresidentialPardonForm &PresidentialPardonForm::operator=( const PresidentialPar
 	std::cout << "(PPF) Copy assignment operator\n";
 	if (this != &other)
 	{
+		_target = other.getTarget();
 		// if (other.getSignedStatus()) //TODO how to assign signed status??? it is private in AForm
 		// 	this->AForm::_signed = true;
 	}
@@ -45,10 +46,30 @@ PresidentialPardonForm::~PresidentialPardonForm()
 
 // -------------- Member fts --------------
 
-void	PresidentialPardonForm::action() const
+
+bool	PresidentialPardonForm::execute(Bureaucrat const & executor) const
 {
-//Required grades: sign 25, exec 5 Informs that <target> has been pardoned by Zaphod Beeblebrox.
-	std::cout << _target << " has been pardoned by Zaphod Beeblebrox.\n";
+	try
+	{
+		if (CheckSignGrades(executor) == true)
+		{
+
+		//Required grades: sign 25, exec 5 Informs that <target> has been pardoned by Zaphod Beeblebrox.
+			std::cout << _target << " has been pardoned by Zaphod Beeblebrox.\n";
+			return true;
+		}
+		return false;
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << executor.getName() << " CANNOT execute " << this->getName() << " because: " << e.what() << '\n';
+		return false;
+	}
 }
 
+
+const std::string&	PresidentialPardonForm::getTarget(void) const
+{
+	return (_target);
+}
 

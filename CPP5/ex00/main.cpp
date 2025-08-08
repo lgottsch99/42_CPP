@@ -2,16 +2,6 @@
 #include "Bureaucrat.hpp"
 #include <iostream>
 
-
-/*
-TODO
-
-change exception to classes inside class
-
-*/
-
-
-
 int main(void)
 {
 	std::cout << "Basic init ----------------\n\n";
@@ -53,6 +43,7 @@ int main(void)
 
 	std::cout << "\nINcrement out of range exception ----------------\n\n";
 
+	
 	//Exceptions
 	try
 	{

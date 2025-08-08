@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <ctime>
+#include <stdlib.h> 
 
 /*
 Required grades: sign 72, exec 45
@@ -33,6 +35,7 @@ RobotomyRequestForm &RobotomyRequestForm::operator=( const RobotomyRequestForm& 
 	std::cout << "(RRF) Copy assignment operator\n";
 	if (this != &other)
 	{
+		_target = other.getTarget();
 		// if (other.getSignedStatus()) //TODO how to assign signed status??? it is private in AForm
 		// 	this->AForm::_signed = true;
 	}
@@ -47,20 +50,38 @@ RobotomyRequestForm::~RobotomyRequestForm()
 
 // -------------- Member fts --------------
 
-void	RobotomyRequestForm::action() const
+
+bool	RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {
-	//Makes some drilling noises, then informs that <target> has been robotomized successfully 50% of the time. 
-//Otherwise, it informs that the robotomy failed.
-	std::cout << "..DRILLING NOISE...\n";
+	try
+	{
+		if (CheckSignGrades(executor))
+		{
+			//Makes some drilling noises, then informs that <target> has been robotomized successfully 50% of the time. 
+			//Otherwise, it informs that the robotomy failed.
+			std::cout << "..DRILLING NOISE...\n";
 
-	bool yes = true;
-	//TODO random 50% chance:
+			srand(std::time(NULL)); //seed for rand (aka setting internal algo params for random numbers), otherwise rand always the same
+			int yes = std::rand() % 2;
 
-	if (yes)
-		std::cout << _target << " successfully robotomized!\n";
-	else	
-		std::cout << "Robotomy of " << _target << "FAILED!\n";
+			if (yes == 1)
+				std::cout << _target << " SUCCESSfully robotomized!\n";
+			else	
+				std::cout << "Robotomy of " << _target << " FAILED!\n";
 
+			return true;
+		}
+		return false;
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << executor.getName() << " CANNOT execute " << this->getName() << " because: " << e.what() << '\n';
+		return false;
+	}
 }
 
 
+const std::string&	RobotomyRequestForm::getTarget(void) const
+{
+	return (_target);
+}

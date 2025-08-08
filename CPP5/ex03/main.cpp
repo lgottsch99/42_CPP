@@ -7,7 +7,12 @@
 #include "Intern.hpp"
 #include <iostream>
 
+/*
+TODO
 
+test, segfault etc
+
+*/
 
 
 int main(void)
@@ -25,7 +30,8 @@ int main(void)
 
 	Boss.signForm(*rrf);
 	Boss.signForm(*scf);
-	//Boss.executeForm(*scf);
+	Boss.executeForm(*scf);
+	Boss.executeForm(*rrf);
 
 	//checking exception of intern (form does not exist)
 	AForm *fake = NULL;

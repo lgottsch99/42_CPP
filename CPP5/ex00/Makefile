@@ -1,25 +1,27 @@
-
-# TODO refactor to generate .o files -> scales better for large projects!!
-
 NAME = bureau
 
-CC = c++ 
-CFLAGS = -Wall -Wextra -Werror -std=c++98 
+CXX = c++
 
-SRC= main.cpp  Bureaucrat.cpp
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-# rules
-$(NAME):
-	 $(CC) $(CFLAGS) $(SRC) -o $(NAME)
+SRC = main.cpp Bureaucrat.cpp
 
+OBJ = $(SRC:.cpp=.o)
+
+$(NAME): $(OBJ)
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 all: $(NAME)
 
-clean: fclean
+clean:
+	rm -f $(OBJ)
 
-fclean:
+fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all fclean re clean
+.PHONY: all clean fclean re

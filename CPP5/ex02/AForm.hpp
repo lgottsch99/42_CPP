@@ -15,7 +15,6 @@ class AForm
 		int const			_gradeSign;
 		int const			_gradeExec;
 
- 
 	public:
 		AForm(std::string const name, int const GradeSign, int const GradeExec);//default
 		AForm(const AForm& other); //copy construct
@@ -47,8 +46,9 @@ class AForm
 		const int&			getGradeExec() const;
 
 		bool				beSigned(const Bureaucrat& bob);
-		bool				execute(Bureaucrat const & executor) const;
-		virtual void		action() const = 0; //making class abstract
+		virtual bool		execute(Bureaucrat const & executor) const = 0; //making class abstract
+		bool				CheckSignGrades(Bureaucrat const & executor) const;
+
 
 };
 

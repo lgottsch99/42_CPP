@@ -101,7 +101,6 @@ void	Bureaucrat::executeForm(AForm const & form) const
 {
 	if (form.execute(*this))
 		std::cout << this->getName() << " executed " << form.getName() << "\n";
-
 }
 
 // -------------- Operators --------------
@@ -111,6 +110,6 @@ insertion («) operator to print output in the following format (without the ang
 */
 std::ostream& operator<<(std::ostream& ostream, const Bureaucrat& obj)
 {
-	ostream << obj.getName() << ", bureaucrat grade " << obj.getGrade() << "\n";
+	ostream << obj.getName() << ", bureaucrat grade " << obj.getGrade() << ".\n";
 	return (ostream);
 }

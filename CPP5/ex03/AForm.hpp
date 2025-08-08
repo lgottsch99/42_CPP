@@ -15,13 +15,11 @@ class AForm
 		int const			_gradeSign;
 		int const			_gradeExec;
 
-
 	public:
 		AForm(std::string const name, int const GradeSign, int const GradeExec);//default
 		AForm(const AForm& other); //copy construct
 		AForm &operator=( const AForm& other); //copy assignment
 		virtual ~AForm(); //destructor //virtual so it checks itself for correct type
-
 
 		class GradeTooHighException : public std::exception 
 		{
@@ -41,14 +39,16 @@ class AForm
 				const char * what(void) const throw();
 		};
 
+
 		const std::string&	getName() const;
 		const bool&			getSignedStatus() const;
 		const int&			getGradeSign() const;
 		const int&			getGradeExec() const;
 
 		bool				beSigned(const Bureaucrat& bob);
-		bool				execute(Bureaucrat const & executor) const;
-		virtual void		action() const = 0; //making class abstract
+		virtual bool		execute(Bureaucrat const & executor) const = 0; //making class abstract
+		bool				CheckSignGrades(Bureaucrat const & executor) const;
+
 
 };
 

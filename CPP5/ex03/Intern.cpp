@@ -47,14 +47,17 @@ char const *Intern::FormDoesNotExistException::what(void) const throw()
 }
 
 //----------- Member fts ------------
+
 int	Intern::checkFormExists(std::string formName)
 {
+	std::cout << "in check if form exsts\n";
 	std::string existing[6] = {"shrubbery creation", "scf", "robotomy request", "rrf", "presidential pardon", "ppf"};
 	
 	int i = 0;
-	while (existing[i] != formName)
+	while (i < 6 && existing[i] != formName)
 		i++;
 
+	std::cout << "after while\n";
 	if (i >= 6)
 	{
 		throw FormDoesNotExistException();
@@ -75,6 +78,9 @@ AForm*	Intern::makeForm(std::string formName, std::string formTarget)
 		//make form
 		switch(formType)
 		{
+			case -1:
+				return (NULL);
+				break;
 			case 0:
 			case 1:
 				newForm = new ShrubberyCreationForm(formTarget);

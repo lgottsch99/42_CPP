@@ -15,7 +15,6 @@ class Form
 		int const			_gradeSign;
 		int const			_gradeExec;
 
-
 	public:
 		Form(std::string const name, int const GradeSign, int const GradeExec);//default
 		Form(const Form& other); //copy construct

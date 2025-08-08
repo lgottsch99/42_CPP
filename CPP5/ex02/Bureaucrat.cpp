@@ -110,6 +110,6 @@ insertion («) operator to print output in the following format (without the ang
 */
 std::ostream& operator<<(std::ostream& ostream, const Bureaucrat& obj)
 {
-	ostream << obj.getName() << ", bureaucrat grade " << obj.getGrade() << "\n";
+	ostream << obj.getName() << ", bureaucrat grade " << obj.getGrade() << ".\n";
 	return (ostream);
 }

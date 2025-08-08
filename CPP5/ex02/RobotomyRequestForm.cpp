@@ -50,20 +50,34 @@ RobotomyRequestForm::~RobotomyRequestForm()
 
 // -------------- Member fts --------------
 
-void	RobotomyRequestForm::action() const
+
+bool	RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {
-	//Makes some drilling noises, then informs that <target> has been robotomized successfully 50% of the time. 
-	//Otherwise, it informs that the robotomy failed.
-	std::cout << "..DRILLING NOISE...\n";
+	try
+	{
+		if (CheckSignGrades(executor))
+		{
+			//Makes some drilling noises, then informs that <target> has been robotomized successfully 50% of the time. 
+			//Otherwise, it informs that the robotomy failed.
+			std::cout << "..DRILLING NOISE...\n";
 
-	srand(std::time(NULL)); //seed for rand (aka setting internal algo params for random numbers), otherwise rand always the same
-	int yes = std::rand() % 2;
+			srand(std::time(NULL)); //seed for rand (aka setting internal algo params for random numbers), otherwise rand always the same
+			int yes = std::rand() % 2;
 
-	if (yes == 1)
-		std::cout << _target << " SUCCESSfully robotomized!\n";
-	else	
-		std::cout << "Robotomy of " << _target << " FAILED!\n";
+			if (yes == 1)
+				std::cout << _target << " SUCCESSfully robotomized!\n";
+			else	
+				std::cout << "Robotomy of " << _target << " FAILED!\n";
 
+			return true;
+		}
+		return false;
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << executor.getName() << " CANNOT execute " << this->getName() << " because: " << e.what() << '\n';
+		return false;
+	}
 }
 
 

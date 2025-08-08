@@ -20,7 +20,8 @@ class ShrubberyCreationForm: virtual public AForm
 		ShrubberyCreationForm &operator=( const ShrubberyCreationForm& other); //copy assignment
 		virtual ~ShrubberyCreationForm(); //destructor //virtual so it checks itself for correct type
 
-		void	action() const;
+		virtual bool		execute(Bureaucrat const & executor) const;
+
 		const std::string&	getTarget(void) const;
 
 };

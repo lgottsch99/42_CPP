@@ -19,8 +19,7 @@ class PresidentialPardonForm: virtual public AForm
 		PresidentialPardonForm &operator=( const PresidentialPardonForm& other); //copy assignment
 		virtual ~PresidentialPardonForm(); //destructor //virtual so it checks itself for correct type
 
-		void				action() const;
-
+		virtual bool		execute(Bureaucrat const & executor) const;
 		const std::string&	getTarget(void) const;
 };
 

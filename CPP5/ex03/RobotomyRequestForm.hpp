@@ -13,7 +13,7 @@ Otherwise, it informs that the robotomy failed.
 class RobotomyRequestForm: virtual public AForm
 {
 	private:
-		std::string const	_target;
+		std::string	_target;
 
 	public:
 		RobotomyRequestForm(std::string const target);//default
@@ -21,7 +21,10 @@ class RobotomyRequestForm: virtual public AForm
 		RobotomyRequestForm &operator=( const RobotomyRequestForm& other); //copy assignment
 		virtual ~RobotomyRequestForm(); //destructor //virtual so it checks itself for correct type
 
-		void	action() const;
+		// void	action() const;
+		virtual bool		execute(Bureaucrat const & executor) const;
+
+		const std::string&	getTarget(void) const;
 };
 
 #endif

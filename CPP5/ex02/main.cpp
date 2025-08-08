@@ -9,7 +9,9 @@
 /*
 TODO
 
-actions of forms: ascii tree in scf, random in rrf
+change execute function in Aform and all others:
+	auslagern: gradechecks (inherit)
+	-> action = execute, overwrite in inherited
 
 */
 
