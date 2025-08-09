@@ -22,6 +22,11 @@ class BitcoinExchange
 		bool		_ReadCsv();
 		time_t		_ConvertDateToTime(std::string &date);
 		std::string	_processedDate; //storing date to validate (for exception printing)
+		
+		bool _ValidateDate(std::string& date); //yyyy-mm-dd ? valid numbers? 
+		bool _ValidateAmount(std::string& value); // positove int or float btw 0-1000?
+		void _ValidateLine(std::string& line); // date | value -> single | found?
+		void _ConvertAndPrint(std::string& date, std::string& value); //looks up data, calcs amount
 
 	public:
 		// std::map<std::string, float>	CsvData; //make private
@@ -32,14 +37,6 @@ class BitcoinExchange
 		BitcoinExchange &operator=( const BitcoinExchange& other); //copy assignment
 		~BitcoinExchange(); //destructor
 
-
-		bool ValidateDate(std::string& date); //yyyy-mm-dd ? valid numbers? 
-		bool ValidateAmount(std::string& value); // positove int or float btw 0-1000?
-		void ValidateLine(std::string& line); // date | value -> single | found?
-
-		void ConvertAndPrint(std::string& date, std::string& value); //looks up data, calcs amount
-
-		// void OpenInputFile(std::string &filename);
 		void ProcessFile( std::string &filename);
 
 		class InvalidInputLine : public std::exception 

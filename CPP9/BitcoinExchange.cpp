@@ -150,7 +150,7 @@ void BitcoinExchange::ProcessFile(std::string &filename)
 		//go thru each line in input 
 		try
 		{
-			ValidateLine(input_line);
+			_ValidateLine(input_line);
 		}
 		catch (std::exception &e)
 		{
@@ -161,7 +161,7 @@ void BitcoinExchange::ProcessFile(std::string &filename)
 }
 
 
-void BitcoinExchange::ValidateLine(std::string& line) // date | value -> single | found?
+void BitcoinExchange::_ValidateLine(std::string& line) // date | value -> single | found?
 {
 	// std::cout << "line is: " << line << "\n";
 	//go thru line and check if exactly one " | "
@@ -192,11 +192,11 @@ void BitcoinExchange::ValidateLine(std::string& line) // date | value -> single 
 	// std::cout << "substr value: " << value << "\n";
 
 	//validat date //check value
-	if (ValidateDate(date) && ValidateAmount(value))
-		ConvertAndPrint(date, value);
+	if (_ValidateDate(date) && _ValidateAmount(value))
+		_ConvertAndPrint(date, value);
 }
 
-bool BitcoinExchange::ValidateDate(std::string& date) //yyyy-mm-dd ? valid numbers? 
+bool BitcoinExchange::_ValidateDate(std::string& date) //yyyy-mm-dd ? valid numbers? 
 {
 	int strich = 0;
 	std::string error = "Error: Invalid Date! -> ";
@@ -279,7 +279,7 @@ bool BitcoinExchange::ValidateDate(std::string& date) //yyyy-mm-dd ? valid numbe
 
 
 
-bool BitcoinExchange::ValidateAmount(std::string& value) // positove int or float btw 0-1000?
+bool BitcoinExchange::_ValidateAmount(std::string& value) // positove int or float btw 0-1000?
 {
 	//convert to float/int?
 	double num = std::strtod(value.c_str(), NULL);
@@ -299,7 +299,7 @@ bool BitcoinExchange::ValidateAmount(std::string& value) // positove int or floa
 }
 
 
-void BitcoinExchange::ConvertAndPrint(std::string& date, std::string& value)
+void BitcoinExchange::_ConvertAndPrint(std::string& date, std::string& value)
 {
 	std::cout << date << " => " << value << " = ";
 	
