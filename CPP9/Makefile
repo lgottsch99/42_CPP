@@ -1,5 +1,5 @@
 
-NAME = whatever
+NAME = btc
 
 CXX = c++
 
