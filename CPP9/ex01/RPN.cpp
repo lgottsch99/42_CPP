@@ -35,7 +35,7 @@ RPN::~RPN()
 // -------------- MEMBERS --------------
 
 
-bool InputValid(std::string input) //TODO: check for valid operators!!!!!
+bool InputValid(std::string input)
 {
 	size_t i = 0;
 	while (i < input.size())
@@ -47,7 +47,6 @@ bool InputValid(std::string input) //TODO: check for valid operators!!!!!
 			&& input[i] != '/'
 			&& input[i] != ' ')
 		{
-			// std::cerr << "Error: Char not allowed in str\n";
 			return false;
 		}
 		i++;
@@ -66,22 +65,17 @@ bool IsOperator(char c)
 void RPN::_addition(void)
 {
 	float one = _stack.top();
-	// std::cout << "Plus one: " << one << "\n";
 	_stack.pop();
 	float two = _stack.top();
-	// std::cout << "Plus two: " << two << "\n";
 	_stack.pop();
 	_stack.push(static_cast<float>(one + two));
 }
 
 void RPN::_substraction(void)
 {
-	// std::cout << "MINUS!\n";
 	float one = _stack.top();
-	// std::cout << "Minus one: " << one << "\n";
 	_stack.pop();
 	float two = _stack.top();
-	// std::cout << "Minus two: " << two << "\n";
 	_stack.pop();
 	_stack.push(static_cast<float>(two - one));
 }
@@ -89,33 +83,23 @@ void RPN::_substraction(void)
 
 void RPN::_multiplication(void)
 {
-	// std::cout << "MULTIP!\n";
 	float one = _stack.top();
-	// std::cout << "Mult one: " << one << "\n";
 	_stack.pop();
 	float two = _stack.top();
-	// std::cout << "Mult two: " << two << "\n";
 	_stack.pop();
 	_stack.push(static_cast<float>(one * two));
-
 }
 void RPN::_division(void)
 {
-	// std::cout << "DIVISION!\n";
 	float one = _stack.top();
-	// std::cout << "Div one: " << one << "\n";
 	_stack.pop();
 	float two = _stack.top();
-	// std::cout << "Div two: " << two << "\n";
 	_stack.pop();
 	_stack.push(static_cast<float>(two / one));
-
 }
 
 int	RPN::_ParseAndCalc(std::string &input)
 {
-	// std::cout << "parsing and calcing\n";
-
 	//go thru str
 	size_t i = 0;
 	while (i < input.size())
@@ -141,7 +125,7 @@ int	RPN::_ParseAndCalc(std::string &input)
 		i++;
 	}	
 
-	if (_stack.size() != 1)
+	if (_stack.size() != 1)//then the input was wrong rpn
 	{
 		std::cerr << "Error\n";
 		return 1;
@@ -152,16 +136,12 @@ int	RPN::_ParseAndCalc(std::string &input)
 
 int RPN::Process(std::string &input)
 {
-	// std::cout << "Processing input.. " << input << "\n";
 	int status = 0;
-	//check if input valid 
-		//check if only digits, space and +-*/
 	if (!InputValid(input))
 	{
 		std::cerr << "Error\n";
 		return 1;
 	}
-	//parse and calc 
 	status = _ParseAndCalc(input);
 	return status;
 }
