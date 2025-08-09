@@ -23,7 +23,7 @@ adaptors: stack, queue, prio-queue
 
 1: container to store price css in and then look up date in input.txt? sorted by date?  MAP (key + value pair, key unique da datum können )
 
-2: einlesen und speichern der Operatoren, sorted! 		MULTISET (mehrere gleiche müssen möglich sein, but key=value)
+2: einlesen und speichern der Operatoren, sorted! 		STACK (mehrere gleiche müssen möglich sein, but key=value)
 
 3: -> merge insert sorting : 2 verschiedene  container: einer sortiert in order, einer evtl nicht? to show difference in efficiency
 	 MULTIMAP? ordered, 
