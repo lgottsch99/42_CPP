@@ -47,8 +47,8 @@ PmergeMe::~PmergeMe()
 void PmergeMe::_CheckDuplicates(char *argv[])
 {
 	//we know: argv = only positive ints
-	std::vector<int> 			vec;
-	std::vector<int>::iterator 	it = vec.begin();
+	std::vector<int> 			vector;
+	std::vector<int>::iterator 	it = vector.begin();
 	int num = -1;
 
 	size_t i = 1;
@@ -56,15 +56,14 @@ void PmergeMe::_CheckDuplicates(char *argv[])
 	{
 		num = std::atoi(argv[i]);
 		// std::cout << "num is: " << num << "\n";
-
-		it = vec.begin();
-		while (it != vec.end())
+		it = vector.begin();
+		while (it != vector.end())
 		{
 			if (*it == num) //found duplicate
 				throw Error();
 			it++;
 		}
-		vec.push_back(num);
+		vector.push_back(num);
 		i++;
 	}
 }
@@ -97,7 +96,7 @@ void PmergeMe::CheckInput(int argc, char *argv[])
 
 	//go thru each argv, check digits only (also no -!)
 	_CheckOnlyDigits(argv);
-	
+
 	//check duplicates
 	_CheckDuplicates(argv);
 }
@@ -115,9 +114,24 @@ void PmergeMe::printBefore(char *argv[])
 	std::cout << "\n";
 }
 
+
+void PmergeMe::_initVec(char *argv[])
+{
+	int num;
+	size_t i = 1;
+	while (argv[i] != NULL)
+	{
+		num = std::atoi(argv[i]);
+		_vec.push_back(num);
+		i++;
+	}
+	std::cout << "Vector initialized\n";
+}
+
 void PmergeMe::SortVector(char *argv[])
 {
 	(void)argv;
+	time_t end;
 	//save starting time
 	time(&_timevec);
 	std::cout << "timevec at start: " << _timevec << "\n";
@@ -126,8 +140,46 @@ void PmergeMe::SortVector(char *argv[])
 	_initVec(argv);
 
 	//sort
+	//TODO
 
 	//calc end time
+	time(&end);
+	_elapsedvec = end - _timevec;
+	std::cout << "Sort Vector took: " << _elapsedvec << "\n";
+
+}
+
+void PmergeMe::_initList(char *argv[])
+{
+	int num;
+	size_t i = 1;
+	while (argv[i] != NULL)
+	{
+		num = std::atoi(argv[i]);
+		_list.push_back(num);
+		i++;
+	}
+	std::cout << "List initialized\n";
+}
+
+void PmergeMe::SortList(char *argv[])
+{
+	(void)argv;
+	time_t end;
+	//save starting time
+	time(&_timelist);
+	std::cout << "timelist at start: " << _timelist << "\n";
+
+	//init vector
+	_initList(argv);
+
+	//sort
+	//TODO
+
+	//calc end time
+	time(&end);
+	_elapsedlist = end - _timelist;
+	std::cout << "Sort List took: " << _elapsedlist << "\n";
 
 
 

@@ -18,6 +18,12 @@
 how to manage the labelling in main chain? 
 	numbers should keep their label until level is finished...
 
+*/
+/* TODO
+
+init vector/list
+	crreate recursion basic structure
+	allgemeinern von params
 
 */
 
@@ -47,7 +53,7 @@ int main(int argc, char *argv[])
 		pm.CheckInput(argc, argv);
 		pm.printBefore(argv);
 		pm.SortVector(argv);
-		// pm.SortList(argv);
+		pm.SortList(argv);
 		// pm.printAfter();
 
 	}
