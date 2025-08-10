@@ -4,7 +4,7 @@
 // https://link.springer.com/article/10.1007/s00224-020-09987-4
 // https://42born2code.slack.com/archives/CN9RHKQHW/p1709984014933529?thread_ts=1709813537.388959&cid=CN9RHKQHW 
 // 
-//implement algo 2 times, with different containers each
+// implement algo 2 times, with different containers each
 
 //no map
 //no stack/ deque
@@ -14,16 +14,14 @@
 //unordered map? unordered set? vector?
 
 /* Q's?????
-
 how to manage the labelling in main chain? 
 	numbers should keep their label until level is finished...
 
 */
 /* TODO
 
-init vector/list
-	crreate recursion basic structure
-	allgemeinern von params
+	create recursion basic structure
+	verallgemeinern von algo params
 
 */
 
@@ -54,7 +52,7 @@ int main(int argc, char *argv[])
 		pm.printBefore(argv);
 		pm.SortVector(argv);
 		pm.SortList(argv);
-		// pm.printAfter();
+		pm.printAfter();
 
 	}
 	catch (std::exception &e)

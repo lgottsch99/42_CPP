@@ -5,15 +5,17 @@
 #include <list>
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <exception>
 #include <cstdlib>
 #include <ctime>
 #include <time.h>
-
+#include <unistd.h>
 
 class PmergeMe
 {	
 	private:
+
 		void	_CheckOnlyDigits(char *argv[]);
 		void	_CheckDuplicates(char *argv[]);
 		void 	_initVec(char *argv[]);//could be template
@@ -21,12 +23,10 @@ class PmergeMe
 
 
 		std::vector<int>	_vec;
-		time_t				_timevec; // save time at start
 		double				_elapsedvec; //save time it took to sort 
 		std::list<int>		_list;
-		time_t				_timelist;
 		double				_elapsedlist; //save time it took to sort 
-
+		int 				_numNumbers; // number of numbers to sort
 
 	public:
 		PmergeMe(void);//default
@@ -38,7 +38,7 @@ class PmergeMe
 		void printBefore(char *argv[]);
 		void SortVector(char *argv[]);
 		void SortList(char *argv[]);
-
+		void printAfter(void);
 
 		class Error : public std::exception 
 		{

@@ -11,7 +11,8 @@ char const *PmergeMe::Error::what(void) const throw()
 // -------------- Constructors --------------
 
 //default
-PmergeMe::PmergeMe()
+PmergeMe::PmergeMe():
+_elapsedvec(0), _elapsedlist(0), _numNumbers(0)
 {
 	std::cout << "(PmergeMe) Default constructor\n";
 }
@@ -111,7 +112,18 @@ void PmergeMe::printBefore(char *argv[])
 		std::cout << argv[i] << " ";
 		i++;
 	}
+	_numNumbers = i - 1; //./skipped
 	std::cout << "\n";
+	// std::cout << "Number of elems: " << _numNumbers <<"\n";
+}
+
+void PmergeMe::printAfter(void) //TODO set field width
+{
+	std::cout << "Time to process a range of " << _numNumbers << " with std::vector :  "
+		<< std::setprecision(5) << _elapsedvec << " ms\n";
+	std::cout << "Time to process a range of " << _numNumbers << " with std::list :  "
+		<< std::setprecision(5) << _elapsedlist << " ms\n";
+
 }
 
 
@@ -131,21 +143,22 @@ void PmergeMe::_initVec(char *argv[])
 void PmergeMe::SortVector(char *argv[])
 {
 	(void)argv;
-	time_t end;
 	//save starting time
-	time(&_timevec);
-	std::cout << "timevec at start: " << _timevec << "\n";
+	clock_t	 start = clock();
 
 	//init vector
 	_initVec(argv);
 
 	//sort
 	//TODO
+	for (int i = 0; i < 10000000; i++) //taking up time
+	{}
+
 
 	//calc end time
-	time(&end);
-	_elapsedvec = end - _timevec;
-	std::cout << "Sort Vector took: " << _elapsedvec << "\n";
+	_elapsedvec = clock() - start; //clock ticks
+	_elapsedvec = _elapsedvec * 1000.0 / CLOCKS_PER_SEC;// calc into milliseconds
+	// std::cout << "Sort Vector took: " << _elapsedvec << "\n";
 
 }
 
@@ -165,10 +178,8 @@ void PmergeMe::_initList(char *argv[])
 void PmergeMe::SortList(char *argv[])
 {
 	(void)argv;
-	time_t end;
 	//save starting time
-	time(&_timelist);
-	std::cout << "timelist at start: " << _timelist << "\n";
+	clock_t	 start = clock();
 
 	//init vector
 	_initList(argv);
@@ -177,9 +188,8 @@ void PmergeMe::SortList(char *argv[])
 	//TODO
 
 	//calc end time
-	time(&end);
-	_elapsedlist = end - _timelist;
-	std::cout << "Sort List took: " << _elapsedlist << "\n";
+	_elapsedlist = clock() - start; //clock ticks
+	_elapsedlist = _elapsedlist * 1000.0 / CLOCKS_PER_SEC;// calc into milliseconds
 
 
 
