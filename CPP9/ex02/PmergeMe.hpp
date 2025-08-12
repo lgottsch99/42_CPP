@@ -12,6 +12,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <cmath>
+#include <limits>
 
 class PmergeMe
 {	
@@ -22,6 +23,7 @@ class PmergeMe
 		void 	_initVec(char *argv[]);//could be template
 		void	_initList(char *argv[]);//could be template
 		void	_VectorAlgo(int level);
+		void	_sortPairs(int level);
 
 		std::vector<int>	_vec;
 		double				_elapsedvec; //save time it took to sort 
@@ -42,6 +44,8 @@ class PmergeMe
 		void SortVector(char *argv[]);
 		void SortList(char *argv[]);
 		void printAfter(void);
+
+		void print_sequence(std::vector<int>& ref);
 
 		class Error : public std::exception 
 		{
