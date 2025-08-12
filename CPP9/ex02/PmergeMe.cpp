@@ -214,8 +214,6 @@ void PmergeMe::_sortPairs(int level)
 { // a/b index pos always stays same at same level
 	//pos a's: at (i % pow(2, level) = 0 ) -> eg level 2: every 4.
 	//pos b's: at (i % pow(2, level) = pow(2, level)/2 ) -> eg level 2:  2. 6 12 ..
-
-	//
 	
 	std::vector<int> tmp_one; //placeholder for swapping
 	std::vector<int> tmp_two; //placeholder for swapping
@@ -223,8 +221,6 @@ void PmergeMe::_sortPairs(int level)
 
 	int size_pair = pow(2, level); //size of  pair
 	std::cout << "size pair is: " << size_pair << "\n";
-
-	(void)level;
 
 	//assign pairs/indexes
 
@@ -236,7 +232,7 @@ void PmergeMe::_sortPairs(int level)
 		it--;
 		last_index--;
 	}
-	std::cout << "last index to assign a/b is: " << last_index << "\n";
+	// std::cout << "last index to assign a/b is: " << last_index << "\n";
 	
 
 	// int first = 1;
@@ -306,11 +302,10 @@ void PmergeMe::_sortPairs(int level)
 		i++;
 	}
 
-	std::cout << "after loop it at: " << *it << std::endl;
-	std::cout << "after loop i at: " << i << std::endl;
+	// std::cout << "after loop it at: " << *it << std::endl;
+	// std::cout << "after loop i at: " << i << std::endl;
 
 	//add rest to result
-
 	while (last_index < _numNumbers)
 	{
 		std::cout << "pushing back rest\n";
@@ -321,9 +316,8 @@ void PmergeMe::_sortPairs(int level)
 	std::cout << "RESULT SWAP LEVEL: " << level << "\n\t";
 	print_sequence(result);
 
+	//exchange result with main vector
 	_vec.swap(result);
-
-
 }
 
 
