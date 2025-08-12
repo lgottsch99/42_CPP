@@ -150,9 +150,12 @@ void PmergeMe::SortVector(char *argv[])
 	_initVec(argv);
 
 	//sort
-	//TODO
-	for (int i = 0; i < 10000000; i++) //taking up time
-	{}
+
+	int rec_level = 1;
+	_recFlag = 0;
+	_VectorAlgo(rec_level);
+	// for (int i = 0; i < 10000000; i++) //taking up time
+	// {}
 
 
 	//calc end time
@@ -160,6 +163,31 @@ void PmergeMe::SortVector(char *argv[])
 	_elapsedvec = _elapsedvec * 1000.0 / CLOCKS_PER_SEC;// calc into milliseconds
 	// std::cout << "Sort Vector took: " << _elapsedvec << "\n";
 
+}
+
+void PmergeMe::	_VectorAlgo(int level)
+{// recursion orchestrator //rec: ft calling itself
+
+	if (_recFlag == 1)
+		std::cout << "going back\n";
+	else
+		std::cout << "going forward\n";
+
+	//FORWARD STEPS: sort pairs
+
+	//base case: no more pairs can be formed (pow(2, level) is size of single pair elem)
+	if (_numNumbers - pow(2, level) < pow(2, level))
+	{
+		std::cout << "base case reached.\n";
+		_recFlag = 1;
+		return;
+	}
+	std::cout << "After base case, level: " << level << "\n";
+	//call itself again
+	_VectorAlgo(level + 1); 
+
+	//do backwards steps here:
+	std::cout << "ORRR maybe step 2 3 here? level: " << level << "\n";
 }
 
 void PmergeMe::_initList(char *argv[])

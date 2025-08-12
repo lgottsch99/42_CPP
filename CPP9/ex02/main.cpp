@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
 		pm.CheckInput(argc, argv);
 		pm.printBefore(argv);
 		pm.SortVector(argv);
-		pm.SortList(argv);
-		pm.printAfter();
+		//pm.SortList(argv);
+		//pm.printAfter();
 
 	}
 	catch (std::exception &e)

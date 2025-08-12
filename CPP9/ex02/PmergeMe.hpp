@@ -11,6 +11,7 @@
 #include <ctime>
 #include <time.h>
 #include <unistd.h>
+#include <cmath>
 
 class PmergeMe
 {	
@@ -20,13 +21,15 @@ class PmergeMe
 		void	_CheckDuplicates(char *argv[]);
 		void 	_initVec(char *argv[]);//could be template
 		void	_initList(char *argv[]);//could be template
-
+		void	_VectorAlgo(int level);
 
 		std::vector<int>	_vec;
 		double				_elapsedvec; //save time it took to sort 
 		std::list<int>		_list;
 		double				_elapsedlist; //save time it took to sort 
 		int 				_numNumbers; // number of numbers to sort
+		int 				_recFlag;
+
 
 	public:
 		PmergeMe(void);//default
