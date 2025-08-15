@@ -24,6 +24,7 @@ class PmergeMe
 		void	_initList(char *argv[]);//could be template
 		void	_VectorAlgo(int level);
 		void	_sortPairs(int level);
+		void	_Step2(int level);
 
 		std::vector<int>	_vec;
 		double				_elapsedvec; //save time it took to sort 

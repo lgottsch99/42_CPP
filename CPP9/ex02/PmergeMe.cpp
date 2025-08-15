@@ -208,6 +208,7 @@ void PmergeMe::	_VectorAlgo(int level)
 	//do backwards steps here:
 		//create main & pend and sort 
 	std::cout << "DO step 2 3 here? level: " << level << "\n";
+	_Step2(level);
 }
 
 void PmergeMe::_sortPairs(int level)
@@ -321,7 +322,28 @@ void PmergeMe::_sortPairs(int level)
 }
 
 
+void PmergeMe::_Step2(int level)
+{
+	//init main and pend + non participating
+	//calc pair size, end of participating, then a1 b1 and else
 
+	std::vector<int> main; //a1 b1 and all other a's
+	std::vector<int> pend; //all other b's
+	std::vector<int> non_part; //rest that cant form whole elem
+
+	int size_pair = pow(2, level); //size of  pair (single elem is half)
+	int size_single = size_pair / 2;
+
+	// int num_elems = floor(_numNumbers / (size_pair / 2)); //getting number of single elems -> do i have more than a1 b1 etc??
+	int num_elems = _numNumbers / size_pair;
+	std::cout << "level " << level << " num of elems in step 2: " << num_elems << "\n";
+
+	//init main (a1, b1 all a's)
+	int i = 0;
+	while ()
+
+
+}
 
 
 
