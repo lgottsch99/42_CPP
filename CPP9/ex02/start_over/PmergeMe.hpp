@@ -25,9 +25,11 @@ class PmergeMe
 		void	_CheckDuplicates(char *argv[]);
 		void 	_initVec(char *argv[]);
 
+		int _getLastIndex(int size_elem, bool uneven);
+
 		//template fj sort
 		template <typename Cont>
-		void _FJSort(Cont& c);
+		void _FJSort(Cont& c, int level);
 
 		//template binary insert
 		template <typename Cont>
@@ -89,90 +91,122 @@ class PmergeMe
 -> The important part: all insertions happen while closing recursion, because only now do we know the mainChain is sorted.
 
 
-Original:       [8, 3, 5, 1, 7]
+ // a/b index pos always stays same at same level
+	//pos a's: at (i % pow(2, level) = 0 ) -> eg level 2: every 4.
+	//pos b's: at (i % pow(2, level) = pow(2, level)/2 ) -> eg level 2:  2. 6 12 ..
 
-Opening:
-- Make pairs -> mainChain=[3,1], pend=[8,5], odd=7
-- Recurse on mainChain=[3,1]
-   - Pair again -> mainChain=[1], pend=[3]
-   - Recurse on [1] -> base case
-
-Closing (stack unwinds):
-- Insert pend=[3] into mainChain=[1] -> [1,3]
-- Insert pend=[8,5] into mainChain=[1,3] -> [1,3,5,8]
-- Insert odd=7 -> [1,3,5,7,8]
 
 */
 
 template <typename Cont>
-void PmergeMe::_FJSort(Cont& c)
-{
-	//return if base case reached 
-	if (c.size() <= 1)
+void PmergeMe::_FJSort(Cont& c, int level)
+{	//recursive ft
+	//use a vector of pairs! to keep track of sequence
+	
+
+	int size_pair = pow(2, level);
+	int size_elem = size_pair / 2; //size of single elem
+	int num_elems = floor(_numNumbers / size_elem);
+	bool uneven = num_elems % 2; // true if uneven num of elems
+
+	std::cout << "size elem is: " << size_elem << "\n";
+	std::cout << "size pair is: " << size_pair << "\n";
+	std::cout << "num elems is: " << num_elems << "\n";
+
+
+//open up levels: make pairs and compare, get bigger one
+	// std::vector < <std::vector<int> > elem_seq; //store single elems grouped (ungerade muss möglich sein)
+	// std::vector <int> non_part; //store leftover who cant form element
+	
+//read c into paired seq
+		//get last index to assign to pairs
+	int last_index = _getLastIndex(size_elem, uneven);
+	// std::cout << "last index is: " << last_index << "\n";
+
+	std::vector <int> sort_result;
+	std::vector<int>::iterator it;
+
+	int i = 0;
+	while (i < last_index)
+	{//go thru c, read for size pair, split into two pair-vectors
+
+		std::vector <int> first;
+		std::vector <int> second;
+
+		int y = 0;
+		while ((i+y) < last_index && y < size_elem)
+		{
+			first.push_back(c[i + y]);
+			y++;
+		}
+		print_sequence(first);
+
+		while ((i+y) < last_index && y < size_pair)
+		{
+			second.push_back(c[i + y]);
+			y++;
+		}
+		print_sequence(second);
+
+		//compare last number each, second = bigger! , swap if needed
+		if (first[size_elem - 1] > second[size_elem - 1])
+		{
+			it = second.begin();
+			while (it != second.end())
+			{	
+				sort_result.push_back(*it);
+				it++;
+			}
+			it = first.begin();
+			while (it != first.end())
+			{	
+				sort_result.push_back(*it);
+				it++;
+			}
+		}
+		else 
+		{
+			it = first.begin();
+			while (it != first.end())
+			{	
+				sort_result.push_back(*it);
+				it++;
+			}
+			it = second.begin();
+			while (it != second.end())
+			{	
+				sort_result.push_back(*it);
+				it++;
+			}
+		}
+
+		i = i + size_pair;
+	}
+	while (i < _numNumbers)
 	{
-		std::cout << " - base case reached! - \n";
+		sort_result.push_back(c[i]);
+		i++;
+	}
+	std::cout << "RESULT SORT LEVEL " << level << " :\n\t";
+	print_sequence(sort_result);
+	//swap c and result
+	c.swap(sort_result);
+
+	//if base case: return 
+	if (_numNumbers - pow(2, level) < pow(2, level))
+	{
+		std::cout << "\n -- base case reached -- \n\n";
 		return;
 	}
-
-	//make pairs
-	//build main chain + pend (smaller go directly into main chain, bigger into pend)
-	Cont main_chain;
-	Cont pend;
-
-	typename Cont::iterator it = c.begin();
-	while (it != c.end())
-	{
-		typename Cont::iterator next = it;
-		++next;		//it at pos 1, next at 2
-		if (next != c.end())
-		{
-			//smaller to main chain, bigger to pend
-			if (*it < *next)
-			{
-				main_chain.push_back(*it);
-				pend.push_back(*next);
-			}
-			else
-			{
-				pend.push_back(*it);
-				main_chain.push_back(*next);
-			}
-			next++;
-			it = next; //jump to next 2 
-		}
-		else //odd elem, push to pend for now and insert later
-		{
-			pend.push_back(*it);
-			it++;
-		}
-		
-	}
-	std::cout << "mainchain: ";
-	print_sequence(main_chain);
-	std::cout << "pend: ";
-	print_sequence(pend);
-
-	//rec call
-	std::cout << "Next recursion call..\n";
-	_FJSort(main_chain);
-
-	//closing: binary insert using j numbers
-
-	//closing: copy into OG containter 
+	//else recursion call
+	std::cout << "Next Rec Level..\n";
+	_FJSort(c, level + 1);
 
 
-	//     // --- Closing stage: insert pend elements into sorted mainChain ---
-    // for (typename Cont::iterator p = pend.begin(); p != pend.end(); ++p)
-    // {
-    //     typename Cont::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), *p);
-    //     mainChain.insert(pos, *p);
-    // }
-
-    // // --- Closing stage: copy back to original container ---
-    // c.clear();
-    // for (typename Cont::iterator m = mainChain.begin(); m != mainChain.end(); ++m)
-    //     c.push_back(*m);
-
+	//close levels: 
+	//restore into vector < pair < vec, vec>> to not loose relationship btw pairs 
+	// create main chain + pend
+	// binary insert using j numbers
 }
 
 //template binary insert

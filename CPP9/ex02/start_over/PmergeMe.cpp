@@ -139,12 +139,13 @@ void PmergeMe::SortVector(char *argv[])
 	(void)argv;
 	//save starting time
 	clock_t	 start = clock();
+	int level = 1;
 
 	//init vector
 	_initVec(argv);
 
 	//sort
-	_FJSort(_vec);
+	_FJSort(_vec, level);
 
 	//calc end time
 	_elapsedvec = clock() - start; //clock ticks
@@ -160,4 +161,21 @@ void PmergeMe::printAfter(void) //TODO set field width
 	std::cout << "Time to process a range of " << _numNumbers << " with std::list :  "
 		<< std::setprecision(5) << _elapsedlist << " ms\n";
 
+}
+
+
+int PmergeMe::_getLastIndex(int size_elem, bool uneven)
+{
+	int last_index;
+
+	if (!uneven)
+		last_index = _numNumbers;
+	else
+		last_index = _numNumbers - size_elem;
+
+	while (last_index % size_elem != 0)
+		last_index--;
+
+	return (last_index);
+	
 }
