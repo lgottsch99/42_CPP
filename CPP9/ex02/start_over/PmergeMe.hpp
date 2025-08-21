@@ -307,17 +307,49 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	{
 	// binary insert using j numbers: wichtig: nicht bezüge zwischen a-b paaren verlieren
 		// gen j number seq.
-		std::vector<int> jacob = _genJNums(_numNumbers);
+		std::vector<int> jacob = _genJNums(_numNumbers); //ok
+		std::vector<int>::iterator current_jacobsthal = jacob.begin();
+		int previous_jacobsthal = 1;
+
 		print_sequence(jacob);
-		// group pend according to j number
+
+		while (!pend.empty())
+		{
+			// group pend according to j number
+			int num_elem_to_insert = *current_jacobsthal - previous_jacobsthal;
+			std::cout << "insertion iteration. num of elems to insert: " << num_elem_to_insert << "\n";
+			
+			if (num_elem_to_insert <= (int)pend.size()) //jnumber works
+			{
+
+				//move iterator in pend to current elem
+				std::vector<std::vector<int> >::iterator it_pend = pend.begin(); 
+				for (int n = 0; n < num_elem_to_insert - 1; n++)
+					it_pend++;
+			
+				std::cout << "traversed pend to elem: " << (*it_pend).back() << "\n";
+
+				//search for partner elem (it_pend) in main, get index (aka search area)
+				//binary search main search area for index position to insert
+				// insert (check if search area changed)
+
 		// calc search area in main (= look for upper bound a if any)
 		// binary insert (search area bleibt MEISTENS aber nicht immer the same!)
+
+			}
+
+
+
+
+			previous_jacobsthal = *current_jacobsthal;
+			current_jacobsthal++;
+		}
 
 
 	}
 
 	std::vector<int> insert_result;
-	//create new single vector with result 
+//create new single vector with result 
 	for (std::vector < std::vector<int> >::iterator hey = main_chain.begin(); hey != main_chain.end(); hey++)
 	{
 		const std::vector<int>& inner_vector = *hey;
@@ -326,7 +358,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 			insert_result.push_back(*inner);
 		}
 	}
-	if (!non_part.empty())
+	if (!non_part.empty()) //adding non participating back to main chain
 	{
 		unsigned long a = 0;
 		while (a < non_part.size())
