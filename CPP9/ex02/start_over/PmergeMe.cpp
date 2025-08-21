@@ -179,3 +179,48 @@ int PmergeMe::_getLastIndex(int size_elem, bool uneven)
 	return (last_index);
 	
 }
+
+
+
+void PmergeMe::print_vector_of_vectors(const std::vector<std::vector<int> >& main_chain) {
+    // Iterate over the outer vector
+    for (std::vector<std::vector<int> >::const_iterator it = main_chain.begin(); it != main_chain.end(); ++it) {
+        // 'it' is an iterator to a std::vector<int>
+        // Dereference 'it' to get the current inner vector
+        const std::vector<int>& inner_vector = *it;
+
+        // Iterate over the inner vector
+        for (std::vector<int>::const_iterator inner_it = inner_vector.begin(); inner_it != inner_vector.end(); ++inner_it) {
+            // Dereference 'inner_it' to get the current integer
+            std::cout << *inner_it << " ";
+        }
+        
+    }
+	std::cout << std::endl; 
+}
+
+
+
+std::vector<int> PmergeMe::_genJNums(int numNums)
+{//how many are needed? sum of all needs to be >= _numnumbers
+	std::vector<int> jnum;
+	int sum = 3;
+
+	int a = 1; //first j num
+	int b = 3; //2. jnum
+	jnum.push_back(3);
+
+	while (sum < numNums)
+	{
+		int c = b + 2 * a;
+		jnum.push_back(c);
+		sum = sum + c;
+		a = b;
+		b = c;
+	}
+
+	std::cout << "sum is: " << sum << "\n";
+	std::cout << "number of jnums calced: " << jnum.size() << "\n";
+	return(jnum);
+
+}
