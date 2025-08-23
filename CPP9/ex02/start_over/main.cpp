@@ -19,9 +19,13 @@
 */
 /* TODO
 
-START OVER:
+shrinking search area in special cases
 
-	-algo = clean template
+dry
+
+template form
+
+list test
 
 
 */
