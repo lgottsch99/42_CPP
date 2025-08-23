@@ -303,24 +303,27 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	std::cout << "pend: ";
 	print_vector_of_vectors(pend);
 
+
+// binary insert using j numbers: wichtig: nicht bezüge zwischen a-b paaren verlieren
+	// gen j number seq.
+	std::vector<int> jacob = _genJNums(_numNumbers); //ok
+	std::vector<int>::iterator current_jacobsthal = jacob.begin();
+	int previous_jacobsthal = 1;
+
+	print_sequence(jacob);
+
 	if (!pend.empty())
 	{
-	// binary insert using j numbers: wichtig: nicht bezüge zwischen a-b paaren verlieren
-		// gen j number seq.
-		std::vector<int> jacob = _genJNums(_numNumbers); //ok
-		std::vector<int>::iterator current_jacobsthal = jacob.begin();
-		int previous_jacobsthal = 1;
-
-		print_sequence(jacob);
-
 		while (!pend.empty())
 		{
 			// group pend according to j number
 			int num_elem_to_insert = *current_jacobsthal - previous_jacobsthal;
 			std::cout << "insertion iteration. num of elems to insert: " << num_elem_to_insert << "\n";
 			
+			//CASE jnumber works (aka enough elems in pend)
 			if (num_elem_to_insert <= (int)pend.size()) //jnumber works
 			{
+				//TODO while loop  for whole group!
 
 				//move iterator in pend to current elem
 				std::vector<std::vector<int> >::iterator it_pend = pend.begin(); 
@@ -329,24 +332,239 @@ void PmergeMe::_FJSort(Cont& c, int level)
 			
 				std::cout << "traversed pend to elem: " << (*it_pend).back() << "\n";
 
-				//search for partner elem (it_pend) in main, get index (aka search area)
-				//binary search main search area for index position to insert
-				// insert (check if search area changed)
+				int iterations = 0;
+				while (iterations < num_elem_to_insert)
+				{
+					std::cout <<"Pend elem to insert: ";
+						print_sequence(*it_pend);
+
+					//search for partner elem (it_pend) in main, get index (aka search area)
+						//std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
+						//	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
+						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
+
+						//1 get partner elem in paired sequence
+						bool found = false;
+						int search_end = 0; //end of search area in main
+
+						std::pair < std::vector<int>, std::vector<int> > partner_pair;
+						std::vector < std::pair < std::vector<int>, std::vector<int> > >::iterator it_paired_outer = paired_sequence.begin();
+						for (int index = 0; index < last_index; index++)
+						{
+							if ((*it_paired_outer).first == *it_pend)
+							{
+								partner_pair = (*it_paired_outer);
+								std::cout << "found partner elem!\n";
+								print_sequence(partner_pair.second);
+								found = true;
+								break;
+							}
+							it_paired_outer++;
+						}
+
+
+
+						//#####
+						if (found)
+						{
+							//look for partner elem position in main_chain
+							while (search_end < (int)main_chain.size() && main_chain[search_end] != partner_pair.second)
+								search_end++;
+
+							std::cout << "partner in main chain at pos: " << search_end << "\n";
+						}
+						else
+						{
+							std::cout <<"no partner found in paired seq\n";
+							search_end = (int)main_chain.size();
+							search_end--; //index at 0
+						}
+
+
+
+						// (void) found;
+						// //look for partner elem position in main_chain
+						// int search_end = 0; //end of search area in main
+						// while (main_chain[search_end] != partner_pair.second)
+						// 	search_end++;
+
+						// std::cout << "partner in main chain at pos: " << search_end << "\n";
+
+
+					//binary search main search area for index position to insert
+					// int L = 0;
+					// int R = search_end;
+					// int T = (*it_pend).back(); //target value to insert
+					// int middle = 0;
+					// // bool done = false;
+					// while (L <= R)
+					// {
+					// 	middle = L + floor((R - L) / 2);
+
+					// 	// std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
+					// 	if (main_chain[middle].back() < T)
+					// 		L = middle + 1;
+					// 	else if (main_chain[middle].back() > T)
+					// 		R = middle - 1;
+					// 	// else if (main_chain[middle].back() == T)
+					// 	// 	done = true; //middle == index to insert to
+					// }
+					int L = 0;
+					int R = search_end;
+					int T = (*it_pend).back(); //target value to insert
+					int middle = 0;
+					bool done = false;
+					while (L <= R && !done)
+					{
+						middle = L + floor((R - L) / 2);
+
+						std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
+						if (main_chain[middle].back() < T)
+							L = middle + 1;
+						else if (main_chain[middle].back() > T)
+							R = middle - 1;
+						else if (main_chain[middle].back() == T)
+							done = true; //middle == index to insert to
+					}
+					if (!done)
+						middle = L; //if not exact match possible
+
+					
+				std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+					//insert (check if search area changed)
+					std::vector < std::vector<int> >::iterator it_main_chain = main_chain.begin();
+					for (int i = 0; i < middle; i++)
+						it_main_chain++;
+					
+					main_chain.insert(it_main_chain, *it_pend);
+					
+					//remove elem from pend
+					std::vector<std::vector<int> >::iterator one_before = it_pend;
+					one_before--;
+
+					pend.erase(it_pend);
+					it_pend = one_before;
+					iterations++;
+				}
+
+			
+			previous_jacobsthal = *current_jacobsthal;
+			current_jacobsthal++;
 
 		// calc search area in main (= look for upper bound a if any)
 		// binary insert (search area bleibt MEISTENS aber nicht immer the same!)
+
+			}
+			else //CASE: not enough elems in pend for jnumber
+			{
+				//just go to end of pend, insert starting from the back
+				//move iterator in pend to current elem
+				std::vector<std::vector<int> >::iterator it_pend = pend.end(); //end returns past the end!
+				it_pend--;
+
+				std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
+				
+				num_elem_to_insert = pend.size();
+				std::cout << "Number of pend elems to insert: " << num_elem_to_insert << "\n";
+				//
+				int iterations = 0;
+				while (iterations < num_elem_to_insert)
+				{
+					//search for partner elem (it_pend) in main, get index (aka search area)
+						//std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
+						//	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
+						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
+
+						std::cout <<"Pend elem to insert: ";
+						print_sequence(*it_pend);
+
+						//1 get partner elem in paired sequence
+						bool found = false;
+						int search_end = 0; //end of search area in main
+
+						std::pair < std::vector<int>, std::vector<int> > partner_pair;
+						std::vector < std::pair < std::vector<int>, std::vector<int> > >::iterator it_paired_outer = paired_sequence.begin();
+						while (it_paired_outer != paired_sequence.end())
+						// for (int index = 0; index < (int)paired_sequence.size(); index++)
+						{
+							std::cout << "traversing pair partners \n";
+							if ((*it_paired_outer).first == *it_pend)
+							{
+								partner_pair = (*it_paired_outer);
+								std::cout << "found partner elem!\n";
+								print_sequence(partner_pair.second);
+								found = true;
+								break;
+							}
+							it_paired_outer++;
+						}
+						if (found)
+						{
+							//look for partner elem position in main_chain
+							while (search_end < (int)main_chain.size() && main_chain[search_end] != partner_pair.second)
+								search_end++;
+
+							std::cout << "partner in main chain at pos: " << search_end << "\n";
+						}
+						else
+						{
+							std::cout <<"no partner found in paired seq\n";
+							search_end = (int)main_chain.size();
+							search_end--; //index at 0
+						}
+						std::cout << "search end is: " << search_end << "\n";
+
+
+
+				std::cout << "bianry inserting..\n";
+					//binary search main search area for index position to insert
+					int L = 0;
+					int R = search_end;
+
+					int T = (*it_pend).back(); //target value to insert
+					int middle = 0;
+					bool done = false;
+					while (L <= R && !done)
+					{
+						middle = L + floor((R - L) / 2);
+
+						std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
+						if (main_chain[middle].back() < T)
+							L = middle + 1;
+						else if (main_chain[middle].back() > T)
+							R = middle - 1;
+						else if (main_chain[middle].back() == T)
+							done = true; //middle == index to insert to
+					}
+					if (!done)
+						middle = L; //if not exact match possible
+
+				std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+
+					//insert (check if search area changed)
+					std::vector < std::vector<int> >::iterator it_main_chain = main_chain.begin();
+					for (int i = 0; i < middle; i++)
+						it_main_chain++;
+					
+					main_chain.insert(it_main_chain, *it_pend);
+					
+					//remove elem from pend
+					it_pend = pend.erase(it_pend);
+					iterations++;
+
+
+				}
+
 
 			}
 
 
 
 
-			previous_jacobsthal = *current_jacobsthal;
-			current_jacobsthal++;
 		}
 
-
 	}
+	
 
 	std::vector<int> insert_result;
 //create new single vector with result 
@@ -370,7 +588,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	std::cout << "insert result: ";
 	print_sequence(insert_result);
 
-	// c.swap(insert_result);
+	c.swap(insert_result);
 
 
 
