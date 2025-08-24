@@ -151,8 +151,8 @@ void PmergeMe::SortVector(char *argv[])
 	//sort
 	_FJSort(_vec, level);
 
-std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
-std::cout << "no of comps needed: " << _comps << "\n";
+	std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
+	std::cout << "no of comps needed: " << _comps << "\n";
 
 	//calc end time
 	_elapsedvec = clock() - start; //clock ticks
@@ -241,6 +241,5 @@ void PmergeMe::_calcMaxComp(void)
         double value = (3.0 / 4.0) * k;
         sum += static_cast<int>(ceil(log2(value)));
     }
-	// std::cout << "Number of max comparisons: " << sum << "\n";
     _maxComparisons = sum;
 }

@@ -395,9 +395,13 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
 						std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
 						if (main_chain[middle].back() < T)
+						{							
 							L = middle + 1;
+						}						
 						else if (main_chain[middle].back() > T)
+						{
 							R = middle - 1;
+						}
 						else if (main_chain[middle].back() == T)
 							done = true; //middle == index to insert to
 					}
@@ -506,9 +510,14 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
 						std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
 						if (main_chain[middle].back() < T)
+						{							
 							L = middle + 1;
+						}						
 						else if (main_chain[middle].back() > T)
+						{							
 							R = middle - 1;
+						}						
+
 						else if (main_chain[middle].back() == T)
 							done = true; //middle == index to insert to
 					}
@@ -531,18 +540,9 @@ void PmergeMe::_FJSort(Cont& c, int level)
 					pend.erase(it_pend);
 					it_pend = one_before;
 					iterations++;
-
-
 				}
-
-
 			}
-
-
-
-
 		}
-
 	}
 	
 

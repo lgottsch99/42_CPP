@@ -19,14 +19,11 @@
 */
 /* TODO
 
-shrinking search area in special cases
-
 dry
 
 template form
 
 list test
-
 
 ADD COMPARISON COUNTER AND CHECK
 
