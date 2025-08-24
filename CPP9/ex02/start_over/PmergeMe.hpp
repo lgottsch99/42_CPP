@@ -341,7 +341,13 @@ void PmergeMe::_FJSort(Cont& c, int level)
 				int iterations = 0;
 				while (iterations < num_elem_to_insert)
 				{
-					std::cout <<"Pend elem to insert: ";
+					//we always start insertion at end of group: 
+						// 	-> next middle pos cannot be bigger than last one! (bc b3 is always bigger than b2)
+						//SHRINKING even more IF :
+						//only need to recalc search area if: inserted elem pos > partner in main
+
+
+					std::cout << "Pend elem to insert: ";
 						print_sequence(*it_pend);
 
 					//search for partner elem (it_pend) in main, get index (aka search area)
@@ -374,6 +380,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 								search_end++;
 
 							std::cout << "partner in main chain at pos: " << search_end << "\n";
+							//no need to compare partner elem tho so -1 index
+							search_end--;
 						}
 						else
 						{
@@ -462,6 +470,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 								search_end++;
 
 							std::cout << "partner in main chain at pos: " << search_end << "\n";
+							//no need to compare partner elem tho so -1 index
+							search_end--;
 						}
 						else
 						{

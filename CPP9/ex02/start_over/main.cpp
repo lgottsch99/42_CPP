@@ -31,6 +31,7 @@ shrinking of search area?
 	comps in opening up OK
 	comps in closing??
 
+	
 */
 
 
