@@ -28,6 +28,9 @@ template form
 list test
 
 
+ADD COMPARISON COUNTER AND CHECK
+
+
 */
 
 

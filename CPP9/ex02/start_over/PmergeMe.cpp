@@ -117,6 +117,8 @@ void PmergeMe::_initVec(char *argv[])
 		i++;
 	}
 	std::cout << "Vector initialized\n";
+
+	//TODO: count numnumbers here!!!
 }
 
 void PmergeMe::printBefore(char *argv[]) //can 
@@ -131,7 +133,7 @@ void PmergeMe::printBefore(char *argv[]) //can
 	}
 	_numNumbers = i - 1; //./skipped
 	std::cout << "\n";
-	std::cout << "Number of elems: " << _numNumbers <<"\n";
+	std::cout << "Number of numbers: " << _numNumbers <<"\n";
 }
 
 void PmergeMe::SortVector(char *argv[])
@@ -144,8 +146,13 @@ void PmergeMe::SortVector(char *argv[])
 	//init vector
 	_initVec(argv);
 
+	_comps = 0;
+	_calcMaxComp();
 	//sort
 	_FJSort(_vec, level);
+
+std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
+std::cout << "no of comps needed: " << _comps << "\n";
 
 	//calc end time
 	_elapsedvec = clock() - start; //clock ticks
@@ -219,8 +226,21 @@ std::vector<int> PmergeMe::_genJNums(int numNums)
 		b = c;
 	}
 
-	std::cout << "sum is: " << sum << "\n";
+	// std::cout << "sum is: " << sum << "\n";
 	std::cout << "number of jnums calced: " << jnum.size() << "\n";
 	return(jnum);
 
+}
+
+
+
+void PmergeMe::_calcMaxComp(void)
+{
+    int sum = 0;
+    for (int k = 1; k <= _numNumbers; ++k) {
+        double value = (3.0 / 4.0) * k;
+        sum += static_cast<int>(ceil(log2(value)));
+    }
+	// std::cout << "Number of max comparisons: " << sum << "\n";
+    _maxComparisons = sum;
 }

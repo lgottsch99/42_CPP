@@ -24,6 +24,7 @@ class PmergeMe
 		void	_CheckOnlyDigits(char *argv[]);
 		void	_CheckDuplicates(char *argv[]);
 		void 	_initVec(char *argv[]);
+		void 	_calcMaxComp(void);
 
 		int _getLastIndex(int size_elem, bool uneven);
 
@@ -46,7 +47,8 @@ class PmergeMe
 		double				_elapsedvec; //save time it took to sort 
 		double				_elapsedlist; //save time it took to sort 
 		int 				_numNumbers; // number of numbers to sort
-
+		int 				_maxComparisons;
+		int 				_comps;
 
 	public:
 		PmergeMe(void);//default
@@ -107,9 +109,9 @@ class PmergeMe
 template <typename Cont>
 void PmergeMe::_FJSort(Cont& c, int level)
 {	//recursive ft
+
 	//use a vector of pairs! to keep track of sequence
 	
-
 	int size_pair = pow(2, level);
 	int size_elem = size_pair / 2; //size of single elem
 	int num_elems = floor(_numNumbers / size_elem);
@@ -153,7 +155,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 		}
 		print_sequence(second);
 		//compare last number each, second = bigger! , swap if needed
-		if (first[size_elem - 1] > second[size_elem - 1])
+		_comps++;
+		if (first[size_elem - 1] > second[size_elem - 1]) //comparison
 		{
 			it = second.begin();
 			while (it != second.end())
@@ -198,8 +201,9 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
 
 	//if base case: return 
-	if (_numNumbers - pow(2, level) < pow(2, level))
+	// if (_numNumbers - pow(2, level) < pow(2, level))
 	// if (_numNumbers - pow(2, level) < size_elem)
+	if (size_pair > _numNumbers)// || last_index == 0)
 	{
 		std::cout << "\n -- base case reached -- \n\n";
 		return;
@@ -249,14 +253,12 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	}
 	if (uneven && i < (int)c.size())
 	{
-		int y = 0;
-		while (y < size_elem && (i + y) < (int)c.size())
-		{
+		int remaining = std::min(size_elem, (int)c.size() - i);
+		for (int y = 0; y < remaining; y++)
 			uneven_elem.push_back(c[i + y]);
-			y++;
-		}
-		i += size_elem;
+		i += remaining; // increment by actual number copied
 	}
+
 	std::cout << "uneven: ";
 	print_sequence(uneven_elem);
 	
@@ -324,8 +326,6 @@ void PmergeMe::_FJSort(Cont& c, int level)
 			//CASE jnumber works (aka enough elems in pend)
 			if (num_elem_to_insert <= (int)pend.size()) //jnumber works
 			{
-				//TODO while loop  for whole group!
-
 				//move iterator in pend to current elem
 				std::vector<std::vector<int> >::iterator it_pend = pend.begin(); 
 				for (int n = 0; n < num_elem_to_insert - 1; n++)
@@ -381,35 +381,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 							search_end--; //index at 0
 						}
 
-
-
-						// (void) found;
-						// //look for partner elem position in main_chain
-						// int search_end = 0; //end of search area in main
-						// while (main_chain[search_end] != partner_pair.second)
-						// 	search_end++;
-
-						// std::cout << "partner in main chain at pos: " << search_end << "\n";
-
-
 					//binary search main search area for index position to insert
-					// int L = 0;
-					// int R = search_end;
-					// int T = (*it_pend).back(); //target value to insert
-					// int middle = 0;
-					// // bool done = false;
-					// while (L <= R)
-					// {
-					// 	middle = L + floor((R - L) / 2);
-
-					// 	// std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
-					// 	if (main_chain[middle].back() < T)
-					// 		L = middle + 1;
-					// 	else if (main_chain[middle].back() > T)
-					// 		R = middle - 1;
-					// 	// else if (main_chain[middle].back() == T)
-					// 	// 	done = true; //middle == index to insert to
-					// }
 					int L = 0;
 					int R = search_end;
 					int T = (*it_pend).back(); //target value to insert
@@ -417,6 +389,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 					bool done = false;
 					while (L <= R && !done)
 					{
+						//one comparison per iteration (or does == not count?) ??////
+						_comps++;
 						middle = L + floor((R - L) / 2);
 
 						std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
@@ -488,7 +462,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 						while (it_paired_outer != paired_sequence.end())
 						// for (int index = 0; index < (int)paired_sequence.size(); index++)
 						{
-							std::cout << "traversing pair partners \n";
+							// std::cout << "traversing pair partners \n";
 							if ((*it_paired_outer).first == *it_pend)
 							{
 								partner_pair = (*it_paired_outer);
@@ -527,6 +501,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 					bool done = false;
 					while (L <= R && !done)
 					{
+						_comps++; //one comp per iteration? (or does == not count??) // TODO ???
 						middle = L + floor((R - L) / 2);
 
 						std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
@@ -550,7 +525,11 @@ void PmergeMe::_FJSort(Cont& c, int level)
 					main_chain.insert(it_main_chain, *it_pend);
 					
 					//remove elem from pend
-					it_pend = pend.erase(it_pend);
+					std::vector<std::vector<int> >::iterator one_before = it_pend;
+					one_before--;
+
+					pend.erase(it_pend);
+					it_pend = one_before;
 					iterations++;
 
 
