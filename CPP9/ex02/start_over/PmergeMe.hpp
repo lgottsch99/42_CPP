@@ -228,12 +228,13 @@ void PmergeMe::_FJSort(Cont& c, int level)
 		int y = 0;
 		while (y < size_elem)
 		{//parse whole elem1 into vector
-			vec1.push_back(_vec[i + y]);
+			vec1.push_back(c[i + y]);
 			y++;
 		}
-		while (y < size_pair)
+		y = 0;
+		while (y < size_elem && (i + y + size_elem) < (int)c.size())
 		{//parse 2nd elem into vector 2
-			vec2.push_back(_vec[i + y]);
+			vec2.push_back(c[i + size_elem + y]);
 			y++;
 		}
 		//Make pair
@@ -246,15 +247,15 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
 		i = i + size_pair;
 	}
-	if (uneven)
+	if (uneven && i < (int)c.size())
 	{
 		int y = 0;
-		while (y < size_elem)
+		while (y < size_elem && (i + y) < (int)c.size())
 		{
-			uneven_elem.push_back(_vec[i+y]);
+			uneven_elem.push_back(c[i + y]);
 			y++;
-			i++;
 		}
+		i += size_elem;
 	}
 	std::cout << "uneven: ";
 	print_sequence(uneven_elem);
@@ -262,7 +263,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	std::vector <int> non_part;
 	while (i < _numNumbers)
 	{
-		non_part.push_back(_vec[i]);
+		non_part.push_back(c[i]);
 		i++;
 	}
 	std::cout << "non part: ";
