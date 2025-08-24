@@ -232,6 +232,28 @@ std::vector<int> PmergeMe::_genJNums(int numNums)
 
 }
 
+int PmergeMe::_binary_search(int search_end, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain)
+{
+	int L = 0;
+	int R = search_end;
+	int T = (*it_pend).back(); //target value to insert
+	int middle = 0;
+	while (L <= R)
+	{
+		//one comparison per iteration
+		_comps++;
+		middle = L + (R - L) / 2;
+
+		std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
+		if (main_chain[middle].back() < T)
+			L = middle + 1;
+		else if (main_chain[middle].back() > T)
+			R = middle - 1;
+	}
+	middle = L; //if not exact match possible
+
+	return (middle);
+}
 
 
 void PmergeMe::_calcMaxComp(void)

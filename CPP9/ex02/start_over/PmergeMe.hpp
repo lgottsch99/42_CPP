@@ -25,6 +25,7 @@ class PmergeMe
 		void	_CheckDuplicates(char *argv[]);
 		void 	_initVec(char *argv[]);
 		void 	_calcMaxComp(void);
+		int _binary_search(int search_area, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain);
 
 		int _getLastIndex(int size_elem, bool uneven);
 
@@ -109,13 +110,13 @@ class PmergeMe
 template <typename Cont>
 void PmergeMe::_FJSort(Cont& c, int level)
 {	//recursive ft
-
 	//use a vector of pairs! to keep track of sequence
-	
 	int size_pair = pow(2, level);
 	int size_elem = size_pair / 2; //size of single elem
 	int num_elems = floor(_numNumbers / size_elem);
 	bool uneven = num_elems % 2; // true if uneven num of elems
+
+
 
 	std::cout << "size elem is: " << size_elem << "\n";
 	std::cout << "size pair is: " << size_pair << "\n";
@@ -134,10 +135,10 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	Cont sort_result;
 	typename Cont::iterator it;
 
+	//go thru c, read for size pair, split into two pair-vectors
 	int i = 0;
 	while (i < last_index)
-	{//go thru c, read for size pair, split into two pair-vectors
-
+	{
 		Cont first;
 		Cont second;
 
@@ -195,6 +196,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	}
 	std::cout << "RESULT SORT LEVEL " << level << " :\n\t";
 	print_sequence(sort_result);
+
+	std::cout << "no comps so far: " << _comps << "\n";
 	//swap c and result
 	c.swap(sort_result);
 
@@ -319,6 +322,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	{
 		while (!pend.empty())
 		{
+			std::cout << "no comps so far: " << _comps << "\n\n";
+
 			// group pend according to j number
 			int num_elem_to_insert = *current_jacobsthal - previous_jacobsthal;
 			std::cout << "insertion iteration. num of elems to insert: " << num_elem_to_insert << "\n";
@@ -344,7 +349,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 						//	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
 						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
 
-						//1 get partner elem in paired sequence
+						//1 get partner elem in paired sequence to calc search area
 						bool found = false;
 						int search_end = 0; //end of search area in main
 
@@ -362,10 +367,6 @@ void PmergeMe::_FJSort(Cont& c, int level)
 							}
 							it_paired_outer++;
 						}
-
-
-
-						//#####
 						if (found)
 						{
 							//look for partner elem position in main_chain
@@ -382,31 +383,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 						}
 
 					//binary search main search area for index position to insert
-					int L = 0;
-					int R = search_end;
-					int T = (*it_pend).back(); //target value to insert
-					int middle = 0;
-					bool done = false;
-					while (L <= R && !done)
-					{
-						//one comparison per iteration (or does == not count?) ??////
-						_comps++;
-						middle = L + floor((R - L) / 2);
-
-						std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
-						if (main_chain[middle].back() < T)
-						{							
-							L = middle + 1;
-						}						
-						else if (main_chain[middle].back() > T)
-						{
-							R = middle - 1;
-						}
-						else if (main_chain[middle].back() == T)
-							done = true; //middle == index to insert to
-					}
-					if (!done)
-						middle = L; //if not exact match possible
+					
+					int middle = _binary_search(search_end, it_pend, main_chain);
 
 					
 				std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
@@ -496,33 +474,9 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
 
 				std::cout << "bianry inserting..\n";
-					//binary search main search area for index position to insert
-					int L = 0;
-					int R = search_end;
+				//binary search main search area for index position to insert
+				int middle = _binary_search(search_end, it_pend, main_chain);
 
-					int T = (*it_pend).back(); //target value to insert
-					int middle = 0;
-					bool done = false;
-					while (L <= R && !done)
-					{
-						_comps++; //one comp per iteration? (or does == not count??) // TODO ???
-						middle = L + floor((R - L) / 2);
-
-						std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
-						if (main_chain[middle].back() < T)
-						{							
-							L = middle + 1;
-						}						
-						else if (main_chain[middle].back() > T)
-						{							
-							R = middle - 1;
-						}						
-
-						else if (main_chain[middle].back() == T)
-							done = true; //middle == index to insert to
-					}
-					if (!done)
-						middle = L; //if not exact match possible
 
 				std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
 

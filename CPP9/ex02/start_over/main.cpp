@@ -21,12 +21,15 @@
 
 dry
 
-template form
+template form?
 
 list test
 
 ADD COMPARISON COUNTER AND CHECK
 
+shrinking of search area?
+	comps in opening up OK
+	comps in closing??
 
 */
 
@@ -72,22 +75,6 @@ int main(int argc, char *argv[])
 		Insert the odd element, if there was one.
 		Copy back to the original container if needed.
 -> The important part: all insertions happen while closing recursion, because only now do we know the mainChain is sorted.
-
-
-Original:       [8, 3, 5, 1, 7]
-
-Opening:
-- Make pairs -> mainChain=[3,1], pend=[8,5], odd=7
-- Recurse on mainChain=[3,1]
-   - Pair again -> mainChain=[1], pend=[3]
-   - Recurse on [1] -> base case
-
-Closing (stack unwinds):
-- Insert pend=[3] into mainChain=[1] -> [1,3]
-- Insert pend=[8,5] into mainChain=[1,3] -> [1,3,5,8]
-- Insert odd=7 -> [1,3,5,7,8]
-
-
 
 */
 
