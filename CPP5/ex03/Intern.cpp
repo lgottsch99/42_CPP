@@ -57,10 +57,7 @@ int	Intern::checkFormExists(std::string formName)
 		i++;
 
 	if (i >= 6)
-	{
-		throw FormDoesNotExistException();
 		return (-1);
-	}
 	return (i);
 }
 	
@@ -70,37 +67,28 @@ AForm*	Intern::makeForm(std::string formName, std::string formTarget)
 	AForm*	newForm = NULL;
 	int 	formType = -1;
 
-	try
+	formType = checkFormExists(formName);
+	switch(formType)
 	{
-		formType = checkFormExists(formName);
-		//make form
-		switch(formType)
-		{
-			case -1:
-				return (NULL);
-				break;
-			case 0:
-			case 1:
-				newForm = new ShrubberyCreationForm(formTarget);
-				std::cout << "Intern creates ShrubberyCreationForm.\n";
-				break;
-			case 2:
-			case 3:
-				newForm = new RobotomyRequestForm(formTarget);
-				std::cout << "Intern creates RobotomyRequestForm.\n";
-				break;
-			case 4:
-			case 5:
-				newForm = new PresidentialPardonForm(formTarget);
-				std::cout << "Intern creates PresidentialPardonForm.\n";
-				break;
-		}
-		return (newForm);
+		case -1:
+			throw FormDoesNotExistException();
+			break;
+		case 0:
+		case 1:
+			newForm = new ShrubberyCreationForm(formTarget);
+			std::cout << "Intern creates ShrubberyCreationForm.\n";
+			break;
+		case 2:
+		case 3:
+			newForm = new RobotomyRequestForm(formTarget);
+			std::cout << "Intern creates RobotomyRequestForm.\n";
+			break;
+		case 4:
+		case 5:
+			newForm = new PresidentialPardonForm(formTarget);
+			std::cout << "Intern creates PresidentialPardonForm.\n";
+			break;
 	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what();
-		return (NULL);
-	}
+	return (newForm);
 }
 

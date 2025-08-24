@@ -35,7 +35,18 @@ int main(void)
 
 	//checking exception of intern (form does not exist)
 	AForm *fake = NULL;
-	fake = someRandomIntern.makeForm("trolol", "lol");
+	try
+	{
+		fake = someRandomIntern.makeForm("lol", "lol"); //problem before: catching exception inside makeform -> exception doesnt reach this try catch block ->deref null ptr/ crash
+		Boss.signForm(*fake);
+		if (fake)
+			delete fake;
+
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what();
+	}
 
 	delete rrf;
 	delete scf;
