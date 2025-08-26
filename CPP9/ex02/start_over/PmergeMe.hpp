@@ -14,7 +14,6 @@
 #include <cmath>
 #include <limits>
 
-
 #define DEBUG 1
 
 
@@ -33,15 +32,19 @@ class PmergeMe
 		template <typename Cont>
 		void _FJSort(Cont& c, int level);
 
+		//template open up levels sort
+		template <typename Cont>
+		void _OpeningSort(Cont& c, int last_index, int size_elem, int size_pair, int level);
+
 		//template binary insert
 		template <typename Cont>
 		void _BinaryInsert(Cont& c);
 
-		//template gen j numbers //TODO template
-		std::vector<int> _genJNums(int numNums);
+		//template gen j numbers
+		template <typename Cont>
+		Cont _genJNums(Cont c, int numNums);
 
 
-		
 		std::vector<int>	_vec;
 		std::list<int>		_list;
 
@@ -104,34 +107,34 @@ class PmergeMe
 
 */
 
+template <typename Cont>
+Cont PmergeMe::_genJNums(Cont c, int numNums)
+{
+	(void)c;
+	Cont jnum;
+	int sum = 3;
 
+	int a = 1; //first j num
+	int b = 3; //2. jnum
+	jnum.push_back(3);
 
+	while (sum < numNums)
+	{
+		int c = b + 2 * a;
+		jnum.push_back(c);
+		sum = sum + c;
+		a = b;
+		b = c;
+	}
+	if (DEBUG)
+		std::cout << "number of jnums calced: " << jnum.size() << "\n";
+	return(jnum);
+
+}
 
 template <typename Cont>
-void PmergeMe::_FJSort(Cont& c, int level)
-{	//recursive ft
-	//use a vector of pairs! to keep track of sequence
-	int size_pair = pow(2, level);
-	int size_elem = size_pair / 2; //size of single elem
-	int num_elems = floor(_numNumbers / size_elem);
-	bool uneven = num_elems % 2; // true if uneven num of elems
-
-
-
-	std::cout << "size elem is: " << size_elem << "\n";
-	std::cout << "size pair is: " << size_pair << "\n";
-	std::cout << "num elems is: " << num_elems << "\n";
-
-
-//open up levels: make pairs and compare, get bigger one
-	// std::vector < <std::vector<int> > elem_seq; //store single elems grouped (ungerade muss möglich sein)
-	// std::vector <int> non_part; //store leftover who cant form element
-	
-//read c into paired seq
-		//get last index to assign to pairs
-	int last_index = _getLastIndex(size_elem, uneven); //last even index!
-	std::cout << "last index is: " << last_index << "\n";
-
+void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pair, int level)
+{
 	Cont sort_result;
 	typename Cont::iterator it;
 
@@ -157,7 +160,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 		print_sequence(second);
 		//compare last number each, second = bigger! , swap if needed
 		_comps++;
-		if (first[size_elem - 1] > second[size_elem - 1]) //comparison
+		if (first[size_elem - 1] > second[size_elem - 1]) //=comparison
 		{
 			it = second.begin();
 			while (it != second.end())
@@ -194,12 +197,41 @@ void PmergeMe::_FJSort(Cont& c, int level)
 		sort_result.push_back(c[i]);
 		i++;
 	}
-	std::cout << "RESULT SORT LEVEL " << level << " :\n\t";
-	print_sequence(sort_result);
 
-	std::cout << "no comps so far: " << _comps << "\n";
+	if (DEBUG)
+	{
+		std::cout << "RESULT SORT LEVEL " << level << " :\n\t";
+		print_sequence(sort_result);
+		std::cout << "no comps so far: " << _comps << "\n";
+	}
+	
 	//swap c and result
 	c.swap(sort_result);
+
+
+}
+
+
+template <typename Cont>
+void PmergeMe::_FJSort(Cont& c, int level)
+{	//recursive ft
+	//use a vector of pairs! to keep track of sequence
+	int size_pair = pow(2, level);
+	int size_elem = size_pair / 2; //size of single elem
+	int num_elems = floor(_numNumbers / size_elem);
+	bool uneven = num_elems % 2; // true if uneven num of elems
+	int last_index = _getLastIndex(size_elem, uneven); //last even index! //get last index to assign to pairs
+
+	if (DEBUG)
+	{
+		std::cout << "size elem is: " << size_elem << "\n";
+		std::cout << "size pair is: " << size_pair << "\n";
+		std::cout << "num elems is: " << num_elems << "\n";
+		std::cout << "last index is: " << last_index << "\n";
+	}
+
+//open up levels: make pairs and compare, get bigger one
+	_OpeningSort(c, last_index, size_elem, size_pair, level);
 
 
 
@@ -208,29 +240,31 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	// if (_numNumbers - pow(2, level) < size_elem)
 	if (size_pair > _numNumbers)// || last_index == 0)
 	{
-		std::cout << "\n -- base case reached -- \n\n";
+		if (DEBUG)
+			std::cout << "\n -- base case reached -- \n\n";
 		return;
 	}
 	//else recursion call
-	std::cout << " -> Next Rec Level..\n";
+	if (DEBUG)
+		std::cout << " -> Next Rec Level..\n";
 	_FJSort(c, level + 1);
 
-	std::cout << " # Level: " << level << "\n";
+	if (DEBUG)
+		std::cout << " # Level: " << level << "\n";
 
-	//Todo change to template style Cont
+	//TTODO change to template style Cont
+
 //close levels: 
 	//parse into new structure (this is to keep pair-rel): 
-		//option1: restore into vector < pair < vec, vec>> to not loose relationship btw pairs (what if uneven??)
-		//option2: new struct ( vector int, index int, flag b/a)
 
 	std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
-	std::vector <int> uneven_elem;
+	Cont uneven_elem;
 	//go thru og seq until last elem index
-	i = 0;
+	int i = 0;
 	while (i < last_index) // last index = last even elem index
 	{
-		std::vector<int> vec1;
-		std::vector<int> vec2;
+		Cont vec1;
+		Cont vec2;
 
 		int y = 0;
 		while (y < size_elem)
@@ -246,15 +280,18 @@ void PmergeMe::_FJSort(Cont& c, int level)
 		}
 		//Make pair
 		//add to paired seq
-		std::cout << "vec1: ";
-		print_sequence(vec1);
-		std::cout << "vec2: ";
-		print_sequence(vec2);
+		if (DEBUG)
+		{
+			std::cout << "vec1: ";
+			print_sequence(vec1);
+			std::cout << "vec2: ";
+			print_sequence(vec2);
+		}
 		paired_sequence.push_back( std::make_pair(vec1, vec2));
 
 		i = i + size_pair;
 	}
-	if (uneven && i < (int)c.size())
+	if (uneven && i < (int)c.size()) //?remaining
 	{
 		int remaining = std::min(size_elem, (int)c.size() - i);
 		for (int y = 0; y < remaining; y++)
@@ -265,7 +302,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	std::cout << "uneven: ";
 	print_sequence(uneven_elem);
 	
-	std::vector <int> non_part;
+	Cont non_part;
 	while (i < _numNumbers)
 	{
 		non_part.push_back(c[i]);
@@ -304,16 +341,19 @@ void PmergeMe::_FJSort(Cont& c, int level)
 		pend.push_back(uneven_elem);
 	}
 
-	std::cout << "main chain: ";
-	print_vector_of_vectors(main_chain);
-	std::cout << "pend: ";
-	print_vector_of_vectors(pend);
+	if (DEBUG)
+	{
+		std::cout << "main chain: ";
+		print_vector_of_vectors(main_chain);
+		std::cout << "pend: ";
+		print_vector_of_vectors(pend);
+	}
 
 
 // binary insert using j numbers: wichtig: nicht bezüge zwischen a-b paaren verlieren
 	// gen j number seq.
-	std::vector<int> jacob = _genJNums(_numNumbers); //ok
-	std::vector<int>::iterator current_jacobsthal = jacob.begin();
+	Cont jacob = _genJNums(c, _numNumbers); //ok
+	typename Cont::iterator current_jacobsthal = jacob.begin();
 	int previous_jacobsthal = 1;
 
 	print_sequence(jacob);
@@ -424,7 +464,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 			{
 				//just go to end of pend, insert starting from the back
 				//move iterator in pend to current elem
-				std::vector<std::vector<int> >::iterator it_pend = pend.end(); //end returns past the end!
+				std::vector< std::vector<int> >::iterator it_pend = pend.end(); //end returns past the end!
 				it_pend--;
 
 				std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
@@ -450,7 +490,6 @@ void PmergeMe::_FJSort(Cont& c, int level)
 						std::pair < std::vector<int>, std::vector<int> > partner_pair;
 						std::vector < std::pair < std::vector<int>, std::vector<int> > >::iterator it_paired_outer = paired_sequence.begin();
 						while (it_paired_outer != paired_sequence.end())
-						// for (int index = 0; index < (int)paired_sequence.size(); index++)
 						{
 							// std::cout << "traversing pair partners \n";
 							if ((*it_paired_outer).first == *it_pend)
@@ -498,7 +537,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 					main_chain.insert(it_main_chain, *it_pend);
 					
 					//remove elem from pend
-					std::vector<std::vector<int> >::iterator one_before = it_pend;
+					std::vector< std::vector<int> >::iterator one_before = it_pend;
 					one_before--;
 
 					pend.erase(it_pend);
@@ -510,7 +549,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	}
 	
 
-	std::vector<int> insert_result;
+	Cont insert_result;
 //create new single vector with result 
 	for (std::vector < std::vector<int> >::iterator hey = main_chain.begin(); hey != main_chain.end(); hey++)
 	{
@@ -529,8 +568,11 @@ void PmergeMe::_FJSort(Cont& c, int level)
 			a++;
 		}
 	}
-	std::cout << "insert result: ";
-	print_sequence(insert_result);
+	if (DEBUG)
+	{
+		std::cout << "insert result: ";
+		print_sequence(insert_result);
+	}
 
 	c.swap(insert_result);
 

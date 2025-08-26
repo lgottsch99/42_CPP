@@ -118,7 +118,9 @@ void PmergeMe::_initVec(char *argv[])
 	}
 	std::cout << "Vector initialized\n";
 
-	//TODO: count numnumbers here!!!
+	//count numnumbers here!!!
+	_numNumbers = i - 1; //./skipped
+	std::cout << "Number of numbers: " << _numNumbers <<"\n";
 }
 
 void PmergeMe::printBefore(char *argv[]) //can 
@@ -131,9 +133,7 @@ void PmergeMe::printBefore(char *argv[]) //can
 		std::cout << argv[i] << " ";
 		i++;
 	}
-	_numNumbers = i - 1; //./skipped
-	std::cout << "\n";
-	std::cout << "Number of numbers: " << _numNumbers <<"\n";
+	std::cout << "\n";	
 }
 
 void PmergeMe::SortVector(char *argv[])
@@ -151,8 +151,11 @@ void PmergeMe::SortVector(char *argv[])
 	//sort
 	_FJSort(_vec, level);
 
-	std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
-	std::cout << "no of comps needed: " << _comps << "\n";
+	if (DEBUG)
+	{
+		std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
+		std::cout << "no of comps needed: " << _comps << "\n";
+	}
 
 	//calc end time
 	_elapsedvec = clock() - start; //clock ticks
@@ -184,7 +187,6 @@ int PmergeMe::_getLastIndex(int size_elem, bool uneven)
 		last_index--;
 
 	return (last_index);
-	
 }
 
 
@@ -208,29 +210,29 @@ void PmergeMe::print_vector_of_vectors(const std::vector<std::vector<int> >& mai
 
 
 
-std::vector<int> PmergeMe::_genJNums(int numNums)
-{//how many are needed? sum of all needs to be >= _numnumbers
-	std::vector<int> jnum;
-	int sum = 3;
+// std::vector<int> PmergeMe::_genJNums(int numNums)
+// {//how many are needed? sum of all needs to be >= _numnumbers
+// 	std::vector<int> jnum;
+// 	int sum = 3;
 
-	int a = 1; //first j num
-	int b = 3; //2. jnum
-	jnum.push_back(3);
+// 	int a = 1; //first j num
+// 	int b = 3; //2. jnum
+// 	jnum.push_back(3);
 
-	while (sum < numNums)
-	{
-		int c = b + 2 * a;
-		jnum.push_back(c);
-		sum = sum + c;
-		a = b;
-		b = c;
-	}
+// 	while (sum < numNums)
+// 	{
+// 		int c = b + 2 * a;
+// 		jnum.push_back(c);
+// 		sum = sum + c;
+// 		a = b;
+// 		b = c;
+// 	}
 
-	// std::cout << "sum is: " << sum << "\n";
-	std::cout << "number of jnums calced: " << jnum.size() << "\n";
-	return(jnum);
+// 	// std::cout << "sum is: " << sum << "\n";
+// 	std::cout << "number of jnums calced: " << jnum.size() << "\n";
+// 	return(jnum);
 
-}
+// }
 
 int PmergeMe::_binary_search(int search_end, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain)
 {

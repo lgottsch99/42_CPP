@@ -25,12 +25,8 @@ template form?
 
 list test
 
-ADD COMPARISON COUNTER AND CHECK
-
-shrinking of search area?
-	comps in opening up OK
-	comps in closing??
-
+ADD COMPARISON COUNTER AND CHECK MODE
+DEBUG MODE
 	
 */
 
@@ -44,8 +40,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		pm.CheckInput(argc, argv);
-		if (DEBUG)
-			pm.printBefore(argv);
+		pm.printBefore(argv);
 		pm.SortVector(argv);
 		// pm.SortList(argv);
 		//pm.printAfter();
