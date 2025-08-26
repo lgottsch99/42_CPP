@@ -17,6 +17,26 @@
 #define DEBUG 1
 
 
+//declaration for compiler
+template <typename Cont>
+struct NestedFor;
+
+// Case: Cont = std::vector<int>
+template <>
+struct NestedFor< std::vector<int> > {
+    typedef std::vector<int> Inner; //inner is always gonna be int in list or vector!
+    typedef std::vector<Inner, std::allocator<Inner> > type;
+};
+
+// Case: Cont = std::list<int>
+template <>
+struct NestedFor< std::list<int> > {
+    typedef std::list<int> Inner;
+    typedef std::list<Inner, std::allocator<Inner> > type;
+};
+
+
+
 class PmergeMe
 {	
 	private:
@@ -24,9 +44,17 @@ class PmergeMe
 		void	_CheckDuplicates(char *argv[]);
 		void 	_initVec(char *argv[]);
 		void 	_calcMaxComp(void);
-		int _binary_search(int search_area, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain);
+
+		//TODO TEMPLATE
+		template <typename Cont>
+		int _binary_search(int search_area, typename NestedFor<Cont>::type::iterator it_pend, typename NestedFor<Cont>::type& main_chain);
+		//int _binary_search(int search_area, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain);
 
 		int _getLastIndex(int size_elem, bool uneven);
+		//TODO TEMPLATE
+		// template <typename Cont>
+		// int _calc_search_area(std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence, int last_index, typename NestedFor<Cont>::type::iterator it_pend, typename NestedFor<Cont>::type main_chain);
+		int _calc_search_area(std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence, int last_index, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> > main_chain);
 
 		//template fj sort
 		template <typename Cont>
@@ -44,7 +72,6 @@ class PmergeMe
 		template <typename Cont>
 		Cont _genJNums(Cont c, int numNums);
 
-
 		std::vector<int>	_vec;
 		std::list<int>		_list;
 
@@ -53,6 +80,7 @@ class PmergeMe
 		int 				_numNumbers; // number of numbers to sort
 		int 				_maxComparisons;
 		int 				_comps;
+
 
 	public:
 		PmergeMe(void);//default
@@ -81,6 +109,71 @@ class PmergeMe
 		};
 
 };
+
+// template <typename Cont>
+// int PmergeMe::_calc_search_area(std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence, int last_index, typename NestedFor<Cont>::type::iterator it_pend, typename NestedFor<Cont>::type main_chain)
+// {
+// 	bool found = false;
+// 	int search_end = 0; //end of search area in main
+
+// 	std::pair < std::vector<int>, std::vector<int> > partner_pair;
+// 	std::vector < std::pair < std::vector<int>, std::vector<int> > >::iterator it_paired_outer = paired_sequence.begin();
+// 	for (int index = 0; index < last_index; index++)
+// 	{
+// 		if ((*it_paired_outer).first == *it_pend)
+// 		{
+// 			partner_pair = (*it_paired_outer);
+// 			std::cout << "found partner elem!\n";
+// 			print_sequence(partner_pair.second);
+// 			found = true;
+// 			break;
+// 		}
+// 		it_paired_outer++;
+// 	}
+// 	if (found)
+// 	{
+// 		//look for partner elem position in main_chain
+// 		while (search_end < (int)main_chain.size() && main_chain[search_end] != partner_pair.second)
+// 			search_end++;
+
+// 		std::cout << "partner in main chain at pos: " << search_end << "\n";
+// 		//no need to compare partner elem tho so -1 index
+// 		search_end--;
+// 	}
+// 	else
+// 	{
+// 		std::cout <<"no partner found in paired seq\n";
+// 		search_end = (int)main_chain.size();
+// 		search_end--; //index at 0
+// 	}
+// 	return(search_end);
+// }
+
+
+
+template <typename Cont>
+int PmergeMe::_binary_search(int search_end, typename NestedFor<Cont>::type::iterator it_pend, typename NestedFor<Cont>::type& main_chain)
+{
+	int L = 0;
+	int R = search_end;
+	int T = (*it_pend).back(); //target value to insert
+	int middle = 0;
+	while (L <= R)
+	{
+		//one comparison per iteration
+		_comps++;
+		middle = L + (R - L) / 2;
+
+		// std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
+		if (main_chain[middle].back() < T)
+			L = middle + 1;
+		else if (main_chain[middle].back() > T)
+			R = middle - 1;
+	}
+	middle = L; //if not exact match possible
+	return (middle);
+}
+
 
 /*
 “Opening” the recursion (going down):
@@ -146,13 +239,13 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 		Cont second;
 
 		int y = 0;
-		while ((i+y) < last_index && y < size_elem)
+		while ((i + y) < last_index && y < size_elem)
 		{
 			first.push_back(c[i + y]);
 			y++;
 		}
 		print_sequence(first);
-		while ((i+y) < last_index && y < size_pair)
+		while ((i + y) < last_index && y < size_pair)
 		{
 			second.push_back(c[i + y]);
 			y++;
@@ -207,8 +300,6 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 	
 	//swap c and result
 	c.swap(sort_result);
-
-
 }
 
 
@@ -216,6 +307,9 @@ template <typename Cont>
 void PmergeMe::_FJSort(Cont& c, int level)
 {	//recursive ft
 	//use a vector of pairs! to keep track of sequence
+
+	typedef typename NestedFor<Cont>::type SimpleNested; // name for simple nested structure eg std::vector < std::vector<int> >
+
 	int size_pair = pow(2, level);
 	int size_elem = size_pair / 2; //size of single elem
 	int num_elems = floor(_numNumbers / size_elem);
@@ -233,12 +327,9 @@ void PmergeMe::_FJSort(Cont& c, int level)
 //open up levels: make pairs and compare, get bigger one
 	_OpeningSort(c, last_index, size_elem, size_pair, level);
 
-
-
+//recursion check
 	//if base case: return 
-	// if (_numNumbers - pow(2, level) < pow(2, level))
-	// if (_numNumbers - pow(2, level) < size_elem)
-	if (size_pair > _numNumbers)// || last_index == 0)
+	if (size_pair > _numNumbers)
 	{
 		if (DEBUG)
 			std::cout << "\n -- base case reached -- \n\n";
@@ -256,10 +347,9 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
 //close levels: 
 	//parse into new structure (this is to keep pair-rel): 
-
 	std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
 	Cont uneven_elem;
-	//go thru og seq until last elem index
+	//go thru og sequence until last elem index
 	int i = 0;
 	while (i < last_index) // last index = last even elem index
 	{
@@ -313,8 +403,10 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
 
 // create main chain + pend
-	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
-	std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
+	// std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
+	SimpleNested main_chain;
+	// std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
+	SimpleNested pend;
 
 	int paires_seq_size = paired_sequence.size();
 	// std::cout << "paired seq size: " << paires_seq_size << "\n";
@@ -372,7 +464,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 			if (num_elem_to_insert <= (int)pend.size()) //jnumber works
 			{
 				//move iterator in pend to current elem
-				std::vector<std::vector<int> >::iterator it_pend = pend.begin(); 
+				// std::vector<std::vector<int> >::iterator it_pend = pend.begin();
+				typename SimpleNested::iterator it_pend = pend.begin();//templated 
 				for (int n = 0; n < num_elem_to_insert - 1; n++)
 					it_pend++;
 			
@@ -381,70 +474,33 @@ void PmergeMe::_FJSort(Cont& c, int level)
 				int iterations = 0;
 				while (iterations < num_elem_to_insert)
 				{
-					//we always start insertion at end of group: 
-						// 	-> next middle pos cannot be bigger than last one! (bc b3 is always bigger than b2)
-						//SHRINKING even more IF :
-						//only need to recalc search area if: inserted elem pos > partner in main
-
-
 					std::cout << "Pend elem to insert: ";
-						print_sequence(*it_pend);
+					print_sequence(*it_pend);
 
 					//search for partner elem (it_pend) in main, get index (aka search area)
 						//std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
 						//	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
 						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
 
-						//1 get partner elem in paired sequence to calc search area
-						bool found = false;
-						int search_end = 0; //end of search area in main
-
-						std::pair < std::vector<int>, std::vector<int> > partner_pair;
-						std::vector < std::pair < std::vector<int>, std::vector<int> > >::iterator it_paired_outer = paired_sequence.begin();
-						for (int index = 0; index < last_index; index++)
-						{
-							if ((*it_paired_outer).first == *it_pend)
-							{
-								partner_pair = (*it_paired_outer);
-								std::cout << "found partner elem!\n";
-								print_sequence(partner_pair.second);
-								found = true;
-								break;
-							}
-							it_paired_outer++;
-						}
-						if (found)
-						{
-							//look for partner elem position in main_chain
-							while (search_end < (int)main_chain.size() && main_chain[search_end] != partner_pair.second)
-								search_end++;
-
-							std::cout << "partner in main chain at pos: " << search_end << "\n";
-							//no need to compare partner elem tho so -1 index
-							search_end--;
-						}
-						else
-						{
-							std::cout <<"no partner found in paired seq\n";
-							search_end = (int)main_chain.size();
-							search_end--; //index at 0
-						}
-
+					// calc search area in main (= look for upper bound a if any)
+					int search_end = _calc_search_area(paired_sequence, last_index, it_pend, main_chain);
+					
+		// binary insert (search area bleibt MEISTENS aber nicht immer the same!)
 					//binary search main search area for index position to insert
-					
-					int middle = _binary_search(search_end, it_pend, main_chain);
+				
+					int middle = _binary_search<Cont>(search_end, it_pend, main_chain);
 
 					
-				std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+					std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
 					//insert (check if search area changed)
-					std::vector < std::vector<int> >::iterator it_main_chain = main_chain.begin();
+					typename SimpleNested::iterator it_main_chain = main_chain.begin();
 					for (int i = 0; i < middle; i++)
 						it_main_chain++;
 					
 					main_chain.insert(it_main_chain, *it_pend);
 					
 					//remove elem from pend
-					std::vector<std::vector<int> >::iterator one_before = it_pend;
+					typename SimpleNested::iterator one_before = it_pend;
 					one_before--;
 
 					pend.erase(it_pend);
@@ -455,16 +511,12 @@ void PmergeMe::_FJSort(Cont& c, int level)
 			
 			previous_jacobsthal = *current_jacobsthal;
 			current_jacobsthal++;
-
-		// calc search area in main (= look for upper bound a if any)
-		// binary insert (search area bleibt MEISTENS aber nicht immer the same!)
-
 			}
 			else //CASE: not enough elems in pend for jnumber
 			{
 				//just go to end of pend, insert starting from the back
 				//move iterator in pend to current elem
-				std::vector< std::vector<int> >::iterator it_pend = pend.end(); //end returns past the end!
+				typename SimpleNested::iterator it_pend = pend.end(); //end() returns past the end!
 				it_pend--;
 
 				std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
@@ -480,64 +532,26 @@ void PmergeMe::_FJSort(Cont& c, int level)
 						//	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
 						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
 
-						std::cout <<"Pend elem to insert: ";
-						print_sequence(*it_pend);
+					std::cout <<"Pend elem to insert: ";
+					print_sequence(*it_pend);
 
-						//1 get partner elem in paired sequence
-						bool found = false;
-						int search_end = 0; //end of search area in main
+					int search_end = _calc_search_area(paired_sequence, last_index, it_pend, main_chain);
+					std::cout << "search end is: " << search_end << "\n";
 
-						std::pair < std::vector<int>, std::vector<int> > partner_pair;
-						std::vector < std::pair < std::vector<int>, std::vector<int> > >::iterator it_paired_outer = paired_sequence.begin();
-						while (it_paired_outer != paired_sequence.end())
-						{
-							// std::cout << "traversing pair partners \n";
-							if ((*it_paired_outer).first == *it_pend)
-							{
-								partner_pair = (*it_paired_outer);
-								std::cout << "found partner elem!\n";
-								print_sequence(partner_pair.second);
-								found = true;
-								break;
-							}
-							it_paired_outer++;
-						}
-						if (found)
-						{
-							//look for partner elem position in main_chain
-							while (search_end < (int)main_chain.size() && main_chain[search_end] != partner_pair.second)
-								search_end++;
-
-							std::cout << "partner in main chain at pos: " << search_end << "\n";
-							//no need to compare partner elem tho so -1 index
-							search_end--;
-						}
-						else
-						{
-							std::cout <<"no partner found in paired seq\n";
-							search_end = (int)main_chain.size();
-							search_end--; //index at 0
-						}
-						std::cout << "search end is: " << search_end << "\n";
-
-
-
-				std::cout << "bianry inserting..\n";
-				//binary search main search area for index position to insert
-				int middle = _binary_search(search_end, it_pend, main_chain);
-
-
-				std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+					std::cout << "bianry inserting..\n";
+					//binary search main search area for index position to insert
+					int middle = _binary_search<Cont>(search_end, it_pend, main_chain);
+					std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
 
 					//insert (check if search area changed)
-					std::vector < std::vector<int> >::iterator it_main_chain = main_chain.begin();
+					typename SimpleNested::iterator it_main_chain = main_chain.begin();
 					for (int i = 0; i < middle; i++)
 						it_main_chain++;
 					
 					main_chain.insert(it_main_chain, *it_pend);
 					
 					//remove elem from pend
-					std::vector< std::vector<int> >::iterator one_before = it_pend;
+					typename SimpleNested::iterator one_before = it_pend;
 					one_before--;
 
 					pend.erase(it_pend);
@@ -551,10 +565,10 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
 	Cont insert_result;
 //create new single vector with result 
-	for (std::vector < std::vector<int> >::iterator hey = main_chain.begin(); hey != main_chain.end(); hey++)
+	for (typename SimpleNested::iterator hey = main_chain.begin(); hey != main_chain.end(); hey++)
 	{
-		const std::vector<int>& inner_vector = *hey;
-		for (std::vector<int>::const_iterator inner = inner_vector.begin(); inner != inner_vector.end(); inner++)
+		const Cont& inner_vector = *hey;
+		for (typename Cont::const_iterator inner = inner_vector.begin(); inner != inner_vector.end(); inner++)
 		{
 			insert_result.push_back(*inner);
 		}

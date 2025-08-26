@@ -234,28 +234,29 @@ void PmergeMe::print_vector_of_vectors(const std::vector<std::vector<int> >& mai
 
 // }
 
-int PmergeMe::_binary_search(int search_end, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain)
-{
-	int L = 0;
-	int R = search_end;
-	int T = (*it_pend).back(); //target value to insert
-	int middle = 0;
-	while (L <= R)
-	{
-		//one comparison per iteration
-		_comps++;
-		middle = L + (R - L) / 2;
+// template <typenae Cont>
+// int PmergeMe::_binary_search(int search_end, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain)
+// {
+// 	int L = 0;
+// 	int R = search_end;
+// 	int T = (*it_pend).back(); //target value to insert
+// 	int middle = 0;
+// 	while (L <= R)
+// 	{
+// 		//one comparison per iteration
+// 		_comps++;
+// 		middle = L + (R - L) / 2;
 
-		std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
-		if (main_chain[middle].back() < T)
-			L = middle + 1;
-		else if (main_chain[middle].back() > T)
-			R = middle - 1;
-	}
-	middle = L; //if not exact match possible
+// 		// std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
+// 		if (main_chain[middle].back() < T)
+// 			L = middle + 1;
+// 		else if (main_chain[middle].back() > T)
+// 			R = middle - 1;
+// 	}
+// 	middle = L; //if not exact match possible
 
-	return (middle);
-}
+// 	return (middle);
+// }
 
 
 void PmergeMe::_calcMaxComp(void)
@@ -266,4 +267,43 @@ void PmergeMe::_calcMaxComp(void)
         sum += static_cast<int>(ceil(log2(value)));
     }
     _maxComparisons = sum;
+}
+
+//TODO TEMPLATE
+int PmergeMe::_calc_search_area(std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence, int last_index, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> > main_chain)
+{
+	bool found = false;
+	int search_end = 0; //end of search area in main
+
+	std::pair < std::vector<int>, std::vector<int> > partner_pair;
+	std::vector < std::pair < std::vector<int>, std::vector<int> > >::iterator it_paired_outer = paired_sequence.begin();
+	for (int index = 0; index < last_index; index++)
+	{
+		if ((*it_paired_outer).first == *it_pend)
+		{
+			partner_pair = (*it_paired_outer);
+			std::cout << "found partner elem!\n";
+			print_sequence(partner_pair.second);
+			found = true;
+			break;
+		}
+		it_paired_outer++;
+	}
+	if (found)
+	{
+		//look for partner elem position in main_chain
+		while (search_end < (int)main_chain.size() && main_chain[search_end] != partner_pair.second)
+			search_end++;
+
+		std::cout << "partner in main chain at pos: " << search_end << "\n";
+		//no need to compare partner elem tho so -1 index
+		search_end--;
+	}
+	else
+	{
+		std::cout <<"no partner found in paired seq\n";
+		search_end = (int)main_chain.size();
+		search_end--; //index at 0
+	}
+	return(search_end);
 }
