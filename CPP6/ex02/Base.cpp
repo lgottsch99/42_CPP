@@ -1,6 +1,6 @@
 
 #include "Base.hpp"
-#include <ctime>
+
 
 //destructor
 Base::~Base()
@@ -18,7 +18,7 @@ Base*	Base::generate(void)
 	Base *ptr = NULL;
 
 	//random choice
-	srand(std::time(NULL)); //seed for rand (aka setting internal algo params for random numbers), otherwise rand always the same
+	std::srand(std::time(NULL)); //seed for rand (aka setting internal algo params for random numbers), otherwise rand always the same
 	int i = std::rand() % 3;
 	std::cout << "random int is: " << i << "\n";
 
@@ -81,6 +81,7 @@ void		Base::identify(Base& p) //ref
 		Base &a = dynamic_cast<A&>(p);
 		std::cout << "Reference actual type is: A\n";
 		(void)a;
+		return;
 	}
 	catch(const std::exception& e)
 	{
@@ -91,6 +92,8 @@ void		Base::identify(Base& p) //ref
 		Base &a = dynamic_cast<B&>(p);
 		std::cout << "Reference actual type is: B\n";
 		(void)a;
+		return;
+
 	}
 	catch(const std::exception& e)
 	{
@@ -101,6 +104,8 @@ void		Base::identify(Base& p) //ref
 		Base &a = dynamic_cast<C&>(p);
 		std::cout << "Reference actual type is: C\n";
 		(void)a;
+		return;
+
 	}
 	catch(const std::exception& e)
 	{

@@ -21,7 +21,7 @@
 template <typename Cont>
 struct NestedFor;
 
-// Case: Cont = std::vector<int>
+// Case: Cont = std::vector<int> -> std::vector < std::vector<int> >
 template <>
 struct NestedFor< std::vector<int> > {
     typedef std::vector<int> Inner; //inner is always gonna be int in list or vector!
@@ -35,7 +35,10 @@ struct NestedFor< std::list<int> > {
     typedef std::list<Inner, std::allocator<Inner> > type;
 };
 
-
+template <typename Cont>
+struct Pair {
+    typedef std::pair<Cont, Cont> Pair;
+};
 
 class PmergeMe
 {	
@@ -44,13 +47,14 @@ class PmergeMe
 		void	_CheckDuplicates(char *argv[]);
 		void 	_initVec(char *argv[]);
 		void 	_calcMaxComp(void);
+		int		_getLastIndex(int size_elem, bool uneven);
 
-		//TODO TEMPLATE
+		//TODO TEMPLATE ????
 		template <typename Cont>
 		int _binary_search(int search_area, typename NestedFor<Cont>::type::iterator it_pend, typename NestedFor<Cont>::type& main_chain);
 		//int _binary_search(int search_area, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain);
 
-		int _getLastIndex(int size_elem, bool uneven);
+		
 		//TODO TEMPLATE
 		// template <typename Cont>
 		// int _calc_search_area(std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence, int last_index, typename NestedFor<Cont>::type::iterator it_pend, typename NestedFor<Cont>::type main_chain);
@@ -80,6 +84,7 @@ class PmergeMe
 		int 				_numNumbers; // number of numbers to sort
 		int 				_maxComparisons;
 		int 				_comps;
+		bool				_UsingVector;
 
 
 	public:
@@ -308,7 +313,7 @@ void PmergeMe::_FJSort(Cont& c, int level)
 {	//recursive ft
 	//use a vector of pairs! to keep track of sequence
 
-	typedef typename NestedFor<Cont>::type SimpleNested; // name for simple nested structure eg std::vector < std::vector<int> >
+	typedef typename NestedFor<Cont>::type SimpleNested; // alias for simple nested structure eg std::vector < std::vector<int> >
 
 	int size_pair = pow(2, level);
 	int size_elem = size_pair / 2; //size of single elem
@@ -347,7 +352,12 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
 //close levels: 
 	//parse into new structure (this is to keep pair-rel): 
+
+	typedef typename Pair<Cont>::Pair Pair;
+
 	std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
+
+
 	Cont uneven_elem;
 	//go thru og sequence until last elem index
 	int i = 0;

@@ -18,7 +18,6 @@ class Array
 		Array &operator=( const Array& other); //copy assignment
 		~Array(); //destructor
 
-		//....
 		T& operator[](int); //[]operator overload (indexing into array)
 
 		int	size(void) const; //returns length of current array
@@ -45,7 +44,7 @@ template <typename T>
 Array<T>::Array(unsigned int n) // Creates an array of n elements initialized by default.
 {
 	std::cout << "(Array) uint constructor\n";
-	_array = new T[n];
+	_array = new T[n](); // parentheses ensure default initialization -> wothout might contain garbage
 	_size = n;
 }
 
@@ -102,9 +101,9 @@ const char* Array<T>::IndexOutOfBounds::what(void) const throw()
 template <typename T>
 T& Array<T>::operator[](int index)
 {
-    if (index >= this->_size) {
+    if (index >= this->_size || index < 0)
         throw IndexOutOfBounds();
-    }
+    
     return _array[index];
 }
 

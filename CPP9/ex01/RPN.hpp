@@ -11,7 +11,7 @@
 class RPN
 {	
 	private:
-		std::stack<float> _stack;
+		std::stack<double> _stack;
 
 		int _ParseAndCalc(std::string &input);
 		void _addition(void);

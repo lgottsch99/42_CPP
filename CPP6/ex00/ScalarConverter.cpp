@@ -97,7 +97,7 @@ bool	ScalarConverter::is_int(std::string str)
 				number = atol(str.c_str());
 				// std::cout << "number is: " << number << "\n\n";
 
-				if (number >= INT32_MIN && number <= INT32_MAX)
+				if (number >= static_cast<long>(INT_MIN) && number <= static_cast<long>(INT_MAX)) 
 					return true;
 			}
 		}
@@ -109,7 +109,6 @@ void	ScalarConverter::convert_from_int(std::string str)
 {
 	std::cout << "OG TYPE: int\n";
 	int number = static_cast<int>(atoi(str.c_str()));
-	// std::cout << "in convert from INT\n";
 
 	//char 
 	std::cout << "char: ";
@@ -207,7 +206,7 @@ void	ScalarConverter::convert_from_float(std::string str)
 	
 	//int
 	std::cout << "int: ";
-	if (number >= INT32_MIN && number <= INT32_MAX)
+	if (number >= std::numeric_limits<int>::min() && number <= std::numeric_limits<int>::max())
 		std::cout << static_cast<int>(number) << "\n";
 	else
 		std::cout << "impossible!\n";
@@ -281,7 +280,7 @@ void	ScalarConverter::convert_from_double(std::string str)
 	}
 
 	//normal float number
-	double number = static_cast<double>(atof(str.c_str()));
+	double number = atof(str.c_str());
 
 	std::cout << "char: ";
 	//check if printable
@@ -294,7 +293,7 @@ void	ScalarConverter::convert_from_double(std::string str)
 	
 	//int
 	std::cout << "int: ";
-	if (number >= INT32_MIN && number <= INT32_MAX)
+	if (number >= std::numeric_limits<int>::min() && number <= std::numeric_limits<int>::max())
 		std::cout << static_cast<int>(number) << "\n";
 	else
 		std::cout << "impossible!\n";

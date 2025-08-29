@@ -10,7 +10,7 @@ The first parameter is the address of an array.
 The second one is the length of the array.
 The third one is a function that will be called on every element of the array.
 
-No need to overload -> since T is typename, if const int is passed all T become const int!
+
 */
 template <typename T> 
 void iter(T *array, size_t len, void (*func)(T&))

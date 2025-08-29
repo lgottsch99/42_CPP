@@ -4,6 +4,9 @@
 
 #include <string>
 #include <exception>
+#include <iostream>
+#include <limits>
+
 /*
 As this class doesn’t need to store anything at all, it must not be instantiable by users.
 Except for char parameters, only the decimal notation will be used.

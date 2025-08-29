@@ -22,6 +22,7 @@ int main(void)
 	std::cout << "after DEserialize():	" << deserialized_ptr << "\n";
 	std::cout << "ORIGINAL ptr address:	" << ptr << "\n";
 
+	std::cout << "\nprinting og data members again:\n" << deserialized_ptr->i << "\n" << deserialized_ptr->lol << "\n";;
 
 	delete ptr;
 }

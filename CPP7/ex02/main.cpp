@@ -4,7 +4,6 @@
 
 int main(void)
 {
-	//todo check valgrind
 
 	std::cout << "\nstring -----------\n";
 	Array<std::string> str_array_empty;
@@ -17,6 +16,8 @@ int main(void)
 
 	std::cout << "size of str_array_empty: " << str_array_empty.size() << "\n";
 	std::cout << "size of str_array: " << str_array.size() << "\n";
+	
+	//out of  bound [] access
 	try
 	{
 		std::cout << "\nstr_array at size + 1: " << str_array[str_array.size() + 1] << "\n";
@@ -25,6 +26,15 @@ int main(void)
 	{
 		std::cerr << e.what() << '\n';
 	}
+	try
+	{
+		std::cout << "\nstr_array at -1: " << str_array[-1] << "\n";
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+	
 	
 	//copy construcr
 	Array<std::string> str_array_copy(str_array);
@@ -33,7 +43,7 @@ int main(void)
 		std::cout << str_array_copy[i] << "\n";
 	}
 
-	std::cout << "\nchanging element in copy array: \n";
+	std::cout << "\nchanging first element in copy array: \n";
 	//check modification of copy
 	str_array_copy[0] = "I CHANGED STH!";
 	for (int i = 0; i < str_array_copy.size(); i++)
@@ -41,6 +51,7 @@ int main(void)
 		std::cout << "COPY: " << str_array_copy[i] << "\n";
 		std::cout << "OG:   " << str_array[i] << "\n";
 	}
+	//printing og 
 
 	//copy assignment
 	Array<std::string> equal = str_array;
@@ -51,12 +62,11 @@ int main(void)
 		std::cout << "OG:   " << str_array[i] << "\n";
 	}
 
-
-
 	std::cout << "\n\nint -----------\n";
 	
-	int * a = new int();
+	int *a = new int();
 	std::cout << *a << "\n";
+	delete a;
 
 	Array<int> int_array_empty;
 	Array<int> int_array(3);
@@ -92,8 +102,4 @@ int main(void)
 		std::cout << "OG:   " << int_array[i] << "\n";
 	}
 
-
-
-
-
-	}
+}

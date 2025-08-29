@@ -142,6 +142,7 @@ void PmergeMe::SortVector(char *argv[])
 	//save starting time
 	clock_t	 start = clock();
 	int level = 1;
+	_UsingVector = true;
 
 	//init vector
 	_initVec(argv);

@@ -339,8 +339,8 @@ void PmergeMe::_Step2(int level)
 	std::cout << "level " << level << " num of elems in step 2: " << num_elems << "\n";
 
 	//init main (a1, b1 all a's)
-	int i = 0;
-	while ()
+	// int i = 0;
+	// while ()
 
 
 }

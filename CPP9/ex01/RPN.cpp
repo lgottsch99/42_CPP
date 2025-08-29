@@ -47,6 +47,7 @@ bool InputValid(std::string input)
 			&& input[i] != '/'
 			&& input[i] != ' ')
 		{
+			std::cout << "weird char detected\n";
 			return false;
 		}
 		i++;
@@ -64,38 +65,38 @@ bool IsOperator(char c)
 
 void RPN::_addition(void)
 {
-	float one = _stack.top();
+	double one = _stack.top();
 	_stack.pop();
-	float two = _stack.top();
+	double two = _stack.top();
 	_stack.pop();
-	_stack.push(static_cast<float>(one + two));
+	_stack.push(static_cast<double>(one + two));
 }
 
 void RPN::_substraction(void)
 {
-	float one = _stack.top();
+	double one = _stack.top();
 	_stack.pop();
-	float two = _stack.top();
+	double two = _stack.top();
 	_stack.pop();
-	_stack.push(static_cast<float>(two - one));
+	_stack.push(static_cast<double>(two - one));
 }
 
 
 void RPN::_multiplication(void)
 {
-	float one = _stack.top();
+	double one = _stack.top();
 	_stack.pop();
-	float two = _stack.top();
+	double two = _stack.top();
 	_stack.pop();
-	_stack.push(static_cast<float>(one * two));
+	_stack.push(static_cast<double>(one * two));
 }
-void RPN::_division(void)
+void RPN::_division(void) //maybe change to double for more 
 {
-	float one = _stack.top();
+	double one = _stack.top();
 	_stack.pop();
-	float two = _stack.top();
+	double two = _stack.top();
 	_stack.pop();
-	_stack.push(static_cast<float>(two / one));
+	_stack.push(static_cast<double>(two / one));
 }
 
 int	RPN::_ParseAndCalc(std::string &input)
@@ -107,7 +108,7 @@ int	RPN::_ParseAndCalc(std::string &input)
 		//encounter digit? ->add to stack
 		if (isdigit(input[i]))
 		{
-			int value = input[i] - '0';
+			double value = input[i] - '0';
 			_stack.push(value);
 		}
 		//encounter operator? -pop last two and calc, push result back to stack
