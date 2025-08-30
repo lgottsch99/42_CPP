@@ -1094,7 +1094,7 @@ void PmergeMe::print_sequence(T& ref)
 template <typename Cont>
 int PmergeMe::_calc_search_area(typename TraitsFor<Cont>::PairContainer& paired_sequence, int last_index, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain)
 {
-	//std::cout << "in calc search area\n";
+	std::cout << "in calc search area\n";
 	//typedef typename NestedFor<Cont>::type SimpleNested; // alias for simple nested structure eg std::vector < std::vector<int> >
 	//typedef typename s_Pair<Cont>::Pair Pair;
 	
@@ -1152,7 +1152,7 @@ int PmergeMe::_calc_search_area(typename TraitsFor<Cont>::PairContainer& paired_
 		search_end = (int)main_chain.size();
 		search_end--; //index at 0 -> compare with entire main chain
 	}
-	//std::cout << "finished calc search area\n";
+	std::cout << "finished calc search area\n";
 	return(search_end);
 }
 

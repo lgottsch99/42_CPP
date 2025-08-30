@@ -361,8 +361,10 @@ void PmergeMe::_FJSort_Vector(int level)
 						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
 
 					// calc search area in main (= look for upper bound a if any)
+					//CRASHING
 					int search_end = _calc_search_area<std::vector<int> >(paired_sequence, last_index, it_pend, main_chain);
 					
+
 		// binary insert (search area bleibt MEISTENS aber nicht immer the same!)
 					//binary search main search area for index position to insert
 				
@@ -476,7 +478,7 @@ void PmergeMe::SortDeque(char *argv[])
 	_comps = 0;
 	_calcMaxComp();
 	//sort
-	_FJSort(_deq, level);
+	_FJSort_Deque(level);
 
 	if (DEBUG)
 	{
@@ -639,7 +641,6 @@ void PmergeMe::_FJSort_Deque(int level)
 			{
 				std::cout <<"jnumber insertion..\n";
 				
-				
 				//move iterator in pend to current elem
 				std::deque<std::deque<int> >::iterator it_pend = pend.begin();
 				for (int n = 0; n < num_elem_to_insert - 1; n++)
@@ -662,6 +663,8 @@ void PmergeMe::_FJSort_Deque(int level)
 					// calc search area in main (= look for upper bound a if any)
 					int search_end = _calc_search_area<std::deque<int> >(paired_sequence, last_index, it_pend, main_chain);
 					
+					std::cout << "After calc search area..\n";
+
 		// binary insert (search area bleibt MEISTENS aber nicht immer the same!)
 					//binary search main search area for index position to insert
 				
