@@ -145,6 +145,8 @@ class PmergeMe
 // 	return (middle);
 // }
 
+
+//TODO change names to sth i understand:
 template <typename Cont>
 int PmergeMe::_binary_search(int search_end,
     typename TraitsFor<Cont>::SimpleNested::iterator it_pend,
@@ -259,13 +261,15 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 			first.push_back(c[i + y]);
 			y++;
 		}
-		print_sequence(first);
+		if (DEBUG)
+			//print_sequence(first);
 		while ((i + y) < last_index && y < size_pair)
 		{
 			second.push_back(c[i + y]);
 			y++;
 		}
-		print_sequence(second);
+		if (DEBUG)
+			//print_sequence(second);
 		//compare last number each, second = bigger! , swap if needed
 		_comps++;
 		//if (first[size_elem - 1] > second[size_elem - 1]) //=comparison
@@ -310,7 +314,7 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 	if (DEBUG)
 	{
 		std::cout << "RESULT SORT LEVEL " << level << " :\n\t";
-		print_sequence(sort_result);
+		//print_sequence(sort_result);
 		std::cout << "no comps so far: " << _comps << "\n";
 	}
 	
@@ -389,7 +393,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 		// Parse vec1 using iterators
         typename Cont::iterator current_it = it;
         int y = 0;
-        while (y < size_elem && current_it != c.end()) {
+        while (y < size_elem && current_it != c.end()) 
+		{
             vec1.push_back(*current_it);
             current_it++;
             y++;
@@ -397,16 +402,18 @@ void PmergeMe::_FJSort(Cont& c, int level)
 		// Parse vec2 using iterators
 		typename Cont::iterator next_it = current_it;
 		y = 0;
-		while (y < size_elem && next_it != c.end()) {
+		while (y < size_elem && next_it != c.end()) 
+		{
 			vec2.push_back(*next_it);
 			next_it++;
 			y++;
 		}
-		if (DEBUG) {
-            std::cout << "vec1: ";
-            print_sequence(vec1);
-            std::cout << "vec2: ";
-            print_sequence(vec2);
+		if (DEBUG) 
+		{
+            // std::cout << "vec1: ";
+            // print_sequence(vec1);
+            // std::cout << "vec2: ";
+            // print_sequence(vec2);
         }
         paired_sequence.push_back(std::make_pair(vec1, vec2));
         
@@ -430,10 +437,13 @@ void PmergeMe::_FJSort(Cont& c, int level)
 		it++;
 	}
 
-	std::cout << "uneven: ";
-	print_sequence(uneven_elem);
-	std::cout << "non part: ";
-	print_sequence(non_part);
+	if (DEBUG)
+	{
+		// std::cout << "uneven: ";
+		// print_sequence(uneven_elem);
+		// std::cout << "non part: ";
+		// print_sequence(non_part);	
+	}
 	
 	
 	// //go thru og sequence until last elem index
@@ -498,28 +508,32 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	typename TraitsFor<Cont>::PairContainer::iterator hi = paired_sequence.begin();
 
 	// Handle the first element pair (b1, a1)
-	if (hi != paired_sequence.end()) {
+	if (hi != paired_sequence.end()) 
+	{
 		main_chain.push_back(hi->first);  // b1
 		main_chain.push_back(hi->second); // a1
-		hi++; // Move to the next element
+		hi++; // Move to next elem
 	}
 
 	// Handle the rest of the pairs
-	for (; hi != paired_sequence.end(); hi++) {
+	for (; hi != paired_sequence.end(); hi++) 
+	{
 		main_chain.push_back(hi->second); // a
 		pend.push_back(hi->first);        // b
 	}
 
 	// Add the uneven element if it exists
-	if (!uneven_elem.empty()) {
+	if (!uneven_elem.empty()) 
+	{
 		pend.push_back(uneven_elem);
 	}
 
-	if (DEBUG) {
-		std::cout << "main chain: ";
-		printSimpleNested<Cont>(main_chain);
-		std::cout << "pend: ";
-		printSimpleNested<Cont>(pend);
+	if (DEBUG) 
+	{
+		// std::cout << "main chain: ";
+		// printSimpleNested<Cont>(main_chain);
+		// std::cout << "pend: ";
+		// printSimpleNested<Cont>(pend);
 	}
 
 
@@ -571,23 +585,28 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	typename Cont::iterator current_jacobsthal = jacob.begin();
 	int previous_jacobsthal = 1;
 
-	print_sequence(jacob);
+	if (DEBUG)
+		//print_sequence(jacob);
 
 	if (!pend.empty())
 	{
 		while (!pend.empty())
 		{
-			std::cout << "no comps so far: " << _comps << "\n\n";
 
 			// group pend according to j number
 			int num_elem_to_insert = *current_jacobsthal - previous_jacobsthal;
-			std::cout << "insertion iteration. num of elems to insert: " << num_elem_to_insert << "\n";
+			if (DEBUG)
+			{
+				std::cout << "no comps so far: " << _comps << "\n\n";
+				std::cout << "insertion iteration. num of elems to insert: " << num_elem_to_insert << "\n";
+			}
 			
 
 			//CASE jnumber works (aka enough elems in pend)
 			if (num_elem_to_insert <= static_cast<int>(pend.size())) // jnumber group is a valid size
             {
-                std::cout << "jnumber insertion..\n";
+				if (DEBUG)
+                	std::cout << "jnumber insertion..\n";
                 
                 // Use std::advance to move the iterator safely and efficiently
                 typename TraitsFor<Cont>::SimpleNested::iterator it_pend = pend.end();
@@ -596,8 +615,11 @@ void PmergeMe::_FJSort(Cont& c, int level)
                 int iterations = 0;
                 while (iterations < num_elem_to_insert)
                 {
-                    std::cout << "Pend elem to insert: ";
-                    print_sequence(*it_pend);
+					if (DEBUG)
+					{
+						// std::cout << "Pend elem to insert: ";
+						// print_sequence(*it_pend);	
+					}
 
                     int search_end = _calc_search_area<Cont>(paired_sequence, last_index, it_pend, main_chain);
                     int middle = _binary_search<Cont>(search_end, it_pend, main_chain);
@@ -678,9 +700,13 @@ void PmergeMe::_FJSort(Cont& c, int level)
 	//CASE: not enough elemns in pend for jnumber group
 			else // CASE: Not enough elements left in pend
             {
-                std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
-                num_elem_to_insert = pend.size();
-                std::cout << "Number of pend elems to insert: " << num_elem_to_insert << "\n";
+				num_elem_to_insert = pend.size();
+
+				if (DEBUG)
+				{
+					std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
+					std::cout << "Number of pend elems to insert: " << num_elem_to_insert << "\n";
+				}
 
                 // Process elements from back to front to avoid iterator invalidation
                 while (!pend.empty())
@@ -689,15 +715,24 @@ void PmergeMe::_FJSort(Cont& c, int level)
                     typename TraitsFor<Cont>::SimpleNested::iterator it_pend = pend.end();
                     --it_pend;
                     
-                    std::cout << "Pend elem to insert: ";
-                    print_sequence(*it_pend);
+					if (DEBUG)
+					{
+						// std::cout << "Pend elem to insert: ";
+						// print_sequence(*it_pend);	
+					}
 
                     int search_end = _calc_search_area<Cont>(paired_sequence, last_index, it_pend, main_chain);
-                    std::cout << "search end is: " << search_end << "\n";
-
-                    std::cout << "bianry inserting..\n";
-                    int middle = _binary_search<Cont>(search_end, it_pend, main_chain);
-                    std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+                   
+					if (DEBUG)
+					{
+						std::cout << "search end is: " << search_end << "\n";
+						std::cout << "bianry inserting..\n";	
+					}
+                    
+					int middle = _binary_search<Cont>(search_end, it_pend, main_chain);
+					
+					if (DEBUG)
+                    	std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
 
                     // Use std::advance for efficient iterator movement
                     typename TraitsFor<Cont>::SimpleNested::iterator it_main_chain = main_chain.begin();
@@ -786,8 +821,8 @@ void PmergeMe::_FJSort(Cont& c, int level)
 
     if (DEBUG)
     {
-        std::cout << "insert result: ";
-        print_sequence(insert_result);
+        // std::cout << "insert result: ";
+        // print_sequence(insert_result);
     }
 
     c.swap(insert_result);
@@ -1050,8 +1085,11 @@ int PmergeMe::_calc_search_area(typename TraitsFor<Cont>::PairContainer& paired_
 		if ((*it_paired_outer).first == *it_pend)
 		{
 			partner_pair = (*it_paired_outer);
-			std::cout << "found partner elem!\n";
-			print_sequence(partner_pair.second);
+			if (DEBUG)
+			{
+				// std::cout << "found partner elem!\n";
+				// print_sequence(partner_pair.second);	
+			}
 			found = true;
 			break;
 		}
@@ -1072,7 +1110,8 @@ int PmergeMe::_calc_search_area(typename TraitsFor<Cont>::PairContainer& paired_
 			++it;
 			++search_end;
 		}
-		std::cout << "partner in main chain at pos: " << search_end << "\n";
+		if (DEBUG)
+			std::cout << "partner in main chain at pos: " << search_end << "\n";
 
 		//no need to compare partner elem tho so -1 index
 		if (search_end > 0)//prevent ozt pf bound 
@@ -1080,7 +1119,8 @@ int PmergeMe::_calc_search_area(typename TraitsFor<Cont>::PairContainer& paired_
 	}
 	else
 	{
-		std::cout <<"no partner found in paired seq\n";
+		if (DEBUG)
+			std::cout <<"no partner found in paired seq\n";
 		search_end = (int)main_chain.size();
 		search_end--; //index at 0 -> compare with entire main chain
 	}

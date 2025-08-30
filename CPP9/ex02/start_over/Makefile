@@ -3,17 +3,17 @@ NAME = PmergeMe
 
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 
 
 SRC = main.cpp PmergeMe.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
 $(NAME): $(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME) -Wl,-stack_size,0x4000000
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@ 
 
 all: $(NAME)
 

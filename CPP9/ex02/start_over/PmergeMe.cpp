@@ -75,7 +75,7 @@ void PmergeMe::_CheckDuplicates(char *argv[])
 
 void PmergeMe::_CheckOnlyDigits(char *argv[])
 {
-	std::cout << "Check only digits\n";
+	//std::cout << "Check only digits\n";
 	size_t i = 1; //skip ./bla
 	while (argv[i] != NULL)
 	{
@@ -92,7 +92,7 @@ void PmergeMe::_CheckOnlyDigits(char *argv[])
 
 void PmergeMe::CheckInput(int argc, char *argv[])
 {
-	std::cout << "Check input\n";
+	//std::cout << "Check input\n";
 	if (argc < 2)
 	{
 		std::cout << "Usage: ./PmergeMe <number sequence to sort>\n";
@@ -106,6 +106,7 @@ void PmergeMe::CheckInput(int argc, char *argv[])
 	_CheckDuplicates(argv);
 }
 
+//TODO TEMPLATE
 void PmergeMe::_initVec(char *argv[])
 {
 	int num;
@@ -116,13 +117,15 @@ void PmergeMe::_initVec(char *argv[])
 		_vec.push_back(num);
 		i++;
 	}
-	std::cout << "Vector initialized\n";
-
-	//count numnumbers here!!!
 	_numNumbers = i - 1; //./skipped
-	std::cout << "Number of numbers: " << _numNumbers <<"\n";
-}
 
+	if (DEBUG)
+	{
+		std::cout << "Vector initialized\n";
+		std::cout << "Number of numbers: " << _numNumbers <<"\n";
+	}
+}
+//TODO TEMPLATE
 void PmergeMe::_initDeq(char *argv[])
 {
 	int num;
@@ -133,11 +136,13 @@ void PmergeMe::_initDeq(char *argv[])
 		_deq.push_back(num);
 		i++;
 	}
-	std::cout << "Deque initialized\n";
-
-	//count numnumbers here!!!
 	_numNumbers = i - 1; //./skipped
-	std::cout << "Number of numbers: " << _numNumbers <<"\n";
+
+	if (DEBUG)
+	{
+		std::cout << "Deque initialized\n";
+		std::cout << "Number of numbers: " << _numNumbers <<"\n";
+	}
 }
 
 
@@ -212,6 +217,12 @@ void PmergeMe::SortDeque(char *argv[])
 
 void PmergeMe::printAfter(void) //TODO set field width
 {
+//TODO check if both vector and deque sorted and the same!
+	//if ok:
+
+	std::cout << "After:  ";
+	print_sequence(_vec);
+
 	std::cout << "Time to process a range of " << _numNumbers << " with std::vector :  "
 		<< std::setprecision(5) << _elapsedvec << " ms\n";
 	std::cout << "Time to process a range of " << _numNumbers << " with std::deque :  "
