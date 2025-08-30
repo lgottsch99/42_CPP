@@ -21,11 +21,8 @@
 
 dry
 
-template form?
-
 list test
 
-ADD COMPARISON COUNTER AND CHECK MODE
 DEBUG MODE
 	
 */
@@ -42,7 +39,7 @@ int main(int argc, char *argv[])
 		pm.CheckInput(argc, argv);
 		pm.printBefore(argv);
 		pm.SortVector(argv);
-		// pm.SortList(argv);
+		pm.SortDeque(argv);
 		//pm.printAfter();
 
 	}

@@ -12,7 +12,7 @@ char const *PmergeMe::Error::what(void) const throw()
 
 //default
 PmergeMe::PmergeMe():
-_elapsedvec(0), _elapsedlist(0), _numNumbers(0)
+_elapsedvec(0), _elapseddeq(0), _numNumbers(0)
 {
 	std::cout << "(PmergeMe) Default constructor\n";
 }
@@ -123,6 +123,24 @@ void PmergeMe::_initVec(char *argv[])
 	std::cout << "Number of numbers: " << _numNumbers <<"\n";
 }
 
+void PmergeMe::_initDeq(char *argv[])
+{
+	int num;
+	size_t i = 1;
+	while (argv[i] != NULL)
+	{
+		num = std::atoi(argv[i]);
+		_deq.push_back(num);
+		i++;
+	}
+	std::cout << "Deque initialized\n";
+
+	//count numnumbers here!!!
+	_numNumbers = i - 1; //./skipped
+	std::cout << "Number of numbers: " << _numNumbers <<"\n";
+}
+
+
 void PmergeMe::printBefore(char *argv[]) //can 
 {
 	std::cout << "Before: ";
@@ -142,7 +160,6 @@ void PmergeMe::SortVector(char *argv[])
 	//save starting time
 	clock_t	 start = clock();
 	int level = 1;
-	_UsingVector = true;
 
 	//init vector
 	_initVec(argv);
@@ -164,13 +181,41 @@ void PmergeMe::SortVector(char *argv[])
 	// std::cout << "Sort Vector took: " << _elapsedvec << "\n";
 }
 
+void PmergeMe::SortDeque(char *argv[])
+{
+	(void)argv;
+	//save starting time
+	clock_t	 start = clock();
+	int level = 1;
+
+	//init list //TODO
+	_initDeq(argv);
+
+	_comps = 0;
+	_calcMaxComp();
+	//sort
+	_FJSort(_deq, level);
+
+	if (DEBUG)
+	{
+		std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
+		std::cout << "no of comps needed: " << _comps << "\n";
+	}
+
+	//calc end time
+	_elapseddeq = clock() - start; //clock ticks
+	_elapseddeq = _elapseddeq * 1000.0 / CLOCKS_PER_SEC;// calc into milliseconds
+	// std::cout << "Sort Vector took: " << _elapseddeq << "\n";
+}
+
+
 
 void PmergeMe::printAfter(void) //TODO set field width
 {
 	std::cout << "Time to process a range of " << _numNumbers << " with std::vector :  "
 		<< std::setprecision(5) << _elapsedvec << " ms\n";
-	std::cout << "Time to process a range of " << _numNumbers << " with std::list :  "
-		<< std::setprecision(5) << _elapsedlist << " ms\n";
+	std::cout << "Time to process a range of " << _numNumbers << " with std::deque :  "
+		<< std::setprecision(5) << _elapseddeq << " ms\n";
 
 }
 
@@ -189,75 +234,6 @@ int PmergeMe::_getLastIndex(int size_elem, bool uneven)
 
 	return (last_index);
 }
-
-
-
-void PmergeMe::print_vector_of_vectors(const std::vector<std::vector<int> >& main_chain) {
-    // Iterate over the outer vector
-    for (std::vector<std::vector<int> >::const_iterator it = main_chain.begin(); it != main_chain.end(); ++it) {
-        // 'it' is an iterator to a std::vector<int>
-        // Dereference 'it' to get the current inner vector
-        const std::vector<int>& inner_vector = *it;
-
-        // Iterate over the inner vector
-        for (std::vector<int>::const_iterator inner_it = inner_vector.begin(); inner_it != inner_vector.end(); ++inner_it) {
-            // Dereference 'inner_it' to get the current integer
-            std::cout << *inner_it << " ";
-        }
-        
-    }
-	std::cout << std::endl; 
-}
-
-
-
-// std::vector<int> PmergeMe::_genJNums(int numNums)
-// {//how many are needed? sum of all needs to be >= _numnumbers
-// 	std::vector<int> jnum;
-// 	int sum = 3;
-
-// 	int a = 1; //first j num
-// 	int b = 3; //2. jnum
-// 	jnum.push_back(3);
-
-// 	while (sum < numNums)
-// 	{
-// 		int c = b + 2 * a;
-// 		jnum.push_back(c);
-// 		sum = sum + c;
-// 		a = b;
-// 		b = c;
-// 	}
-
-// 	// std::cout << "sum is: " << sum << "\n";
-// 	std::cout << "number of jnums calced: " << jnum.size() << "\n";
-// 	return(jnum);
-
-// }
-
-// template <typenae Cont>
-// int PmergeMe::_binary_search(int search_end, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain)
-// {
-// 	int L = 0;
-// 	int R = search_end;
-// 	int T = (*it_pend).back(); //target value to insert
-// 	int middle = 0;
-// 	while (L <= R)
-// 	{
-// 		//one comparison per iteration
-// 		_comps++;
-// 		middle = L + (R - L) / 2;
-
-// 		// std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
-// 		if (main_chain[middle].back() < T)
-// 			L = middle + 1;
-// 		else if (main_chain[middle].back() > T)
-// 			R = middle - 1;
-// 	}
-// 	middle = L; //if not exact match possible
-
-// 	return (middle);
-// }
 
 
 void PmergeMe::_calcMaxComp(void)
