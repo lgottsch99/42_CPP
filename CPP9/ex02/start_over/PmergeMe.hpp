@@ -56,6 +56,9 @@ class PmergeMe
 		int		_getLastIndex(int size_elem, bool uneven);
 
 		template <typename Cont>
+		void _initCont(char *argv[], Cont& c);
+
+		template <typename Cont>
 		int _binary_search(int search_area, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain);
 		//int _binary_search(int search_area, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> >& main_chain);
 		
@@ -67,6 +70,8 @@ class PmergeMe
 		//template fj sort
 		template <typename Cont>
 		void _FJSort(Cont& c, int level);
+
+		void _FJSort_Vector(int level);
 
 		//template open up levels sort
 		template <typename Cont>
@@ -81,7 +86,10 @@ class PmergeMe
 		Cont _genJNums(Cont c, int numNums);
 
 		std::vector<int>	_vec;
+		std::vector<int>	_SortedVec;
 		std::deque<int>		_deq;
+		std::deque<int>		_SortedDeq;
+
 
 		double				_elapsedvec; //save time it took to sort 
 		double				_elapseddeq; //save time it took to sort 
@@ -119,6 +127,26 @@ class PmergeMe
 
 };
 
+template <typename Cont>
+void PmergeMe::_initCont(char *argv[], Cont& c)
+{
+	int num;
+	size_t i = 1;
+	while (argv[i] != NULL)
+	{
+		num = std::atoi(argv[i]);
+		c.push_back(num);
+		i++;
+	}
+	_numNumbers = i - 1; //./skipped
+
+	if (DEBUG)
+	{
+		std::cout << "Cont initialized\n";
+		std::cout << "Number of numbers: " << _numNumbers <<"\n";
+	}
+}
+
 
 // template <typename Cont>
 // int PmergeMe::_binary_search(int search_end, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain)
@@ -148,9 +176,7 @@ class PmergeMe
 
 //TODO change names to sth i understand:
 template <typename Cont>
-int PmergeMe::_binary_search(int search_end,
-    typename TraitsFor<Cont>::SimpleNested::iterator it_pend,
-    typename TraitsFor<Cont>::SimpleNested& main_chain)
+int PmergeMe::_binary_search(int search_end, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain)
 {
     //std::cout << "in binary search\n";
 
@@ -262,14 +288,14 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 			y++;
 		}
 		if (DEBUG)
-			//print_sequence(first);
+			print_sequence(first);
 		while ((i + y) < last_index && y < size_pair)
 		{
 			second.push_back(c[i + y]);
 			y++;
 		}
 		if (DEBUG)
-			//print_sequence(second);
+			print_sequence(second);
 		//compare last number each, second = bigger! , swap if needed
 		_comps++;
 		//if (first[size_elem - 1] > second[size_elem - 1]) //=comparison
@@ -314,13 +340,14 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 	if (DEBUG)
 	{
 		std::cout << "RESULT SORT LEVEL " << level << " :\n\t";
-		//print_sequence(sort_result);
+		print_sequence(sort_result);
 		std::cout << "no comps so far: " << _comps << "\n";
 	}
 	
 	//swap c and result
 	c.swap(sort_result);
 }
+
 
 
 template <typename Cont>
