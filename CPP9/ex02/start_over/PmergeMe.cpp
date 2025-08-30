@@ -509,6 +509,7 @@ void PmergeMe::_FJSort_Deque(int level)
 	}
 
 //open up levels: make pairs and compare, get bigger one
+	//CRASHING
 	_OpeningSort(_deq, last_index, size_elem, size_pair, level);
 
 //recursion check
