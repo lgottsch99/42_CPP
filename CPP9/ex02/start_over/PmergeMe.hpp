@@ -72,6 +72,7 @@ class PmergeMe
 		void _FJSort(Cont& c, int level);
 
 		void _FJSort_Vector(int level);
+		void _FJSort_Deque(int level);
 
 		//template open up levels sort
 		template <typename Cont>
