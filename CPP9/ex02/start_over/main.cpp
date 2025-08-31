@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
 	{
 		pm.CheckInput(argc, argv);
 		pm.printBefore(argv);
-		//pm.SortVector(argv);
-		pm.SortDeque(argv);
+		pm.SortVector(argv);
+		//pm.SortDeque(argv);
 		pm.printAfter();
 
 	}

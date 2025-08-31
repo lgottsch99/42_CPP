@@ -10,7 +10,7 @@ SRC = main.cpp PmergeMe.cpp
 OBJ = $(SRC:.cpp=.o)
 
 $(NAME): $(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME) -Wl,-stack_size,0x4000000
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME) 
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@ 

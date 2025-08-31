@@ -1091,70 +1091,133 @@ void PmergeMe::print_sequence(T& ref)
 
 //int PmergeMe::_calc_search_area(std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence, int last_index, std::vector<std::vector<int> >::iterator it_pend, std::vector < std::vector<int> > main_chain)
 //int PmergeMe::_calc_search_area(typename std::vector < typename s_Pair<Cont>::Pair >& paired_sequence, int last_index, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain)
-template <typename Cont>
-int PmergeMe::_calc_search_area(typename TraitsFor<Cont>::PairContainer& paired_sequence, int last_index, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain)
-{
-	std::cout << "in calc search area\n";
-	//typedef typename NestedFor<Cont>::type SimpleNested; // alias for simple nested structure eg std::vector < std::vector<int> >
-	//typedef typename s_Pair<Cont>::Pair Pair;
+// template <typename Cont>
+// int PmergeMe::_calc_search_area(typename TraitsFor<Cont>::PairContainer& paired_sequence, int last_index, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain)
+// {
+// 	std::cout << "in calc search area\n";
+// 	//typedef typename NestedFor<Cont>::type SimpleNested; // alias for simple nested structure eg std::vector < std::vector<int> >
+// 	//typedef typename s_Pair<Cont>::Pair Pair;
 	
-	bool found = false;
-	int search_end = 0; //end of search area in main
+// 	bool found = false;
+// 	int search_end = 0; //end of search area in main
 
-	// std::pair < std::vector<int>, std::vector<int> > partner_pair;
-	//typedef typename s_Pair<Cont>::Pair Pair;
-	typename TraitsFor<Cont>::Pair partner_pair;
+// 	// std::pair < std::vector<int>, std::vector<int> > partner_pair;
+// 	//typedef typename s_Pair<Cont>::Pair Pair;
+// 	typename TraitsFor<Cont>::Pair partner_pair;
 
-	//std::vector < std::pair < std::vector<int>, std::vector<int> > >::iterator it_paired_outer = paired_sequence.begin();
-	typename TraitsFor<Cont>::PairContainer::iterator it_paired_outer = paired_sequence.begin();
+// 	//std::vector < std::pair < std::vector<int>, std::vector<int> > >::iterator it_paired_outer = paired_sequence.begin();
+// 	typename TraitsFor<Cont>::PairContainer::iterator it_paired_outer = paired_sequence.begin();
 
-	for (int index = 0; index < last_index; index++)
-	{
-		if ((*it_paired_outer).first == *it_pend)
-		{
-			partner_pair = (*it_paired_outer);
-			if (DEBUG)
-			{
-				// std::cout << "found partner elem!\n";
-				// print_sequence(partner_pair.second);	
-			}
-			found = true;
-			break;
-		}
-		it_paired_outer++;
-	}
-	if (found)
-	{
-		// //look for partner elem position in main_chain
-		// while (search_end < (int)main_chain.size() && main_chain[search_end] != partner_pair.second)
-		// 	search_end++;
+// 	for (int index = 0; index < last_index; index++)
+// 	{
+// 		if ((*it_paired_outer).first == *it_pend)
+// 		{
+// 			partner_pair = (*it_paired_outer);
+// 			if (DEBUG)
+// 			{
+// 				// std::cout << "found partner elem!\n";
+// 				// print_sequence(partner_pair.second);	
+// 			}
+// 			found = true;
+// 			break;
+// 		}
+// 		it_paired_outer++; // -----> COULD CRASH!!
+// 	}
+// 	if (found)
+// 	{
+// 		// //look for partner elem position in main_chain
+// 		// while (search_end < (int)main_chain.size() && main_chain[search_end] != partner_pair.second)
+// 		// 	search_end++;
 
-		// std::cout << "partner in main chain at pos: " << search_end << "\n";
-		// iterator-based search in main_chain
-		typename TraitsFor<Cont>::SimpleNested::iterator it = main_chain.begin();
-		search_end = 0;
-		while (it != main_chain.end() && *it != partner_pair.second)
-		{
-			++it;
-			++search_end;
-		}
-		if (DEBUG)
-			std::cout << "partner in main chain at pos: " << search_end << "\n";
+// 		// std::cout << "partner in main chain at pos: " << search_end << "\n";
+// 		// iterator-based search in main_chain
+// 		typename TraitsFor<Cont>::SimpleNested::iterator it = main_chain.begin();
+// 		search_end = 0;
+// 		while (it != main_chain.end() && *it != partner_pair.second)
+// 		{
+// 			++it;
+// 			++search_end;
+// 		}
+// 		if (DEBUG)
+// 			std::cout << "partner in main chain at pos: " << search_end << "\n";
 
-		//no need to compare partner elem tho so -1 index
-		if (search_end > 0)//prevent ozt pf bound 
-			search_end--;
-	}
-	else
-	{
-		if (DEBUG)
-			std::cout <<"no partner found in paired seq\n";
-		search_end = (int)main_chain.size();
-		search_end--; //index at 0 -> compare with entire main chain
-	}
-	std::cout << "finished calc search area\n";
-	return(search_end);
+// 		//no need to compare partner elem tho so -1 index
+// 		if (search_end > 0)//prevent ozt pf bound 
+// 			search_end--;
+// 	}
+// 	else
+// 	{
+// 		if (DEBUG)
+// 			std::cout <<"no partner found in paired seq\n";
+// 		search_end = (int)main_chain.size();
+// 		search_end--; //index at 0 -> compare with entire main chain
+// 	}
+// 	std::cout << "finished calc search area\n";
+// 	return(search_end);
+// }
+
+template <typename Cont>
+int PmergeMe::_calc_search_area(
+    typename TraitsFor<Cont>::PairContainer &paired_sequence,
+    int last_index,
+    typename TraitsFor<Cont>::SimpleNested::iterator it_pend,
+    typename TraitsFor<Cont>::SimpleNested &main_chain)
+{
+    std::cout << "in calc search area\n";
+
+    bool found = false;
+    int search_end = 0;
+
+    typename TraitsFor<Cont>::Pair partner_pair;
+    typename TraitsFor<Cont>::PairContainer::iterator it_paired_outer = paired_sequence.begin();
+
+    // secure last_index to container size in case last index too big for cont
+    int max_index = (int)paired_sequence.size();
+    if (last_index > max_index)
+        last_index = max_index;
+
+    int index = 0;
+    while (it_paired_outer != paired_sequence.end() && index < last_index) //it past end()->undefined + CRASH! Thats why 
+    {
+        if ((*it_paired_outer).first == *it_pend)
+        {
+            partner_pair = *it_paired_outer;
+            found = true;
+            break;
+        }
+        ++it_paired_outer;
+        ++index;
+    }
+
+    if (found)
+    {
+        typename TraitsFor<Cont>::SimpleNested::iterator it = main_chain.begin();
+        search_end = 0;
+        while (it != main_chain.end() && *it != partner_pair.second)
+        {
+            ++it;
+            ++search_end;
+        }
+        if (DEBUG)
+            std::cout << "partner in main chain at pos: " << search_end << "\n";
+
+        //no need to compare partner elem tho so -1 index
+        if (search_end > 0)
+            search_end--;
+    }
+    else
+    {
+        if (DEBUG)
+            std::cout << "no partner found in paired seq\n";
+        search_end = (int)main_chain.size();
+        //if (search_end > 0) //index at 0 -> compare with entire main chain
+        search_end--; 
+    }
+
+    std::cout << "finished calc search area\n";
+    return search_end;
 }
+
 
 template <typename Cont>
 void PmergeMe::printSimpleNested(typename TraitsFor<Cont>::SimpleNested object)
