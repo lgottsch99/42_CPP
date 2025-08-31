@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
 	{
 		pm.CheckInput(argc, argv);
 		pm.printBefore(argv);
-		pm.SortVector(argv);
-		//pm.SortDeque(argv);
+		//pm.SortVector(argv);
+		pm.SortDeque(argv);
 		pm.printAfter();
 
 	}
@@ -69,5 +69,7 @@ int main(int argc, char *argv[])
 		Copy back to the original container if needed.
 -> The important part: all insertions happen while closing recursion, because only now do we know the mainChain is sorted.
 
+
+./PmergeMe 9 4 6 2 3 1 8 7 5 0 99 88 44 66 77 333 21 22 111 
 */
 

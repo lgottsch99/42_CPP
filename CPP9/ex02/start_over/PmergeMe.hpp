@@ -66,7 +66,14 @@ class PmergeMe
 		//int _calc_search_area(typename std::vector < s_pair<Cont>::Pair > paired_sequence, int last_index, typename NestedFor<Cont>::type::iterator it_pend, typename NestedFor<Cont>::type main_chain);
 		template <typename Cont>
 		int _calc_search_area(typename TraitsFor<Cont>::PairContainer& paired_sequence, int last_index, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain);
-		
+
+		int _calc_search_area_deque(
+			std::deque < std::pair < std::deque<int>, std::deque<int> > > &paired_sequence,
+			int last_index,
+			std::deque<std::deque<int> >::iterator it_pend,
+			std::deque<std::deque<int> > &main_chain);
+
+
 		//template fj sort
 		template <typename Cont>
 		void _FJSort(Cont& c, int level);
@@ -77,6 +84,8 @@ class PmergeMe
 		//template open up levels sort
 		template <typename Cont>
 		void _OpeningSort(Cont& c, int last_index, int size_elem, int size_pair, int level);
+
+		void _OpeningSort_Deque(std::deque<int>& c, int last_index, int size_elem, int size_pair, int level);
 
 		//template binary insert
 		template <typename Cont>
@@ -272,6 +281,7 @@ Cont PmergeMe::_genJNums(Cont c, int numNums)
 template <typename Cont>
 void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pair, int level)
 {
+	std::cout << "in open sort\n";
 	Cont sort_result;
 	typename Cont::iterator it;
 
@@ -279,6 +289,7 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 	int i = 0;
 	while (i < last_index)
 	{
+		std::cout << "loop\n";
 		Cont first;
 		Cont second;
 
@@ -347,6 +358,7 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 	
 	//swap c and result
 	c.swap(sort_result);
+	std::cout << "finished open sort\n";
 }
 
 
