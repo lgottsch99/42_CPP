@@ -180,14 +180,8 @@ void PmergeMe::SortVector(char *argv[])
 
 	_FJSort_Vector(level);
 
-	if (DEBUG)
-	{
-		std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
-		std::cout << "no of comps needed: " << _comps << "\n";
-	}
-	// std::cout << "FINISHED SORTING VECTOR: ";
-	// print_sequence(_vec);
 	_SortedVec = _vec;
+	_CompsVec = _comps;
 
 	//calc end time
 	_elapsedvec = clock() - start; //clock ticks
@@ -219,6 +213,9 @@ void PmergeMe::_FJSort_Vector(int level)
 	{
 		if (DEBUG)
 			std::cout << "\n -- base case reached -- \n\n";
+		if (CHECK_COMPS)
+			std::cout << "VEC Opening Sort comps: " << _comps << "\n";
+
 		return;
 	}
 	//else recursion call
@@ -228,6 +225,7 @@ void PmergeMe::_FJSort_Vector(int level)
 
 	if (DEBUG)
 		std::cout << " # Level: " << level << "\n";
+
 
 //close levels: 
 //parse into new structure (this is to keep pair-rel): 
@@ -437,7 +435,7 @@ void PmergeMe::_FJSort_Vector(int level)
 					std::vector<std::vector<int> >::iterator it_main_chain = main_chain.begin();
 					for (int i = 0; i < middle; i++)
 						it_main_chain++;
-					
+
 					main_chain.insert(it_main_chain, *it_pend);
 					
 					//remove elem from pend
@@ -491,12 +489,8 @@ void PmergeMe::SortDeque(char *argv[])
 	//sort
 	_FJSort_Deque(level);
 
-	if (DEBUG)
-	{
-		std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
-		std::cout << "no of comps needed: " << _comps << "\n";
-	}
 	_SortedDeq = _deq;
+	_CompsDeq = _comps;
 
 	//calc end time
 	_elapseddeq = clock() - start; //clock ticks
@@ -529,6 +523,9 @@ void PmergeMe::_FJSort_Deque(int level)
 	{
 		if (DEBUG)
 			std::cout << "\n -- base case reached -- \n\n";
+		if (CHECK_COMPS)
+			std::cout << "DEQ Opening Sort comps: " << _comps << "\n";
+
 		return;
 	}
 	//else recursion call
@@ -538,6 +535,8 @@ void PmergeMe::_FJSort_Deque(int level)
 
 	if (DEBUG)
 		std::cout << " # Level: " << level << "\n";
+
+
 
 //close levels: 
 //parse into new structure (this is to keep pair-rel): 
@@ -564,7 +563,7 @@ void PmergeMe::_FJSort_Deque(int level)
 		y = 0;
 		//while (y < size_elem && (i + y + size_elem) < (int)_deq.size())
 		while(y < size_elem && it != _deq.end())
-		{//parse 2nd elem into vector 2
+		{//parse 2nd elem int_maxComparisonso vector 2
 			vec2.push_back(*it);
 			y++;
 			it++;
@@ -712,14 +711,37 @@ void PmergeMe::_FJSort_Deque(int level)
 					
 					main_chain.insert(it_main_chain, *it_pend);
 					
-					// erase safely, get iterator to next element
-					it_pend = pend.erase(it_pend); // erase returns iterator after erased element
 
-					// if erase returned end(), move back one to continue loop safely
-					if (it_pend == pend.end() && !pend.empty())
-						it_pend = pend.end() - 1;
 
-					iterations++;
+					//////WRONG
+					// // erase safely, get iterator to next element
+					// it_pend = pend.erase(it_pend); // erase returns iterator after erased element
+
+					// // if erase returned end(), move back one to continue loop safely
+					// if (it_pend == pend.end() && !pend.empty())
+					// 	it_pend = pend.end() - 1;
+
+					///////
+					// std::deque<std::deque<int> >::iterator one_before = it_pend;
+					// one_before--;
+
+					// pend.erase(it_pend);
+					// it_pend = one_before;
+
+					// iterations++;
+    // -------- safe pend erase + iterator update --------
+    if (it_pend != pend.begin()) {
+        std::deque<std::deque<int> >::iterator one_before = it_pend;
+        --one_before;              // safe, not begin()
+        pend.erase(it_pend);       // erase current
+        it_pend = one_before;      // move back
+    } else {
+        // at begin(), erase and continue from new begin()
+        it_pend = pend.erase(it_pend);  
+    }
+    // --------------------------------------------------
+
+    iterations++;
 				}
 			
 			previous_jacobsthal = *current_jacobsthal;
@@ -729,7 +751,7 @@ void PmergeMe::_FJSort_Deque(int level)
 			{
 				if (pend.empty())
 					return;
-				//just go to end of pend, insert starting from the back
+				//just go to _maxComparisonsend of pend, insert starting from the back
 				//move iterator in pend to current elem
 				std::deque<std::deque<int> >::iterator it_pend = pend.end(); //end() returns past the end!
 				it_pend--;//only safe if pend not emoty
@@ -758,7 +780,7 @@ void PmergeMe::_FJSort_Deque(int level)
 
 					//binary search main search area for index position to insert
 					int middle = _binary_search<std::deque<int> >(search_end, it_pend, main_chain);
-					
+
 					if (DEBUG)
 						std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
 
@@ -769,12 +791,27 @@ void PmergeMe::_FJSort_Deque(int level)
 					
 					main_chain.insert(it_main_chain, *it_pend);
 					
-					// erase safely, get iterator to next element
-					it_pend = pend.erase(it_pend); // erase returns iterator after erased element
+					// // erase safely, get iterator to next element
+					// it_pend = pend.erase(it_pend); // erase returns iterator after erased element
 
-					// if erase returned end(), move back one to continue loop safely
-					if (it_pend == pend.end() && !pend.empty())
-						it_pend = pend.end() - 1;
+					// // if erase returned end(), move back one to continue loop safely
+					// if (it_pend == pend.end() && !pend.empty())
+					// 	it_pend = pend.end() - 1;
+    // -------- safe pend erase + iterator update --------
+    if (it_pend != pend.begin()) {
+        std::deque<std::deque<int> >::iterator one_before = it_pend;
+        --one_before;              // safe, not begin()
+        pend.erase(it_pend);       // erase current
+        it_pend = one_before;      // move back
+    } else {
+        // at begin(), erase and continue from new begin()
+        it_pend = pend.erase(it_pend);  
+    }
+    // --------------------------------------------------
+
+    iterations++;
+
+
 				}
 			}
 		}
@@ -829,7 +866,7 @@ void PmergeMe::_OpeningSort_Deque(std::deque<int>& c, int last_index, int size_e
     		++it;
 
 		int y = 0;
-		while (it != c.end()&& (i + y) < last_index && y < size_elem)
+		while (it != c.end() && (i + y) < last_index && y < size_elem)
 		{
 			first.push_back(*it);
 			y++;
@@ -865,7 +902,7 @@ void PmergeMe::_OpeningSort_Deque(std::deque<int>& c, int last_index, int size_e
 				it++;
 			}
 		}
-		else 
+		else
 		{
 			it = first.begin();
 			while (it != first.end())
@@ -961,7 +998,7 @@ int PmergeMe::_calc_search_area_deque(
         if (DEBUG)
             std::cout << "no partner found in paired seq\n";
         search_end = (int)main_chain.size();
-        //if (search_end > 0) //index at 0 -> compare with entire main chain
+        if (search_end > 0) //index at 0 -> compare with entire main chain
         search_end--; 
     }
 
@@ -1007,7 +1044,7 @@ void PmergeMe::printAfter(void) //TODO set field width
 	if (!_result_equal() || !_is_sorted())
 		throw ResultError();
 
-	// std::cout << "Vec After:  ";
+	// std::cout << "Vec Afte_maxComparisonsr:  ";
 	// print_sequence(_SortedVec);
 
 	std::cout << "After:  ";
@@ -1017,6 +1054,13 @@ void PmergeMe::printAfter(void) //TODO set field width
 		<< std::setprecision(5) << _elapsedvec << " ms\n";
 	std::cout << "Time to process a range of " << _numNumbers << " with std::deque :  "
 		<< std::setprecision(5) << _elapseddeq << " ms\n";
+
+	if (CHECK_COMPS)
+	{
+		std::cout << "Number of max allowed comps: " << _maxComparisons << "\n";
+		std::cout << "No Comps Vector: " << _CompsVec << "\n";
+		std::cout << "No Comps Deque:  " << _CompsDeq << "\n";
+	}
 
 }
 

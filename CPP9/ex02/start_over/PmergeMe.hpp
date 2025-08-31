@@ -14,7 +14,8 @@
 #include <cmath>
 #include <limits>
 
-#define DEBUG 0
+#define DEBUG 1
+#define CHECK_COMPS 1
 
 /*
 Specialization allows type-dependent logic:
@@ -109,8 +110,10 @@ class PmergeMe
 
 		std::vector<int>	_vec;
 		std::vector<int>	_SortedVec;
+		int					_CompsVec;
 		std::deque<int>		_deq;
 		std::deque<int>		_SortedDeq;
+		int					_CompsDeq;
 
 
 		double				_elapsedvec; //save time it took to sort 
@@ -118,6 +121,7 @@ class PmergeMe
 		int 				_numNumbers; // number of numbers to sort
 		int 				_maxComparisons;
 		int 				_comps;
+	
 
 
 	public:
@@ -196,47 +200,47 @@ void PmergeMe::_initCont(char *argv[], Cont& c)
 // }
 
 
-//TODO change names to sth i understand:
 template <typename Cont>
 int PmergeMe::_binary_search(int search_end, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain)
 {
-    //std::cout << "in binary search\n";
+	//it_pend -> points to elem in pend we want to insert
 
+    //std::cout << "in binary search\n";
     typedef typename TraitsFor<Cont>::SimpleNested::iterator Iterator;
 
     if (it_pend->empty()) 
-		return 0; // safety
-    int T = it_pend->back();        // target value
+		return 0; // safety (calling .back() on empty container crashes)
+
+    int T = it_pend->back();// target value = number to compare 
     int _index = 0;
 
     Iterator first = main_chain.begin();
     Iterator last = main_chain.begin();
-    int steps = std::min(search_end + 1, (int)main_chain.size());
+    int steps = std::min(search_end + 1, (int)main_chain.size()); // Without the +1, the iterator last would point just before search_end, excluding the last element in the search area
     for (int i = 0; i < steps; ++i) 
-		++last;  // advance safely for dque and vector
+		last++;  // advance safely for dque and vector // need to advance manually to be safe for deque 
 
     while (first != last)
     {
-        int distance = std::distance(first, last);
-        Iterator middle = first;
-        for (int i = 0; i < distance / 2; ++i) ++middle;
+        int distance = std::distance(first, last); //1 Compute distance between first and last.
+        
+		Iterator middle = first; //2 Move middle to midpoint manually, safe for deque
+        for (int i = 0; i < distance / 2; ++i) 
+			middle++; 
 
 		//one comparison per iteration
         _comps++;
-
-        if (middle->back() < T)
+        if (middle->back() < T) // 3 If middle elem is less than target, move first after middle
         {
             Iterator tmp = middle;
-            ++tmp;
+            tmp++;
             first = tmp;
         }
         else
-        {
             last = middle;
-        }
     }
 
-    _index = std::distance(main_chain.begin(), first);
+    _index = std::distance(main_chain.begin(), first); //converts first iteratir to int index 
    // std::cout << "finished binary search\n";
     return _index;
 }
@@ -344,6 +348,7 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 	
 	//swap c and result
 	c.swap(sort_result);
+
 }
 
 
@@ -416,7 +421,7 @@ int PmergeMe::_calc_search_area(
         if (DEBUG)
             std::cout << "no partner found in paired seq\n";
         search_end = (int)main_chain.size();
-        //if (search_end > 0) //index at 0 -> compare with entire main chain
+        if (search_end > 0) //index at 0 -> compare with entire main chain
         search_end--; 
     }
 
