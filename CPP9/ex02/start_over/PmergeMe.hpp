@@ -55,6 +55,7 @@ class PmergeMe
 		void 	_calcMaxComp(void);
 		int		_getLastIndex(int size_elem, bool uneven);
 		bool	_result_equal(void);
+		bool	_is_sorted(void);
 
 		template <typename Cont>
 		void _initCont(char *argv[], Cont& c);

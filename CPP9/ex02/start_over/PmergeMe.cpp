@@ -988,11 +988,27 @@ bool PmergeMe::_result_equal(void)
 	return true;
 }
 
+bool PmergeMe::_is_sorted(void)
+{
+	std::vector<int>::iterator it_vec = _vec.begin();
+	int prev = *it_vec;
+
+	for (int i = 1; i < _numNumbers; i++) //start at 2nd num
+	{
+		if (*it_vec < prev)
+			return false;
+		prev = *it_vec;
+		it_vec++;
+	}
+	return true;
+}
+
+
 void PmergeMe::printAfter(void) //TODO set field width
 {
 //check if both vector and deque sorted and the same!
 	//if ok:
-	if (!_result_equal())
+	if (!_result_equal() || !_is_sorted())
 		throw ResultError();
 
 	// std::cout << "Vec After:  ";
