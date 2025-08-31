@@ -7,6 +7,12 @@ char const *PmergeMe::Error::what(void) const throw()
 	return ("Error.\n");
 };
 
+char const *PmergeMe::ResultError::what(void) const throw()
+{
+	return ("Sortnig Result: Error. Vector and deque result not the same!\n");
+};
+
+
 
 // -------------- Constructors --------------
 
@@ -967,12 +973,30 @@ int PmergeMe::_calc_search_area_deque(
     return search_end;
 }
 
+bool PmergeMe::_result_equal(void)
+{
+	std::vector<int>::iterator it_vec = _vec.begin();
+	std::deque<int>::iterator it_deq = _deq.begin();
 
+	for (int i = 0; i < _numNumbers; i++)
+	{
+		if (*it_vec != *it_deq)
+			return false;
+		it_vec++;
+		it_deq++;
+	}
+	return true;
+}
 
 void PmergeMe::printAfter(void) //TODO set field width
 {
-//TODO check if both vector and deque sorted and the same!
+//check if both vector and deque sorted and the same!
 	//if ok:
+	if (!_result_equal())
+		throw ResultError();
+
+	// std::cout << "Vec After:  ";
+	// print_sequence(_SortedVec);
 
 	std::cout << "After:  ";
 	print_sequence(_SortedDeq);

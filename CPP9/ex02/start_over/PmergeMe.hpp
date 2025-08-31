@@ -14,7 +14,7 @@
 #include <cmath>
 #include <limits>
 
-#define DEBUG 1
+#define DEBUG 0
 
 
 template <typename Cont>
@@ -54,6 +54,7 @@ class PmergeMe
 		void 	_initDeq(char *argv[]);
 		void 	_calcMaxComp(void);
 		int		_getLastIndex(int size_elem, bool uneven);
+		bool	_result_equal(void);
 
 		template <typename Cont>
 		void _initCont(char *argv[], Cont& c);
@@ -134,6 +135,12 @@ class PmergeMe
 			public:
 				const char * what(void) const throw();
 		};
+		class ResultError : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
+
 
 };
 
