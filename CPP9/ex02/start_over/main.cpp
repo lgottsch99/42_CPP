@@ -4,24 +4,9 @@
 // https://link.springer.com/article/10.1007/s00224-020-09987-4
 // https://42born2code.slack.com/archives/CN9RHKQHW/p1709984014933529?thread_ts=1709813537.388959&cid=CN9RHKQHW 
 // 
-// implement algo 2 times, with different containers each
-
-//no map
-//no stack/ deque
-
-//using: 
-//list
-//unordered map? unordered set? vector?
-
-/* Q's?????
 
 
-*/
 /* TODO
-
-dry
-
-list test
 
 DEBUG MODE
 	
@@ -69,7 +54,5 @@ int main(int argc, char *argv[])
 		Copy back to the original container if needed.
 -> The important part: all insertions happen while closing recursion, because only now do we know the mainChain is sorted.
 
-
-./PmergeMe 9 4 6 2 3 1 8 7 5 0 99 88 44 66 77 333 21 22 111 
 */
 
