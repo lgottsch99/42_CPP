@@ -14,7 +14,7 @@
 #include <cmath>
 #include <limits>
 
-#define DEBUG 1
+#define DEBUG 0
 #define CHECK_COMPS 1
 
 /*

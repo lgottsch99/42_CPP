@@ -673,43 +673,6 @@ void PmergeMe::_FJSort_Deque(int level)
 		//CASE jnumber works (aka enough elems in pend)
 			if (num_elem_to_insert <= (int)pend.size()) //jnumber works
 			{			
-		// 		//move iterator in pend to current elem
-		// 		std::deque<std::deque<int> >::iterator it_pend = pend.begin();
-		// 		for (int n = 0; n < num_elem_to_insert - 1 && it_pend != pend.end(); n++)
-		// 			it_pend++;
-			
-		// 		if (DEBUG)
-		// 		{
-		// 			std::cout <<"jnumber insertion..\n";
-		// 			std::cout << "traversed pend to elem: " << it_pend->back() << "\n";
-		// 		}
-
-		// 		int iterations = 0;
-		// 		while (iterations < num_elem_to_insert && !pend.empty())
-		// 		{
-		// 			if (DEBUG)
-		// 			{
-		// 				std::cout << "Pend elem to insert: ";
-		// 				print_sequence(*it_pend);
-		// 			}
-
-		// 			//search for partner elem (it_pend) in main, get index (aka search area)
-		// 			// calc search area in main (= look for upper bound a if any)
-		// 			int search_end = _calc_search_area_deque(paired_sequence, last_index, it_pend, main_chain);
-				
-		// // binary insert (search area bleibt MEISTENS aber nicht immer the same!)
-		// 			//binary search main search area for index position to insert
-		// 			int middle = _binary_search<std::deque<int> >(search_end, it_pend, main_chain);
-
-		// 			if (DEBUG)
-		// 				std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
-
-		// 			//insert (check if search area changed)
-		// 			std::deque<std::deque<int> >::iterator it_main_chain = main_chain.begin();
-		// 			for (int i = 0; i < middle && it_main_chain != main_chain.end(); i++)
-		// 				it_main_chain++;
-					
-		// 			main_chain.insert(it_main_chain, *it_pend);
 					
              // We'll use an index for backward iteration
                 int current_idx = num_elem_to_insert - 1;
@@ -760,24 +723,6 @@ void PmergeMe::_FJSort_Deque(int level)
                     current_idx--; 
                     
                     iterations++;
-
-					//////WRONG
-					// // erase safely, get iterator to next element
-					// it_pend = pend.erase(it_pend); // erase returns iterator after erased element
-
-					// // if erase returned end(), move back one to continue loop safely
-					// if (it_pend == pend.end() && !pend.empty())
-					// 	it_pend = pend.end() - 1;
-
-					///////
-					// std::deque<std::deque<int> >::iterator one_before = it_pend;
-					// one_before--;
-
-					// pend.erase(it_pend);
-					// it_pend = one_before;
-
-					// iterations++;
-
 				}
 			
 			previous_jacobsthal = *current_jacobsthal;
@@ -785,56 +730,6 @@ void PmergeMe::_FJSort_Deque(int level)
 			}
 			else //CASE: not enough elems in pend for jnumber
 			{
-				// if (pend.empty())
-				// 	return;
-				// //just go to _maxComparisonsend of pend, insert starting from the back
-				// //move iterator in pend to current elem
-				// std::deque<std::deque<int> >::iterator it_pend = pend.end(); //end() returns past the end!
-				// it_pend--;//only safe if pend not emoty
-
-				// num_elem_to_insert = pend.size();
-
-				// if (DEBUG)
-				// {
-				// 	std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
-				// 	std::cout << "Number of pend elems to insert: " << num_elem_to_insert << "\n";
-				// }
-
-				// int iterations = 0;
-				// while (iterations < num_elem_to_insert && !pend.empty())
-				// {
-				// 	//search for partner elem (it_pend) in main, get index (aka search area)
-				// 	if (DEBUG)
-				// 	{
-				// 		std::cout <<"Pend elem to insert: ";
-				// 		print_sequence(*it_pend);
-				// 	}
-
-				// 	// int search_end = _calc_search_area<std::deque<int> >(paired_sequence, last_index, it_pend, main_chain);
-				// 	// std::cout << "search end is: " << search_end << "\n";
-				// 	int search_end = _calc_search_area_deque(paired_sequence, last_index, it_pend, main_chain);
-
-				// 	//binary search main search area for index position to insert
-				// 	int middle = _binary_search<std::deque<int> >(search_end, it_pend, main_chain);
-
-				// 	if (DEBUG)
-				// 		std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
-
-				// 	//insert (check if search area changed)
-				// 	std::deque<std::deque<int> >::iterator it_main_chain = main_chain.begin();
-				// 	for (int i = 0; i < middle && it_main_chain != main_chain.end(); i++)
-				// 		it_main_chain++;
-					
-				// 	main_chain.insert(it_main_chain, *it_pend);
-					
-				// 	// // erase safely, get iterator to next element
-				// 	// it_pend = pend.erase(it_pend); // erase returns iterator after erased element
-
-				// 	// // if erase returned end(), move back one to continue loop safely
-				// 	// if (it_pend == pend.end() && !pend.empty())
-				// 	// 	it_pend = pend.end() - 1;
-    			// iterations++;
-
 				if (pend.empty())
                     return;
 
@@ -873,7 +768,7 @@ void PmergeMe::_FJSort_Deque(int level)
                     
                     // Erase the element and update the index
                     it_pend_temp = pend.begin() + current_idx;
-                    pend.erase(it_pend_temp);
+                    pend.erase(it_pend_temp); 
 
                     // Move "back" one element
                     current_idx--;
@@ -910,7 +805,6 @@ void PmergeMe::_FJSort_Deque(int level)
 
 }
 
-//TODO CHANGE TO USE ITERATORS!!
 void PmergeMe::_OpeningSort_Deque(std::deque<int>& c, int last_index, int size_elem, int size_pair, int level)
 {
 	// std::cout << "in open sort deque\n";
