@@ -14,11 +14,12 @@ int main(int argc, char *argv[])
 	{
 		if (argc != 2)
 		{
-			// std::cout << "Usage: ./btc <input_file>\n";
-			throw BitcoinExchange::CannotOpenFile();
+			std::cout << "Usage: ./btc <input_file>\n";
+			//throw BitcoinExchange::CannotOpenFile();
+			return 0;
 		}
 		std::string input_file(argv[1]);
-		btc.ProcessFile( input_file);
+		btc.ProcessFile(input_file);
 	}
 	catch (std::exception &e)
 	{

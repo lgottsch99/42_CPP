@@ -18,7 +18,12 @@
 class BitcoinExchange
 {	
 	private:
-		
+		time_t 		first_entry; //store earliest db entry
+		time_t		last_entry; //store latest db entry
+
+		bool		_is_future;
+		bool		_is_past;
+
 		bool		_ReadCsv();
 		time_t		_ConvertDateToTime(std::string &date);
 		std::string	_processedDate; //storing date to validate (for exception printing)

@@ -100,6 +100,7 @@ bool BitcoinExchange::_ReadCsv()
 	std::string			date;
 	std::string			str_value;
 	double				value = 0.0;
+	int i = 0;
 
 	while ( std::getline (csv_file, line)) 
 	{
@@ -113,20 +114,20 @@ bool BitcoinExchange::_ReadCsv()
 		if (time_key == -1)
 			throw CsvLoadError();
 
+		if (i == 0) //store first entry
+			first_entry = time_key;
+		else
+			last_entry = time_key; //store last for possible future date input
+
 		getline(iss, str_value, '\n');
 		// std::cout << "str value is: " << str_value << "\n"; 
-
-		// std::stringstream ss(str_value);
-		// float fvalue;
-		// ss >> fvalue;
-		// std::cout << "ss value is: " << fvalue << "\n"; 
 
 		value = std::strtod(str_value.c_str(), NULL);
 		// std::cout << "atof value is: " << value << "\n"; 
 
 		//into map
-		CsvData.insert( std::make_pair(time_key, value));
-
+		CsvData.insert(std::make_pair(time_key, value));
+		i++;
 	}
 	if (CsvData.empty())
 		throw CsvLoadError();
@@ -137,7 +138,6 @@ bool BitcoinExchange::_ReadCsv()
 //orchestrator for processing
 void BitcoinExchange::ProcessFile(std::string &filename)
 {
-	(void) filename;
 	std::string		input_line;
 	
 	//try to open infile
@@ -163,7 +163,6 @@ void BitcoinExchange::ProcessFile(std::string &filename)
 
 void BitcoinExchange::_ValidateLine(std::string& line) // date | value -> single | found?
 {
-	// std::cout << "line is: " << line << "\n";
 	//go thru line and check if exactly one " | "
 	std::string error = "Input File: Line of invalid Format: ";
 	error.append(line);
@@ -187,9 +186,7 @@ void BitcoinExchange::_ValidateLine(std::string& line) // date | value -> single
 	//split str in date and value
 	std::string date = line.substr(0, pos_found);
 	_processedDate = date;
-	// std::cout << "substr date : " << date << "\n";
-	std::string value = line.substr(pos_found + 3, line.size());
-	// std::cout << "substr value: " << value << "\n";
+	std::string value = line.substr(pos_found + 3, line.size()); //treating delimiter " | " with spaces as necessary
 
 	//validat date //check value
 	if (_ValidateDate(date) && _ValidateAmount(value))
@@ -219,7 +216,7 @@ bool BitcoinExchange::_ValidateDate(std::string& date) //yyyy-mm-dd ? valid numb
 	}
 	// std::cout << "Date check 2 minus\n";
 
-	if (strich != 2) //check 2x -
+	if (strich != 2) //check 2x '-'
 	{
 		throw InvalidDate(error);
 		return false;
@@ -227,20 +224,18 @@ bool BitcoinExchange::_ValidateDate(std::string& date) //yyyy-mm-dd ? valid numb
 	//check - pos
 	size_t pos_one;
 	size_t pos_two;
-// std::cout << "Date check pos minus\n";
 
 	pos_one = date.find("-");
 	// std::cout <<"1st min at: " << pos_one << "\n";
 	pos_two = date.rfind("-");
 	// std::cout <<"2nd min at: " << pos_two << "\n";
-
 	if (pos_one != 4 || pos_two != 7)
 	{
 		throw InvalidDate(error);
 		return false;
 	}
 
-	//split and construct timestruct if -1 invalid date
+	//split and construct timestruct ->  if -1 invalid date
 	std::string syear = date.substr(0, 4);
 	// std::cout << "year is: " << syear << "\n";
 	std::string smonth = date.substr(5, 2);
@@ -254,10 +249,10 @@ bool BitcoinExchange::_ValidateDate(std::string& date) //yyyy-mm-dd ? valid numb
 	time_t rawtime;
 	struct tm *timeinfo = NULL;
 
-	time(&rawtime);
-	timeinfo = localtime(&rawtime);
-	timeinfo->tm_year = year - 1900;
-	timeinfo->tm_mon = month - 1;
+	time(&rawtime); //fills &rawtime with current time
+	timeinfo = localtime(&rawtime); //converts into struct tm
+	timeinfo->tm_year = year - 1900; //tm_year  = no of years since 1900
+	timeinfo->tm_mon = month - 1; //indexed at 0
 	timeinfo->tm_mday = day;
  	if (mktime(timeinfo) == -1) //mktime automatically adjust wrong date to correct one -> feb 31 is march 3
 	{
@@ -273,6 +268,14 @@ bool BitcoinExchange::_ValidateDate(std::string& date) //yyyy-mm-dd ? valid numb
 		throw InvalidDate(error);
 		return false;
 	}
+
+	_is_past = false;
+	_is_future = false;
+	if (mktime(timeinfo) < first_entry)
+		_is_past = true;
+	else if (mktime(timeinfo) > last_entry)
+		_is_future = true;
+
 	// std::cout << "********DATE VALID\n\n";
 	return true;
 }
@@ -310,19 +313,25 @@ void BitcoinExchange::_ConvertAndPrint(std::string& date, std::string& value)
 
 	it = CsvData.find(datetime);
 	if (it == CsvData.end())
-	{
-		// std::cout << "Could not find EXACT date in MAP!\n";
-		//look for lower bound
-		it = CsvData.lower_bound(datetime);
-		if (it == CsvData.end())
-			std::cout << "STH WENT WRONG LOOKING UP DATE IN MAP\n";
+	{// std::cout << "Could not find EXACT date in MAP!\n";
+
+		if (_is_past)
+			it = CsvData.begin();
+		else if (_is_future)
+		{			
+			it = CsvData.end();
+			it--;
+		}
+		else //inbetween 2 db values 
+		{
+			it = CsvData.lower_bound(datetime); //returns first bigger in map
+			it--; //mive to lower one
+		}
 	}
 	// std::cout << "Exchange rate is : " << it->second << " result: ";
 	//do conversion
 	double fvalue = std::strtod(value.c_str(), NULL);
 
 	std::cout << static_cast<float>( fvalue * it->second) << "\n";
-
-
-
+\
 }
