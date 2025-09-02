@@ -131,7 +131,7 @@ void PmergeMe::_initVec(char *argv[])
 		std::cout << "Number of numbers: " << _numNumbers <<"\n";
 	}
 }
-
+//TODO TEMPLATE
 void PmergeMe::_initDeq(char *argv[])
 {
 	int num;
@@ -167,10 +167,12 @@ void PmergeMe::printBefore(char *argv[]) //can
 
 void PmergeMe::SortVector(char *argv[])
 {
+	(void)argv;
 	//save starting time
 	clock_t	 start = clock();
 	int level = 1;
 
+	//_initVec(argv);
 	_initCont(argv, _vec);
 
 	_comps = 0;
@@ -178,12 +180,19 @@ void PmergeMe::SortVector(char *argv[])
 
 	_FJSort_Vector(level);
 
+	if (DEBUG)
+	{
+		std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
+		std::cout << "no of comps needed: " << _comps << "\n";
+	}
+	// std::cout << "FINISHED SORTING VECTOR: ";
+	// print_sequence(_vec);
 	_SortedVec = _vec;
-	_CompsVec = _comps;
 
 	//calc end time
 	_elapsedvec = clock() - start; //clock ticks
 	_elapsedvec = _elapsedvec * 1000.0 / CLOCKS_PER_SEC;// calc into milliseconds
+	// std::cout << "Sort Vector took: " << _elapsedvec << "\n";
 }
 
 void PmergeMe::_FJSort_Vector(int level)
@@ -210,9 +219,6 @@ void PmergeMe::_FJSort_Vector(int level)
 	{
 		if (DEBUG)
 			std::cout << "\n -- base case reached -- \n\n";
-		if (CHECK_COMPS)
-			std::cout << "VEC Opening Sort comps: " << _comps << "\n";
-
 		return;
 	}
 	//else recursion call
@@ -223,11 +229,13 @@ void PmergeMe::_FJSort_Vector(int level)
 	if (DEBUG)
 		std::cout << " # Level: " << level << "\n";
 
-
 //close levels: 
 //parse into new structure (this is to keep pair-rel): 
 	std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
 	std::vector <int> uneven_elem;
+
+	// std::vector <int>::iterator it = _vec.begin();
+	// std::vector <int>::iterator end_it = _vec.end();
 
 	int i = 0;
 	while (i < last_index) // last index = last even elem index
@@ -260,17 +268,16 @@ void PmergeMe::_FJSort_Vector(int level)
 
 		i = i + size_pair;
 	}
-	if (uneven && i < (int)_vec.size())
+	if (uneven && i < (int)_vec.size()) //?remaining
 	{
-		for (int y = 0; y < size_elem; y++)
+		int remaining = std::min(size_elem, (int)_vec.size() - i);
+		for (int y = 0; y < remaining; y++)
 			uneven_elem.push_back(_vec[i + y]);
-		i += size_elem;
+		i += remaining; // increment by actual number copied
 	}
-	if (DEBUG)
-	{
-		std::cout << "uneven: ";
-		print_sequence(uneven_elem);
-	}
+
+	std::cout << "uneven: ";
+	print_sequence(uneven_elem);
 	
 	std::vector <int> non_part;
 	while (i < _numNumbers && i < (int)_vec.size())
@@ -278,11 +285,8 @@ void PmergeMe::_FJSort_Vector(int level)
 		non_part.push_back(_vec[i]);
 		i++;
 	}
-	if (DEBUG)
-	{
-		std::cout << "non part: ";
-		print_sequence(non_part);
-	}
+	std::cout << "non part: ";
+	print_sequence(non_part);
 
 // create main chain + pend
 	std::vector< std::vector<int> > main_chain;
@@ -340,37 +344,40 @@ void PmergeMe::_FJSort_Vector(int level)
 		//CASE jnumber works (aka enough elems in pend)
 			if (num_elem_to_insert <= (int)pend.size()) //jnumber works
 			{
+				std::cout <<"jnumber insertion..\n";
+				
+				
 				//move iterator in pend to current elem
 				std::vector<std::vector<int> >::iterator it_pend = pend.begin();
 				for (int n = 0; n < num_elem_to_insert - 1; n++)
 					it_pend++;
 			
 				//if (it_pend != pend.end())
-				if (DEBUG)
-				{
-					std::cout <<"jnumber insertion..\n";
-					std::cout << "traversed pend to elem: " << (*it_pend).back() << "\n";
-				}
+				std::cout << "traversed pend to elem: " << (*it_pend).back() << "\n";
 
 				int iterations = 0;
 				while (iterations < num_elem_to_insert)
 				{
-					if (DEBUG)
-					{
-						std::cout << "Pend elem to insert: ";
-						print_sequence(*it_pend);
-					}
+					std::cout << "Pend elem to insert: ";
+					print_sequence(*it_pend);
 
 					//search for partner elem (it_pend) in main, get index (aka search area)
+						//std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
+						//	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
+						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
+
 					// calc search area in main (= look for upper bound a if any)
+					//CRASHING
 					int search_end = _calc_search_area<std::vector<int> >(paired_sequence, last_index, it_pend, main_chain);
 					
+
 		// binary insert (search area bleibt MEISTENS aber nicht immer the same!)
 					//binary search main search area for index position to insert
-					int middle = _binary_search<std::vector<int> >(search_end, it_pend, main_chain);
-					if (DEBUG)
-						std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
 				
+					int middle = _binary_search<std::vector<int> >(search_end, it_pend, main_chain);
+
+					
+					std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
 					//insert (check if search area changed)
 					std::vector<std::vector<int> >::iterator it_main_chain = main_chain.begin();
 					for (int i = 0; i < middle; i++)
@@ -397,36 +404,35 @@ void PmergeMe::_FJSort_Vector(int level)
 				std::vector<std::vector<int> >::iterator it_pend = pend.end(); //end() returns past the end!
 				it_pend--;
 
+				std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
+				
 				num_elem_to_insert = pend.size();
-
-				if (DEBUG)
-				{
-					std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
-					std::cout << "Number of pend elems to insert: " << num_elem_to_insert << "\n";
-				}
-
+				std::cout << "Number of pend elems to insert: " << num_elem_to_insert << "\n";
+				//
 				int iterations = 0;
 				while (iterations < num_elem_to_insert)
 				{
-					if (DEBUG)
-					{
-						std::cout <<"Pend elem to insert: ";
-						print_sequence(*it_pend);
-					}
+					//search for partner elem (it_pend) in main, get index (aka search area)
+						//std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
+						//	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
+						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
+
+					std::cout <<"Pend elem to insert: ";
+					print_sequence(*it_pend);
 
 					int search_end = _calc_search_area<std::vector<int> >(paired_sequence, last_index, it_pend, main_chain);
+					std::cout << "search end is: " << search_end << "\n";
 
+					std::cout << "bianry inserting..\n";
 					//binary search main search area for index position to insert
 					int middle = _binary_search<std::vector<int> >(search_end, it_pend, main_chain);
-
-					if (DEBUG)
-						std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+					std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
 
 					//insert (check if search area changed)
 					std::vector<std::vector<int> >::iterator it_main_chain = main_chain.begin();
 					for (int i = 0; i < middle; i++)
 						it_main_chain++;
-
+					
 					main_chain.insert(it_main_chain, *it_pend);
 					
 					//remove elem from pend
@@ -480,8 +486,12 @@ void PmergeMe::SortDeque(char *argv[])
 	//sort
 	_FJSort_Deque(level);
 
+	if (DEBUG)
+	{
+		std::cout << "max no of comps allowed: " << _maxComparisons << "\n";
+		std::cout << "no of comps needed: " << _comps << "\n";
+	}
 	_SortedDeq = _deq;
-	_CompsDeq = _comps;
 
 	//calc end time
 	_elapseddeq = clock() - start; //clock ticks
@@ -505,17 +515,15 @@ void PmergeMe::_FJSort_Deque(int level)
 	}
 
 //open up levels: make pairs and compare, get bigger one
+	//CRASHING
+	//_OpeningSort(_deq, last_index, size_elem, size_pair, level);
 	_OpeningSort_Deque(_deq, last_index, size_elem, size_pair, level);
-
 //recursion check
 	//if base case: return 
 	if (size_pair > _numNumbers)
 	{
 		if (DEBUG)
 			std::cout << "\n -- base case reached -- \n\n";
-		if (CHECK_COMPS)
-			std::cout << "DEQ Opening Sort comps: " << _comps << "\n";
-
 		return;
 	}
 	//else recursion call
@@ -525,8 +533,6 @@ void PmergeMe::_FJSort_Deque(int level)
 
 	if (DEBUG)
 		std::cout << " # Level: " << level << "\n";
-
-
 
 //close levels: 
 //parse into new structure (this is to keep pair-rel): 
@@ -553,7 +559,7 @@ void PmergeMe::_FJSort_Deque(int level)
 		y = 0;
 		//while (y < size_elem && (i + y + size_elem) < (int)_deq.size())
 		while(y < size_elem && it != _deq.end())
-		{//parse 2nd elem int_maxComparisonso vector 2
+		{//parse 2nd elem into vector 2
 			vec2.push_back(*it);
 			y++;
 			it++;
@@ -571,38 +577,35 @@ void PmergeMe::_FJSort_Deque(int level)
 
 		i = i + size_pair;
 	}
-	if (uneven && i < (int)_deq.size())
+	if (uneven && i < (int)_deq.size()) //?remaining
 	{
+		int remaining = std::min(size_elem, (int)_deq.size() - i);
+
 		std::deque<int>::iterator it = _deq.begin();
 		for (int k = 0; k < i && it != _deq.end(); k++) //advance to i
 			it++;
 
-		for (int y = 0; y < size_elem && it != _deq.end(); y++, it++)
+		for (int y = 0; y < remaining && it != _deq.end(); y++, it++)
 			uneven_elem.push_back(*it);
-		i = i + size_elem; // increment by actual number copied
+		i = i + remaining; // increment by actual number copied
 	}
-	if (DEBUG)
-	{
-		std::cout << "uneven: ";
-		print_sequence(uneven_elem);
-	}
+
+	std::cout << "uneven: ";
+	print_sequence(uneven_elem);
 	
 	std::deque <int> non_part;
 	std::deque <int>::iterator it = _deq.begin();
 	for (int k = 0; k < i && it != _deq.end(); k++) //advance to i
 		it++;
 
-	while (i < _numNumbers && it != _deq.end())
+	while (i < _numNumbers && it != _deq.end())//i < (int)_deq.size())
 	{
 		non_part.push_back(*it);
 		i++;
 		it++;
 	}
-	if (DEBUG)
-	{
-		std::cout << "non part: ";
-		print_sequence(non_part);
-	}
+	std::cout << "non part: ";
+	print_sequence(non_part);
 
 // create main chain + pend
 	std::deque< std::deque<int> > main_chain;
@@ -659,48 +662,63 @@ void PmergeMe::_FJSort_Deque(int level)
 
 		//CASE jnumber works (aka enough elems in pend)
 			if (num_elem_to_insert <= (int)pend.size()) //jnumber works
-			{			
-             // index for backward iteration
-                int current = num_elem_to_insert - 1;
-                
-                if (DEBUG)
-                {
-                    std::cout <<"jnumber insertion..\n";
-                    std::cout << "traversed pend to elem: " << pend[current].back() << "\n";
-                }
+			{
+				std::cout <<"jnumber insertion..\n";
+				
+				//move iterator in pend to current elem
+				std::deque<std::deque<int> >::iterator it_pend = pend.begin();
+				for (int n = 0; n < num_elem_to_insert - 1 && it_pend != pend.end(); n++)
+					it_pend++;
+			
+				//if (it_pend != pend.end())
+				std::cout << "traversed pend to elem: " << it_pend->back() << "\n";
 
-                int iterations = 0;
-                // Loop while elements to insert and within bounds
-                while (iterations < num_elem_to_insert && current >= 0 && !pend.empty())
-                {
-                    if (DEBUG)
-                    {
-                        std::cout << "Pend elem to insert: ";
-                        print_sequence(pend[current]);
-                    }
+				int iterations = 0;
+				while (iterations < num_elem_to_insert && !pend.empty())
+				{
+					std::cout << "Pend elem to insert: ";
+					print_sequence(*it_pend);
 
-                    // search for partner elem (it_pend) in main, get index (aka search area)
-                    std::deque<std::deque<int> >::iterator it_pend_temp = pend.begin() + current; //pend.begin() it to first inner deque, + current steps forward
-                    int search_end = _calc_search_area_deque(paired_sequence, last_index, it_pend_temp, main_chain);
-                
-                    // binary insert
-                    int middle = _binary_search<std::deque<int> >(search_end, it_pend_temp, main_chain);
-                    if (DEBUG)
-                        std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+					//search for partner elem (it_pend) in main, get index (aka search area)
+						//std::deque < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
+						//	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
+						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
 
-                    // insert
-                    std::deque<std::deque<int> >::iterator it_main_chain = main_chain.begin();
-                    if (middle > 0)
-                        it_main_chain += middle;
-                    
-                    main_chain.insert(it_main_chain, pend[current]);
-                    
-                    // Erase elem at current index in pend
-                    it_pend_temp = pend.begin() + current;
-                    pend.erase(it_pend_temp); //invalidates all iterators (deque) thats why using current -index
-                
-                    current--; 
-                    iterations++;
+					// calc search area in main (= look for upper bound a if any)
+					int search_end = _calc_search_area_deque(paired_sequence, last_index, it_pend, main_chain);
+					
+					std::cout << "After calc search area..\n";
+
+		// binary insert (search area bleibt MEISTENS aber nicht immer the same!)
+					//binary search main search area for index position to insert
+				
+					int middle = _binary_search<std::deque<int> >(search_end, it_pend, main_chain);
+
+					
+					std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+					//insert (check if search area changed)
+					std::deque<std::deque<int> >::iterator it_main_chain = main_chain.begin();
+					for (int i = 0; i < middle && it_main_chain != main_chain.end(); i++)
+						it_main_chain++;
+					
+					main_chain.insert(it_main_chain, *it_pend);
+					
+					//remove elem from pend
+					// std::deque<std::deque<int> >::iterator one_before = it_pend;
+					// one_before--;
+
+					// pend.erase(it_pend);
+					// it_pend = one_before;
+					// iterations++;
+					
+					// erase safely, get iterator to next element
+					it_pend = pend.erase(it_pend); // erase returns iterator after erased element
+
+					// if erase returned end(), move back one to continue loop safely
+					if (it_pend == pend.end() && !pend.empty())
+						it_pend = pend.end() - 1;
+
+					iterations++;
 				}
 			
 			previous_jacobsthal = *current_jacobsthal;
@@ -709,45 +727,58 @@ void PmergeMe::_FJSort_Deque(int level)
 			else //CASE: not enough elems in pend for jnumber
 			{
 				if (pend.empty())
-                    return;
+					return;
+				//just go to end of pend, insert starting from the back
+				//move iterator in pend to current elem
+				std::deque<std::deque<int> >::iterator it_pend = pend.end(); //end() returns past the end!
+				it_pend--;//only safe if pend not emoty
 
-                num_elem_to_insert = pend.size();
-                int current = num_elem_to_insert - 1; // start from the end
-                
-                if (DEBUG)
-                {
-                    std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
-                    std::cout << "Number of pend elems to insert: " << num_elem_to_insert << "\n";
-                }
+				std::cout << "Not enough elems for jnumber left! inserting from back of pend now\n";
+				
+				num_elem_to_insert = pend.size();
+				std::cout << "Number of pend elems to insert: " << num_elem_to_insert << "\n";
+				//
+				int iterations = 0;
+				while (iterations < num_elem_to_insert && !pend.empty())
+				{
+					//search for partner elem (it_pend) in main, get index (aka search area)
+						//std::vector < std::pair < std::vector<int>, std::vector<int> > > paired_sequence;
+						//	std::vector < std::vector<int> > main_chain; //b1, a1, rest of a's (pair 1, rest of pair.second()s)
+						//  std::vector < std::vector<int> > pend; //rest of b's (rest of pair.first()s)
 
-                int iterations = 0;
-                while (iterations < num_elem_to_insert && current >= 0 && !pend.empty())
-                {
-                    if (DEBUG)
-                    {
-                        std::cout <<"Pend elem to insert: ";
-                        print_sequence(pend[current]);
-                    }
-                    
-                    // Create a temporary iterator for the functions that require it
-                    std::deque<std::deque<int> >::iterator it_pend_temp = pend.begin() + current;
-                    int search_end = _calc_search_area_deque(paired_sequence, last_index, it_pend_temp, main_chain);
-                    int middle = _binary_search<std::deque<int> >(search_end, it_pend_temp, main_chain);
-                    if (DEBUG)
-                        std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+					std::cout <<"Pend elem to insert: ";
+					print_sequence(*it_pend);
 
-                    std::deque<std::deque<int> >::iterator it_main_chain = main_chain.begin();
-                    if (middle > 0)
-                        it_main_chain += middle;
-                    
-                    main_chain.insert(it_main_chain, pend[current]);
-                    
-                    // Erase the element
-                    it_pend_temp = pend.begin() + current;
-                    pend.erase(it_pend_temp); 
+					// int search_end = _calc_search_area<std::deque<int> >(paired_sequence, last_index, it_pend, main_chain);
+					// std::cout << "search end is: " << search_end << "\n";
+					int search_end = _calc_search_area_deque(paired_sequence, last_index, it_pend, main_chain);
 
-                    current--;
-                    iterations++;
+
+					// std::cout << "bianry inserting..\n";
+					//binary search main search area for index position to insert
+					int middle = _binary_search<std::deque<int> >(search_end, it_pend, main_chain);
+					std::cout << "inserting pend elem into main chain pos: " << middle << "\n";
+
+					//insert (check if search area changed)
+					std::deque<std::deque<int> >::iterator it_main_chain = main_chain.begin();
+					for (int i = 0; i < middle && it_main_chain != main_chain.end(); i++)
+						it_main_chain++;
+					
+					main_chain.insert(it_main_chain, *it_pend);
+					
+					// //remove elem from pend
+					// std::deque<std::deque<int> >::iterator one_before = it_pend;
+					// one_before--;
+
+					// pend.erase(it_pend);
+					// it_pend = one_before;
+					// iterations++;
+					// erase safely, get iterator to next element
+					it_pend = pend.erase(it_pend); // erase returns iterator after erased element
+
+					// if erase returned end(), move back one to continue loop safely
+					if (it_pend == pend.end() && !pend.empty())
+						it_pend = pend.end() - 1;
 				}
 			}
 		}
@@ -779,10 +810,14 @@ void PmergeMe::_FJSort_Deque(int level)
 
 }
 
+//TODO CHANGE TO USE ITERATORS!!
 void PmergeMe::_OpeningSort_Deque(std::deque<int>& c, int last_index, int size_elem, int size_pair, int level)
 {
 	// std::cout << "in open sort deque\n";
 	std::deque<int> sort_result;
+
+	if (last_index > (int)c.size()) //last index seems to be too big for deque??
+    	last_index = c.size();
 
 	//go thru c, read for size pair, split into two pair-vectors
 	int i = 0;
@@ -798,15 +833,15 @@ void PmergeMe::_OpeningSort_Deque(std::deque<int>& c, int last_index, int size_e
     		++it;
 
 		int y = 0;
-		while (it != c.end() && (i + y) < last_index && y < size_elem)
+		while (it != c.end()&& (i + y) < last_index && y < size_elem)
 		{
 			first.push_back(*it);
 			y++;
 			it++;
 		}
+
 		if (DEBUG)
 			print_sequence(first);
-
 		while ((i + y) < last_index && y < size_pair && it != c.end())
 		{
 			second.push_back(*it);
@@ -818,6 +853,7 @@ void PmergeMe::_OpeningSort_Deque(std::deque<int>& c, int last_index, int size_e
 		
 		//compare last number each, second = bigger! , swap if needed
 		_comps++;
+		//if (first[size_elem - 1] > second[size_elem - 1]) //=comparison
 		if (first.back() > second.back())
 		{
 			it = second.begin();
@@ -833,7 +869,7 @@ void PmergeMe::_OpeningSort_Deque(std::deque<int>& c, int last_index, int size_e
 				it++;
 			}
 		}
-		else
+		else 
 		{
 			it = first.begin();
 			while (it != first.end())
@@ -890,7 +926,11 @@ int PmergeMe::_calc_search_area_deque(
     std::pair < std::deque<int>, std::deque<int> > partner_pair;
     std::deque < std::pair < std::deque<int>, std::deque<int> > >::iterator it_paired_outer = paired_sequence.begin();
 
-	//look for partner elem
+    // secure last_index to container size in case last index too big for cont
+    int max_index = (int)paired_sequence.size();
+    if (last_index > max_index)
+        last_index = max_index;
+
     int index = 0;
     while (it_paired_outer != paired_sequence.end() && index < last_index) //it past end()->undefined + CRASH! Thats why 
     {
@@ -905,8 +945,7 @@ int PmergeMe::_calc_search_area_deque(
     }
 
     if (found)
-    {	//look for partner elem pos in main_chain
-
+    {
         std::deque<std::deque<int> >::iterator it = main_chain.begin();
         search_end = 0;
         while (it != main_chain.end() && *it != partner_pair.second)
@@ -921,12 +960,12 @@ int PmergeMe::_calc_search_area_deque(
         if (search_end > 0)
             search_end--;
     }
-    else //no partner elem -> compare with whole main_chain
+    else
     {
         if (DEBUG)
             std::cout << "no partner found in paired seq\n";
         search_end = (int)main_chain.size();
-        if (search_end > 0) //index at 0 -> compare with entire main chain
+        //if (search_end > 0) //index at 0 -> compare with entire main chain
         search_end--; 
     }
 
@@ -968,10 +1007,11 @@ bool PmergeMe::_is_sorted(void)
 void PmergeMe::printAfter(void) //TODO set field width
 {
 //check if both vector and deque sorted and the same!
+	//if ok:
 	if (!_result_equal() || !_is_sorted())
 		throw ResultError();
 
-	// std::cout << "Vec Afte_maxComparisonsr:  ";
+	// std::cout << "Vec After:  ";
 	// print_sequence(_SortedVec);
 
 	std::cout << "After:  ";
@@ -982,12 +1022,6 @@ void PmergeMe::printAfter(void) //TODO set field width
 	std::cout << "Time to process a range of " << _numNumbers << " with std::deque :  "
 		<< std::setprecision(5) << _elapseddeq << " ms\n";
 
-	if (CHECK_COMPS)
-	{
-		std::cout << "Number of max allowed comps: " << _maxComparisons << "\n";
-		std::cout << "No Comps Vector: " << _CompsVec << "\n";
-		std::cout << "No Comps Deque:  " << _CompsDeq << "\n";
-	}
 }
 
 

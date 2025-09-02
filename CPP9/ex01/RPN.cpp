@@ -47,7 +47,7 @@ bool InputValid(std::string input)
 			&& input[i] != '/'
 			&& input[i] != ' ')
 		{
-			std::cout << "weird char detected\n";
+			// std::cout << "weird char detected\n";
 			return false;
 		}
 		i++;

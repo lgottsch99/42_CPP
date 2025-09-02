@@ -2,6 +2,7 @@
 #define RPN_HPP
 
 #include <stack>
+#include <list>
 #include <string>
 #include <iostream>
 #include <exception>
@@ -11,7 +12,7 @@
 class RPN
 {	
 	private:
-		std::stack<double> _stack;
+		std::stack<double, std::list<double> > _stack;
 
 		int _ParseAndCalc(std::string &input);
 		void _addition(void);

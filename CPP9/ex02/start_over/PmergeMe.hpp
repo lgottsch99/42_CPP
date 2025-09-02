@@ -14,7 +14,7 @@
 #include <cmath>
 #include <limits>
 
-#define DEBUG 0
+#define DEBUG 1
 #define CHECK_COMPS 1
 
 /*
@@ -77,27 +77,20 @@ class PmergeMe
 		template <typename Cont>
 		int _binary_search(int search_area, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain);		
 
-		//TODO REMOVE TEMPLATE
-		template <typename Cont>
+		template <typename Cont> //used by vector
 		int _calc_search_area(typename TraitsFor<Cont>::PairContainer& paired_sequence, int last_index, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain);
-
 		int _calc_search_area_deque(std::deque < std::pair < std::deque<int>, std::deque<int> > > &paired_sequence, int last_index, std::deque<std::deque<int> >::iterator it_pend, std::deque<std::deque<int> > &main_chain);
-
 
 		void _FJSort_Vector(int level);
 		void _FJSort_Deque(int level);
 
-		//template open up levels sort
-		template <typename Cont>
+		template <typename Cont> //used by vector
 		void _OpeningSort(Cont& c, int last_index, int size_elem, int size_pair, int level);
-
 		void _OpeningSort_Deque(std::deque<int>& c, int last_index, int size_elem, int size_pair, int level);
 
-		//template binary insert
 		template <typename Cont>
 		void _BinaryInsert(Cont& c);
 
-		//template gen j numbers
 		template <typename Cont>
 		Cont _genJNums(Cont c, int numNums);
 
@@ -107,7 +100,6 @@ class PmergeMe
 		template <typename Cont>
 		void printSimpleNested(typename TraitsFor<Cont>::SimpleNested object);
 
-
 		std::vector<int>	_vec;
 		std::vector<int>	_SortedVec;
 		int					_CompsVec;
@@ -115,15 +107,12 @@ class PmergeMe
 		std::deque<int>		_SortedDeq;
 		int					_CompsDeq;
 
-
 		double				_elapsedvec; //save time it took to sort 
 		double				_elapseddeq; //save time it took to sort 
 		int 				_numNumbers; // number of numbers to sort
 		int 				_maxComparisons;
 		int 				_comps;
 	
-
-
 	public:
 		PmergeMe(void);//default
 		PmergeMe(const PmergeMe& other); //copy construct
@@ -138,7 +127,6 @@ class PmergeMe
 		void SortVector(char *argv[]);
 		void SortDeque(char *argv[]);
 
-
 		class Error : public std::exception 
 		{
 			public:
@@ -149,8 +137,6 @@ class PmergeMe
 			public:
 				const char * what(void) const throw();
 		};
-
-
 };
 
 template <typename Cont>
@@ -174,32 +160,6 @@ void PmergeMe::_initCont(char *argv[], Cont& c)
 }
 
 
-// template <typename Cont>
-// int PmergeMe::_binary_search(int search_end, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain)
-// {
-// 	std::cout << "in binary search\n";
-// 	int L = 0;
-// 	int R = search_end;
-// 	int T = (*it_pend).back(); //target value to insert
-// 	int middle = 0;
-// 	while (L <= R)
-// 	{
-// 		//one comparison per iteration
-// 		_comps++;
-// 		middle = L + (R - L) / 2;
-
-// 		// std::cout << "main chain middle back() number: " << main_chain[middle].back() << "\n";
-// 		if (main_chain[middle].back() < T)
-// 			L = middle + 1;
-// 		else if (main_chain[middle].back() > T)
-// 			R = middle - 1;
-// 	}
-// 	middle = L; //if not exact match possible
-// 	std::cout << "finished binary search\n";
-// 	return (middle);
-// }
-
-
 template <typename Cont>
 int PmergeMe::_binary_search(int search_end, typename TraitsFor<Cont>::SimpleNested::iterator it_pend, typename TraitsFor<Cont>::SimpleNested& main_chain)
 {
@@ -211,38 +171,38 @@ int PmergeMe::_binary_search(int search_end, typename TraitsFor<Cont>::SimpleNes
     if (it_pend->empty()) 
 		return 0; // safety (calling .back() on empty container crashes)
 
-    int T = it_pend->back();// target value = number to compare 
-    int _index = 0;
+    int T = it_pend->back();// T target value = number to compare 
+    int index = 0;
 
-    Iterator first = main_chain.begin();
-    Iterator last = main_chain.begin();
-    int steps = std::min(search_end + 1, (int)main_chain.size()); // Without the +1, the iterator last would point just before search_end, excluding the last element in the search area
+    Iterator left = main_chain.begin();
+    Iterator right = main_chain.begin();
+    int steps = std::min(search_end + 1, (int)main_chain.size()); // Without the +1, the iterator right would point just before search_end, excluding the right element in the search area
     for (int i = 0; i < steps; ++i) 
-		last++;  // advance safely for dque and vector // need to advance manually to be safe for deque 
+		right++;  // advance safely for dque and vector // need to advance manually to be safe for deque 
 
-    while (first != last)
+    while (left != right)
     {
-        int distance = std::distance(first, last); //1 Compute distance between first and last.
+        int dist = std::distance(left, right); //1 Compute distance between left and right.
         
-		Iterator middle = first; //2 Move middle to midpoint manually, safe for deque
-        for (int i = 0; i < distance / 2; ++i) 
+		Iterator middle = left; //2 Move middle to midpoint manually, safe for deque
+        for (int i = 0; i < dist / 2; ++i) 
 			middle++; 
 
 		//one comparison per iteration
         _comps++;
-        if (middle->back() < T) // 3 If middle elem is less than target, move first after middle
+        if (middle->back() < T) // 3 If middle elem is less than target, move left after middle
         {
-            Iterator tmp = middle;
+            Iterator tmp = middle; //used to not invalidate for following else
             tmp++;
-            first = tmp;
+            left = tmp;
         }
         else
-            last = middle;
+            right = middle;
     }
 
-    _index = std::distance(main_chain.begin(), first); //converts first iteratir to int index 
+    index = std::distance(main_chain.begin(), left); //converts left iteratir to int index 
    // std::cout << "finished binary search\n";
-    return _index;
+    return index;
 }
 
 template <typename Cont>
@@ -298,9 +258,9 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 		}
 		if (DEBUG)
 			print_sequence(second);
+		
 		//compare last number each, second = bigger! , swap if needed
 		_comps++;
-		//if (first[size_elem - 1] > second[size_elem - 1]) //=comparison
 		if (first.back() > second.back())
 		{
 			it = second.begin();
@@ -348,7 +308,6 @@ void PmergeMe::_OpeningSort(Cont& c, int last_index, int size_elem, int size_pai
 	
 	//swap c and result
 	c.swap(sort_result);
-
 }
 
 
@@ -382,11 +341,7 @@ int PmergeMe::_calc_search_area(
     typename TraitsFor<Cont>::Pair partner_pair;
     typename TraitsFor<Cont>::PairContainer::iterator it_paired_outer = paired_sequence.begin();
 
-    // secure last_index to container size in case last index too big for cont
-    int max_index = (int)paired_sequence.size();
-    if (last_index > max_index)
-        last_index = max_index;
-
+	//look for partner to it_pend 
     int index = 0;
     while (it_paired_outer != paired_sequence.end() && index < last_index) //it past end()->undefined + CRASH! Thats why 
     {
@@ -402,6 +357,7 @@ int PmergeMe::_calc_search_area(
 
     if (found)
     {
+		//get pos of partner in main chain
         typename TraitsFor<Cont>::SimpleNested::iterator it = main_chain.begin();
         search_end = 0;
         while (it != main_chain.end() && *it != partner_pair.second)
@@ -412,11 +368,11 @@ int PmergeMe::_calc_search_area(
         if (DEBUG)
             std::cout << "partner in main chain at pos: " << search_end << "\n";
 
-        //no need to compare partner elem tho so -1 index
+        //no need to compare partner elem itself tho so -1 index
         if (search_end > 0)
             search_end--;
     }
-    else
+    else //no partner elem found, compare with entire main chain
     {
         if (DEBUG)
             std::cout << "no partner found in paired seq\n";
@@ -433,16 +389,15 @@ int PmergeMe::_calc_search_area(
 template <typename Cont>
 void PmergeMe::printSimpleNested(typename TraitsFor<Cont>::SimpleNested object)
 {
-    // Iterate over the outer vector
+    // Iterate over outer vector
     for (typename TraitsFor<Cont>::SimpleNested::const_iterator it = object.begin(); it != object.end(); ++it)
 	{
-        // 'it' is an iterator to a std::vector<int>
-        // Dereference 'it' to get the current inner vector
+        // it is iterator to std::vector<int>
+        // dereference it to get inner vector
         const Cont& inner_object = *it;
 
         // Iterate over the inner vector
         for (typename Cont::const_iterator inner_it = inner_object.begin(); inner_it != inner_object.end(); ++inner_it) {
-            // Dereference 'inner_it' to get the current integer
             std::cout << *inner_it << " ";
         }
     }
