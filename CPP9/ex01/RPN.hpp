@@ -12,6 +12,7 @@
 class RPN
 {	
 	private:
+		int 	_is_op;
 		std::stack<double, std::list<double> > _stack;
 
 		int _ParseAndCalc(std::string &input);
@@ -19,6 +20,7 @@ class RPN
 		void _substraction(void);
 		void _multiplication(void);
 		void _division(void);
+		bool IsOperator(char c);
 
 	public:
 		RPN(void);//default

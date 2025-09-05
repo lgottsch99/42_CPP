@@ -11,6 +11,7 @@ class Span
 {
 	private:
 		unsigned int		_max_int;
+		std::vector<int>	_vec; //to actually store ints
 
 	public:
 		Span(unsigned int n); //default constr
@@ -26,8 +27,9 @@ class Span
 		void			addRange(T start, T end);
 
 		//getset
-		unsigned int	getMaxInt(void) const;
-		std::vector<int>	_vec; //to actually store ints
+		unsigned int		getMaxInt(void) const;
+		std::vector<int>&	getVec(void);
+		const std::vector<int>&	getVec(void) const; //overload for copy constr. / assign.
 
 
 		//exceptions
@@ -42,6 +44,12 @@ class Span
 			public:
 				const char * what(void) const throw();
 		};
+		class RangeTooBig : public std::exception 
+		{
+			public:
+				const char * what(void) const throw();
+		};
+
 };
 
 
@@ -51,12 +59,12 @@ If you don’t have a clue, study the Containers.  Some member
 functions take a range of iterators in order to add a sequence of
 elements to the container.
 
--> a while loop not ok
+single call -> while loop not ok
 -> iterators (to different existing Span) as params
 
 */
 template <typename T>
-void	Span::addRange(T start, T end) //pass iterators of existing container thta stores ints
+void	Span::addRange(T start, T end) //pass iterators (T) of existing container thta stores ints
 {
 	//check size of range (if bigger than max int ?)
 	if (start == end)
@@ -65,7 +73,7 @@ void	Span::addRange(T start, T end) //pass iterators of existing container thta 
 	//check size of desired range
 	unsigned int rangeSize = std::distance(start, end);
 	if (_vec.size() + rangeSize > this->_max_int)
-		throw std::runtime_error("Not enough space for range.");
+		throw RangeTooBig();
 
 	//insert
 	_vec.insert(_vec.end(), start, end);

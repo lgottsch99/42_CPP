@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-//zb array of int: 1st param (container), 2nd param (number to search for)
+//eg array of int: 1st param (container), 2nd param (number to search for)
 template <typename T>
 typename T::iterator easyfind(T &t, int i)
 {

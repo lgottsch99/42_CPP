@@ -56,10 +56,13 @@ bool InputValid(std::string input)
 }
 
 
-bool IsOperator(char c)
+bool RPN::IsOperator(char c)
 {
 	if (c == '+' || c == '-' || c == '*' || c == '/')
+	{
+		_is_op = 1;
 		return true;
+	}
 	return false;
 }
 
@@ -70,6 +73,7 @@ void RPN::_addition(void)
 	double two = _stack.top();
 	_stack.pop();
 	_stack.push(static_cast<double>(one + two));
+	_is_op = 0;
 }
 
 void RPN::_substraction(void)
@@ -79,6 +83,7 @@ void RPN::_substraction(void)
 	double two = _stack.top();
 	_stack.pop();
 	_stack.push(static_cast<double>(two - one));
+	_is_op = 0;
 }
 
 
@@ -89,6 +94,7 @@ void RPN::_multiplication(void)
 	double two = _stack.top();
 	_stack.pop();
 	_stack.push(static_cast<double>(one * two));
+	_is_op = 0;
 }
 void RPN::_division(void) //maybe change to double for more 
 {
@@ -97,12 +103,16 @@ void RPN::_division(void) //maybe change to double for more
 	double two = _stack.top();
 	_stack.pop();
 	_stack.push(static_cast<double>(two / one));
+	_is_op = 0;
+
 }
 
 int	RPN::_ParseAndCalc(std::string &input)
 {
 	//go thru str
 	size_t i = 0;
+	_is_op = 0;
+
 	while (i < input.size())
 	{
 		//encounter digit? ->add to stack
@@ -126,7 +136,7 @@ int	RPN::_ParseAndCalc(std::string &input)
 		i++;
 	}	
 
-	if (_stack.size() != 1)//then the input was wrong rpn
+	if (_stack.size() != 1 || _is_op)//then the input was wrong rpn
 	{
 		std::cerr << "Error\n";
 		return 1;

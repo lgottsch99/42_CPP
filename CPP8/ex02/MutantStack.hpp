@@ -10,7 +10,7 @@
 // https://en.cppreference.com/w/cpp/container/stack.html 
 
 template <typename T, typename Container=std::deque<T> > //container param like std::stack defualt is deque but any is fine
-class MutantStack: public std::stack<T, Container> //inheriting from stack, 
+class MutantStack: public std::stack<T, Container> //inheriting from stack 
 {
 	//container c inherited from std::stack
 
@@ -24,8 +24,8 @@ class MutantStack: public std::stack<T, Container> //inheriting from stack,
 		typedef typename Container::iterator iterator;
 
 		//iterator fts
-		iterator begin();
-		iterator end();
+		iterator begin(void);
+		iterator end(void);
 
 		//iterator overloads? ++ -- ... ->not needed, inherited from stack
 
@@ -59,7 +59,7 @@ MutantStack<T, Container>::MutantStack(const MutantStack<T, Container>& other):
 std::stack<T, Container>(other) //better: letting base class handle the copying
 {
 	std::cout << "(MutantStack) Copy constructor\n";
-	// this->c = other.c;
+	this->c = other.c;
 }
 
 //copy assignment
@@ -85,18 +85,17 @@ MutantStack<T, Container>::~MutantStack()
 //----------- Iterators ------------
 
 template <typename T, typename Container>
-typename MutantStack<T, Container>::iterator MutantStack<T, Container>::begin()
+typename MutantStack<T, Container>::iterator MutantStack<T, Container>::begin(void)
 {
 	return (this->c.begin());
 }
 
 
 template <typename T, typename Container>
-typename MutantStack<T, Container>::iterator MutantStack<T, Container>::end()
+typename MutantStack<T, Container>::iterator MutantStack<T, Container>::end(void)
 {
 	return (this->c.end()); //c is container in std::stack
 }
-
 
 
 #endif

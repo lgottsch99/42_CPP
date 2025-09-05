@@ -24,14 +24,15 @@ pop
 
 int main(void)
 {
-	//subject main ----
+
 	MutantStack<int> mstack;
 	std::cout << "\nMUTANT STACK TEST ----------\n\n\n";
 
 	if (mstack.empty())
 		std::cout << "mstack is empty\n";
 
-	std::cout << "pushing to mstack..\n";
+	//subject main ----
+	std::cout << "pushing 5, 17 to mstack..\n";
 	mstack.push(5);
 	mstack.push(17);
 
@@ -40,8 +41,9 @@ int main(void)
 
 	std::cout << "top: " << mstack.top() << std::endl;
 
+	std::cout << "size: " << mstack.size() << std::endl;
+	std::cout << "pop() (aka remove top one: 17)\n";
 	mstack.pop();
-
 	std::cout << "size: " << mstack.size() << std::endl;
 
 	mstack.push(3);
@@ -51,7 +53,7 @@ int main(void)
 	//[...] 
 	mstack.push(0);
 
-	std::cout << "\nprinting stack after adding: \n";
+	std::cout << "\nprinting stack after adding 3, 5, 737, 0: \n";
 	MutantStack<int>::iterator it = mstack.begin(); 
 	MutantStack<int>::iterator ite = mstack.end();
 	++it; //just testing if ++/-- is working and doesnt throw errors
@@ -62,6 +64,8 @@ int main(void)
 		++it; 
 	}
 	std::cout << "size: " << mstack.size() << std::endl;
+
+
 
 	std::stack<int> s(mstack); //?? -> since mstack inherits from stack it can be copy constructed with stack, no issue
 	std::cout << "size std::stack<int> s(mstack): " << s.size() << std::endl;

@@ -21,10 +21,8 @@
 Specialization allows type-dependent logic:
 TraitsFor<Cont> can be different depending on Cont.
 You write your algorithms using typename TraitsFor<Cont>::SimpleNested, Pair, etc., and the compiler picks the correct types automatically.
-
 Code reuse:
 You can write one set of functions templated on Cont and they will work for vector<int> or deque<int> without rewriting the algorithm.
-
 Compile-time resolution:
 All type aliases are resolved at compile time, so there is no runtime overhead.
 */

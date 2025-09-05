@@ -13,6 +13,12 @@ char const *Span::NotEnoughInt::what(void) const throw()
 	return("(Span) EXCEPTION: Not enough elements yet!\n");
 }
 
+char const *Span::RangeTooBig::what(void) const throw()
+{
+	return("(Span) EXCEPTION: Range to insert more than max size!\n");
+}
+
+
 // ----- Constructors -----------------------
 
 //default constr
@@ -20,7 +26,6 @@ Span::Span(unsigned int n)
 {
 	std::cout << "(Span) Default constructor\n";
 	_max_int = n;
-
 }
 
 //copy construct
@@ -28,6 +33,7 @@ Span::Span(const Span& other)
 {
 	std::cout << "(Span) Copy constructor\n";
 	_max_int = other.getMaxInt();
+	_vec = other.getVec();
 }
 
 //copy assignment
@@ -36,7 +42,8 @@ Span &Span::operator=( const Span& other)
 	if (this != &other)
 	{
 		std::cout << "(Span) Copy assignment\n";
-		_max_int = other.getMaxInt();	
+		_max_int = other.getMaxInt();
+		_vec = other.getVec();
 	}
 	return (*this);
 }
@@ -79,7 +86,7 @@ unsigned int	Span::shortestSpan(void)
 	std::sort(_vec.begin(), _vec.end());
 
 	//find shortest span
-	for (std::vector<int>::iterator it = _vec.begin(); it!= _vec.end() - 1; it++)
+	for (std::vector<int>::iterator it = _vec.begin(); it != _vec.end() - 1; it++)
 	{	
 		current = *it;
 		next = *(it + 1);
@@ -108,7 +115,7 @@ unsigned int	Span::longestSpan(void)
 		throw NotEnoughInt();
 
 	//find min and max
-	for (std::vector<int>::iterator it = _vec.begin(); it!= _vec.end(); it++)
+	for (std::vector<int>::iterator it = _vec.begin(); it != _vec.end(); it++)
 	{
 		if (init == 0)
 		{
@@ -127,4 +134,12 @@ unsigned int	Span::longestSpan(void)
 	return (max - min);
 }
 
+std::vector<int>&	Span::getVec(void)
+{
+	return (_vec);
+}
 
+const std::vector<int>&	Span::getVec(void) const
+{
+	return (_vec);
+}

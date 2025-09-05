@@ -147,6 +147,8 @@ void BitcoinExchange::ProcessFile(std::string &filename)
 
 	while (getline(input_file, input_line)) //go thru each line
 	{
+		if (input_line == "date | value")
+			continue;
 		//go thru each line in input 
 		try
 		{
